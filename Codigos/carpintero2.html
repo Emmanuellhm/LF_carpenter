@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Perfil de Juan Pérez - LF Carpinter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0b1228;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      color: #000;
+      height: 50px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .logo-container img {
+      height: 60px;
+    }
+
+    .user-dropdown,
+    .notificaciones-dropdown {
+      position: relative;
+    }
+
+    .user-button,
+    .noti-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #000;
+    }
+
+    .dropdown-menu,
+    .noti-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #ffffff;
+      color: #000;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      padding: 0.5rem 0;
+      display: none;
+      min-width: 200px;
+      z-index: 10;
+    }
+
+    .dropdown-menu a,
+    .noti-menu a {
+      display: block;
+      padding: 0.6rem 1rem;
+      text-decoration: none;
+      color: #000;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-menu a:hover,
+    .noti-menu a:hover {
+      background-color: #f3f4f6;
+    }
+
+    .noti-menu p {
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h1, h2 {
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: #facc15;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      background-color: #1d263b;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    strong {
+      color: #facc15;
+    }
+
+    .button-group {
+      margin: 2rem 0;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .action-button {
+      background-color: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s ease;
+    }
+
+    .action-button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .estado {
+      font-size: 16px;
+      margin-left: 10px;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    .disponible {
+      background-color: #d1fae5;
+      color: #10b981;
+    }
+
+    .ocupado {
+      background-color: #fee2e2;
+      color: #ef4444;
+    }
+
+    .projects-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .project-card {
+      min-width: 250px;
+      flex: 0 0 auto;
+      background-color: #1d263b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      scroll-snap-align: start;
+    }
+
+    .project-card h3 {
+      margin-top: 0;
+      color: #facc15;
+    }
+
+    .project-card p {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .edit-button {
+      margin-top: 10px;
+      background-color: #f59e0b;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .edit-button:hover {
+      background-color: #d97706;
+    }
+
+    .comment-card {
+      background-color: #1d263b;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .small-text {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="./img/Logo de Carpintería LF.png" alt="LF Logo" />
+    </div>
+    <nav>
+      <a href="carpinteros1.html">Carpinteros</a>
+      <a href="#">Contáctanos</a>
+
+      <div class="notificaciones-dropdown">
+        <button class="noti-button" onclick="toggleNotificaciones()">
+          <i class="fas fa-bell"></i>
+        </button>
+        <div class="noti-menu" id="notiMenu">
+          <p>Notificaciones</p>
+          <a href="#">Compra de proyecto: Estantería Minimalista</a>
+          <a href="#">Proyecto personalizado: Closet empotrado</a>
+          <a href="#">Mantenimiento solicitado: Silla antigua</a>
+        </div>
+      </div>
+
+      <div class="user-dropdown">
+        <button class="user-button" onclick="toggleMenu()">Juan Pérez ▾</button>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="#">Configuración</a>
+          <a href="index.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Perfil del Carpintero</h1>
+
+    <section class="info-grid">
+      <p><strong>Nombre:</strong> Juan Esteban Pérez Ramírez</p>
+      <p><strong>Ciudad:</strong> Medellín, Colombia</p>
+      <p><strong>Zonas de trabajo:</strong> Medellín, Envigado, Bello</p>
+      <p><strong>Años de experiencia:</strong> 12 años</p>
+      <p style="grid-column: span 2;"><strong>Especialidades:</strong> Muebles personalizados, closets, sillas a medida, mantenimiento de estructuras en madera</p>
+      <p><strong>Teléfono:</strong> +57 312 456 7890</p>
+      <p><strong>Correo:</strong> juanperezcarpintero@gmail.com</p>
+    </section>
+
+    <div class="button-group">
+      <span id="estado" class="estado disponible">● Disponible</span>
+      <button class="action-button" onclick="toggleEstado()">Cambiar Estado</button>
+    </div>
+
+    <h2>Proyectos</h2>
+    <div class="projects-scroll">
+      <div class="project-card">
+        <h3>Closet en madera roble</h3>
+        <p class="small-text">Publicado: 15 de junio de 2025</p>
+        <p>Incluye compartimientos personalizados y rieles metálicos.</p>
+        <button class="edit-button">Editar</button>
+      </div>
+
+      <div class="project-card">
+        <h3>Mesa comedor para 6</h3>
+        <p class="small-text">Publicado: 3 de junio de 2025</p>
+        <p>Fabricada en pino canadiense, acabado mate.</p>
+        <button class="edit-button">Editar</button>
+      </div>
+
+      <div class="project-card">
+        <h3>Silla rústica individual</h3>
+        <p class="small-text">Publicado: 25 de mayo de 2025</p>
+        <p>Madera de pino barnizada con respaldo curvo.</p>
+        <button class="edit-button">Editar</button>
+      </div>
+    </div>
+
+    <h2>Comentarios de Clientes</h2>
+    <div class="comment-card">
+      <p><strong>Cliente:</strong> Laura Martínez</p>
+      <p><em>“La mesa quedó espectacular, con un acabado profesional y muy puntual en la entrega. ¡Gracias Juan!”</em></p>
+      <p class="small-text">Fecha: 18 de junio de 2025</p>
+    </div>
+
+    <div class="comment-card">
+      <p><strong>Cliente:</strong> Esteban Torres</p>
+      <p><em>“Muy buena atención y excelente trabajo con la silla personalizada. Tal como la pedí.”</em></p>
+      <p class="small-text">Fecha: 17 de junio de 2025</p>
+    </div>
+  </div>
+
+  <script>
+    function toggleEstado() {
+      const estadoSpan = document.getElementById('estado');
+      if (estadoSpan.classList.contains('disponible')) {
+        estadoSpan.classList.remove('disponible');
+        estadoSpan.classList.add('ocupado');
+        estadoSpan.textContent = '● Ocupado';
+      } else {
+        estadoSpan.classList.remove('ocupado');
+        estadoSpan.classList.add('disponible');
+        estadoSpan.textContent = '● Disponible';
+      }
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById("dropdownMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      menu.style.flexDirection = "column";
+    }
+
+    function toggleNotificaciones() {
+      const menu = document.getElementById("notiMenu");
+      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      menu.style.flexDirection = "column";
+    }
+
+    document.addEventListener("click", function (event) {
+      const userDropdown = document.querySelector(".user-dropdown");
+      const notiDropdown = document.querySelector(".notificaciones-dropdown");
+
+      if (!userDropdown.contains(event.target)) {
+        document.getElementById("dropdownMenu").style.display = "none";
+      }
+
+      if (!notiDropdown.contains(event.target)) {
+        document.getElementById("notiMenu").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

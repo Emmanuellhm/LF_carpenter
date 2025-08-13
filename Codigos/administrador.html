@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel de Administrador - LF Carpinter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0b1228;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      color: #000;
+      height: 50px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+    }
+
+    .user-dropdown {
+      position: relative;
+    }
+
+    .user-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #000;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background-color: #ffffff;
+      color: #000;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      padding: 0.5rem 0;
+      display: none;
+      min-width: 150px;
+      z-index: 10;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 0.6rem 1rem;
+      text-decoration: none;
+      color: #000;
+      font-size: 0.95rem;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: #f3f4f6;
+    }
+
+    .logo-container img {
+      height: 80px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+    }
+
+    h2 {
+      color: #facc15;
+      margin-bottom: 1rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background-color: #1d263b;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #334155;
+    }
+
+    .card p {
+      margin-bottom: 0.5rem;
+      color: #ccc;
+    }
+
+    .card strong {
+      color: #facc15;
+    }
+
+    .button-group {
+      margin-top: 1rem;
+      display: flex;
+      gap: 10px;
+    }
+
+    .button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .accept {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .accept:hover {
+      background-color: #059669;
+    }
+
+    .deny {
+      background-color: #ef4444;
+      color: white;
+    }
+
+    .deny:hover {
+      background-color: #dc2626;
+    }
+
+    .delete {
+      background-color: #f87171;
+      color: white;
+    }
+
+    .delete:hover {
+      background-color: #dc2626;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="./img/Logo de Carpintería LF.png" alt="LF Logo" />
+    </div>
+    <nav>
+      <a href="#solicitudes">Solicitudes</a>
+      <a href="#sugerencias">Sugerencias</a>
+      <a href="#reportes">Carpinteros Reportados</a>
+      <div class="user-dropdown">
+        <button class="user-button" onclick="toggleDropdown()">Administrador ▾</button>
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="#">Configuración</a>
+          <a href="index.html">Cerrar sesión</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section id="solicitudes">
+      <h2>Solicitudes de Registro</h2>
+      <div class="card">
+        <p><strong>Nombre:</strong> Diego Ramírez</p>
+        <p><strong>Email:</strong> diego.carpintero@gmail.com</p>
+        <p><strong>Especialidad:</strong> Closets y cocinas</p>
+        <div class="button-group">
+          <button class="button accept">Aceptar</button>
+          <button class="button deny">Rechazar</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="sugerencias">
+      <h2>Sugerencias de Usuarios</h2>
+      <div class="card">
+        <p><strong>Nombre:</strong> Camila Rojas</p>
+        <p><strong>Mensaje:</strong> Podrían añadir un filtro por ubicación para encontrar carpinteros más cercanos.</p>
+      </div>
+      <div class="card">
+        <p><strong>Nombre:</strong> Andrés López</p>
+        <p><strong>Mensaje:</strong> Me gustaría poder calificar también la atención al cliente.</p>
+      </div>
+    </section>
+
+    <section id="reportes">
+      <h2>Carpinteros Reportados</h2>
+      <div class="card">
+        <p><strong>Nombre:</strong> Mario Torres</p>
+        <p><strong>Motivo del reporte:</strong> No entregó el trabajo en el tiempo acordado.</p>
+        <div class="button-group">
+          <button class="button delete">Eliminar Carpintero</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.addEventListener('click', function(e) {
+      const button = document.querySelector('.user-button');
+      const menu = document.getElementById('dropdownMenu');
+      if (!button.contains(e.target) && !menu.contains(e.target)) {
+        menu.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
+
+

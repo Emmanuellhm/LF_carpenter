@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carpinteros - LF Carpinter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0b1228;
+      color: #fff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      color: #000;
+      height: 50px;
+    }
+
+    nav a {
+      margin-left: 2rem;
+      text-decoration: none;
+      color: #000;
+      font-weight: 500;
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin: 2rem;
+      font-size: 2rem;
+    }
+
+    .proyectos-container, .perfiles-container {
+      display: flex;
+      overflow-x: auto;
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .proyecto-card, .perfil-card {
+      background-color: #1d263b;
+      border-radius: 1rem;
+      width: 300px;
+      flex: 0 0 auto;
+      padding: 1rem;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .proyecto-card img, .perfil-card img {
+      width: 100%;
+      height: 180px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+      margin-bottom: 1rem;
+    }
+
+    .proyecto-card h3, .perfil-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .proyecto-card p, .perfil-card p {
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+    .logo-container {
+      display: flex;
+      align-items: center;
+      padding: 0.2rem 0;
+    }
+
+    .logo-container img {
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="./img/Logo de Carpintería LF.png" alt="LF Logo">
+    </div>
+    <nav>
+      <a href="index2.html">Página de inicio</a>
+      <a href="carpinteros1.html">Carpinteros</a>
+      <a href="#">Contáctanos</a>
+      <a href="iniciar-seccion.html">Iniciar sesión</a>
+    </nav>
+  </header>
+
+  <h1>Proyectos de Carpinteros</h1>
+  <div class="proyectos-container">
+    <div class="proyecto-card">
+      <img src="./img/proyecto1.jpg" alt="Proyecto 1">
+      <h3>Silla de Madera Roble</h3>
+      <p>Diseño ergonómico, hecho con madera de roble. Acabados profesionales.</p>
+    </div>
+    <div class="proyecto-card">
+      <img src="./img/proyecto2.jpg" alt="Proyecto 2">
+      <h3>Estantería Minimalista</h3>
+      <p>Estilo moderno, ideal para espacios pequeños. Madera pino tratada.</p>
+    </div>
+    <div class="proyecto-card">
+      <img src="./img/proyecto3.jpg" alt="Proyecto 3">
+      <h3>Comedor para 6 personas</h3>
+      <p>Conjunto completo con mesa y sillas. Madera de nogal.</p>
+    </div>
+    <div class="proyecto-card">
+      <img src="./img/proyecto4.jpg" alt="Proyecto 4">
+      <h3>Cómoda vintage</h3>
+      <p>Diseño clásico, con barniz protector. Hecha a mano.</p>
+    </div>
+  </div>
+
+  <h2>Perfiles de Carpinteros</h2>
+  <div class="perfiles-container">
+    <div class="perfil-card" onclick="window.location.href='cliente2.html'">
+      <img src="./img/carpintero1.jpg" alt="Carpintero 1">
+      <h3>Juan Pérez</h3>
+      <p>Especialista en muebles a medida. 10 años de experiencia. Disponible para proyectos personalizados.</p>
+    </div>
+    <div class="perfil-card">
+      <img src="./img/carpintero2.jpg" alt="Carpintero 2">
+      <h3>Laura Gómez</h3>
+      <p>Experticia en restauración de muebles antiguos. Atención personalizada garantizada.</p>
+    </div>
+    <div class="perfil-card">
+      <img src="./img/carpintero3.jpg" alt="Carpintero 3">
+      <h3>Carlos Ruiz</h3>
+      <p>Diseño moderno y funcional. Proyectos innovadores y a buen precio.</p>
+    </div>
+    <div class="perfil-card">
+      <img src="./img/carpintero4.jpg" alt="Carpintero 4">
+      <h3>Ana Torres</h3>
+      <p>Con enfoque ecológico. Trabaja con maderas recicladas y acabados sostenibles.</p>
+    </div>
+  </div>
+</body>
+
+</html>
+
+

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Perfil del Carpintero</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #0b1228;
+      color: #fff;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background-color: #1d263b;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h1, h2, h3 {
+      color: #facc15;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: #e5e7eb;
+    }
+
+    .small-text {
+      font-size: 14px;
+      color: #9ca3af;
+    }
+
+    .projects-scroll {
+      display: flex;
+      gap: 20px;
+      overflow-x: auto;
+      padding-bottom: 10px;
+      scroll-snap-type: x mandatory;
+      margin-bottom: 20px;
+    }
+
+    .project-card {
+      min-width: 250px;
+      flex: 0 0 auto;
+      background-color: #111827;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .project-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .button, .button-green {
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .button {
+      background-color: #3b82f6;
+      color: white;
+    }
+
+    .button:hover {
+      background-color: #2563eb;
+    }
+
+    .button-green {
+      background-color: #10b981;
+      color: white;
+    }
+
+    .button-green:hover {
+      background-color: #059669;
+    }
+
+    .estado {
+      font-size: 16px;
+      margin-left: 10px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .disponible {
+      color: #10b981;
+      background-color: #064e3b;
+    }
+
+    .comment-card {
+      background-color: #111827;
+      border: 1px solid #334155;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    /* Modal */
+    #modalFormulario {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 9999;
+    }
+
+    #modalFormulario .modal-content {
+      background-color: #1d263b;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      margin: 50px auto;
+    }
+
+    #modalFormulario h2 {
+      color: #facc15;
+      margin-bottom: 15px;
+    }
+
+    #modalFormulario select,
+    #modalFormulario input[type="text"],
+    #modalFormulario input[type="file"] {
+      width: 100%;
+      margin-bottom: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    #modalFormulario .button {
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Juan Esteban Pérez Ramírez <span class="estado disponible">● Disponible</span></h1>
+    <p><strong>Ciudad:</strong> Medellín, Colombia</p>
+    <p><strong>Zonas de trabajo:</strong> Medellín, Envigado, Bello</p>
+    <p><strong>Años de experiencia:</strong> 12 años</p>
+    <p><strong>Especialidades:</strong> Muebles personalizados, closets, sillas a medida, mantenimiento de estructuras en madera</p>
+    <p><strong>Teléfono:</strong> +57 312 456 7890</p>
+    <p><strong>Correo:</strong> juanperezcarpintero@gmail.com</p>
+
+    <h2>Proyectos Disponibles</h2>
+    <div class="projects-scroll">
+      <div class="project-card">
+        <img src="https://via.placeholder.com/250x150?text=Closet" alt="Closet">
+        <h3>Closet en madera roble</h3>
+        <p class="small-text">Compartimientos personalizados y rieles metálicos</p>
+        <button class="button">Comprar</button>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/250x150?text=Mesa+Comedor" alt="Mesa">
+        <h3>Mesa comedor para 6</h3>
+        <p class="small-text">Pino canadiense, acabado mate</p>
+        <button class="button">Comprar</button>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/250x150?text=Silla" alt="Silla">
+        <h3>Silla rústica individual</h3>
+        <p class="small-text">Madera barnizada, respaldo curvo</p>
+        <button class="button">Comprar</button>
+      </div>
+      <div class="project-card">
+        <img src="https://via.placeholder.com/250x150?text=Estantería" alt="Estantería">
+        <h3>Estantería flotante</h3>
+        <p class="small-text">MDF negro, soportes ocultos</p>
+        <button class="button">Comprar</button>
+      </div>
+    </div>
+
+    <h2>Servicios</h2>
+    <button class="button">Contratar para mantenimiento</button>
+    <button class="button" onclick="mostrarFormulario()">Enviar proyecto personalizado</button>
+
+    <h2>Reseñas de Otros Clientes</h2>
+    <div class="comment-card">
+      <p><strong>Cliente:</strong> Laura Martínez</p>
+      <p><em>“La mesa quedó espectacular, con un acabado profesional y muy puntual en la entrega. ¡Gracias Juan!”</em></p>
+      <p class="small-text">Fecha: 18 de junio de 2025</p>
+    </div>
+    <div class="comment-card">
+      <p><strong>Cliente:</strong> Esteban Torres</p>
+      <p><em>“Muy buena atención y excelente trabajo con la silla personalizada. Tal como la pedí.”</em></p>
+      <p class="small-text">Fecha: 17 de junio de 2025</p>
+    </div>
+
+    <h2>Deja tu Reseña</h2>
+    <form>
+      <label for="nombre">Tu nombre:</label><br>
+      <input type="text" id="nombre" name="nombre" style="width: 100%; margin-bottom: 10px; padding: 8px; border-radius: 6px; border: none;"><br>
+      <label for="comentario">Tu experiencia:</label><br>
+      <textarea id="comentario" name="comentario" rows="4" style="width: 100%; padding: 8px; border-radius: 6px; border: none;"></textarea><br><br>
+      <button type="submit" class="button-green">Enviar Reseña</button>
+    </form>
+  </div>
+
+  <!-- Modal de Proyecto Personalizado -->
+<div id="modalFormulario">
+  <div class="modal-content">
+    <h2>Proyecto Personalizado</h2>
+    <form id="formProyecto">
+      <label for="material">Material:</label><br>
+      <select id="material" name="material" required>
+        <option value="">--Selecciona un material--</option>
+        <option value="Madera roble">Madera roble</option>
+        <option value="Madera pino">Madera pino</option>
+        <option value="MDF">MDF</option>
+        <option value="Melamina">Melamina</option>
+        <option value="Triplay">Triplay</option>
+      </select><br>
+
+      <label for="descripcion">Descripción del proyecto:</label><br>
+      <textarea id="descripcion" name="descripcion" rows="3" placeholder="Ej: Un escritorio con 3 cajones y superficie amplia para monitor..." required style="width: 100%; margin-bottom: 15px; padding: 10px; border-radius: 6px; border: none;"></textarea>
+
+      <label>Medidas (cm):</label><br>
+      <input type="number" id="alto" name="alto" placeholder="Alto" required style="width: 32%; margin-right: 2%; padding: 10px; border-radius: 6px; border: none;">
+      <input type="number" id="ancho" name="ancho" placeholder="Ancho" required style="width: 32%; margin-right: 3%; padding: 10px; border-radius: 6px; border: none;">
+      <input type="number" id="largo" name="largo" placeholder="Largo" required style="width: 32%; padding: 10px; border-radius: 6px; border: none;"><br><br>
+
+      <label for="archivo">Archivo de ejemplo (PDF o JPG):</label><br>
+      <input type="file" id="archivo" name="archivo" accept=".pdf,.jpg,.jpeg" required><br><br>
+
+      <button type="submit" class="button-green">Enviar solicitud</button>
+      <button type="button" onclick="cerrarFormulario()" class="button" style="background-color:#ef4444;">Cancelar</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+  function mostrarFormulario() {
+    document.getElementById("modalFormulario").style.display = "block";
+  }
+
+  function cerrarFormulario() {
+    document.getElementById("modalFormulario").style.display = "none";
+  }
+
+  document.getElementById("formProyecto").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const material = document.getElementById("material").value;
+    const descripcion = document.getElementById("descripcion").value;
+    const alto = document.getElementById("alto").value;
+    const ancho = document.getElementById("ancho").value;
+    const largo = document.getElementById("largo").value;
+    const archivo = document.getElementById("archivo").files[0];
+
+    if (!archivo || !['application/pdf', 'image/jpeg', 'image/jpg'].includes(archivo.type)) {
+      alert("Solo se permiten archivos PDF o JPG.");
+      return;
+    }
+
+    alert(
+      "¡Proyecto enviado con éxito!\n\n" +
+      "Material: " + material + "\n" +
+      "Descripción: " + descripcion + "\n" +
+      "Medidas (cm): Alto: " + alto + ", Ancho: " + ancho + ", Largo: " + largo + "\n" +
+      "Archivo: " + archivo.name
+    );
+
+    cerrarFormulario();
+  });
+</script>
+</body>
+</html>
+
+
+
+
+
