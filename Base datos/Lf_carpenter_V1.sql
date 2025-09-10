@@ -1,4 +1,4 @@
--- Proyecto: Plataforma Carpintería
+-- Proyecto: Lf_carpenter
 -- Versión: 1.0
 -- Fecha: 2025-09-09
 -- Autor: Emmanuel Hincapié
