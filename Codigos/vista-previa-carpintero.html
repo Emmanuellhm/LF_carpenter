@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil Carpintero con Vista Previa - LF Carpinter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex min-h-screen bg-gradient-to-br from-amber-50 to-stone-100">
+
+  <!-- Botón para abrir la vista previa (ejemplo, ponlo en el menú lateral si quieres) -->
+  <div class="p-6">
+    <button onclick="abrirVistaPrevia()" class="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold shadow">
+      Ver Vista Previa
+    </button>
+  </div>
+
+  <!-- Modal Vista Previa -->
+  <div id="modal-vista-previa" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-xl p-8 overflow-y-auto max-h-[90vh] relative">
+
+      <!-- Botón cerrar -->
+      <button onclick="cerrarVistaPrevia()" 
+              class="absolute top-4 right-4 bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-lg font-semibold">
+        Volver
+      </button>
+
+      <!-- Información del Carpintero -->
+      <section class="mb-8">
+        <div class="flex gap-6 items-center">
+          <img src="img/carpintero.jpg" alt="Foto Carpintero"
+              class="w-32 h-32 rounded-full border-4 border-amber-600 object-cover shadow-md">
+          <div>
+            <h1 class="text-3xl font-extrabold text-stone-800">Juan Pérez</h1>
+            <p class="text-stone-600">📍 Medellín, Colombia</p>
+            <p class="text-stone-600">✉️ juanperez@example.com</p>
+            <p class="text-stone-600">📞 +57 300 123 4567</p>
+            <p class="mt-2 text-stone-700"><strong>Especialidad:</strong> Muebles a medida, restauración de madera fina y diseño moderno sostenible.</p>
+            <p class="mt-1 text-stone-700"><strong>Experiencia:</strong> 12 años en el sector, proyectos realizados para más de 150 clientes satisfechos.</p>
+            <span class="inline-block mt-3 px-3 py-1 rounded-full bg-green-600 text-white text-sm font-semibold">Disponible</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Proyectos -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Proyectos</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div class="bg-stone-50 border border-stone-200 rounded-xl shadow p-4">
+            <img src="img/proyecto1.jpg" alt="Proyecto" class="w-full h-40 object-cover rounded-lg mb-3">
+            <h3 class="text-lg font-bold">Mesa de comedor</h3>
+            <p class="text-stone-600 text-sm mb-2">Mesa en madera maciza con acabado natural.</p>
+            <p class="text-amber-700 font-semibold">$350.000 COP</p>
+          </div>
+
+          <div class="bg-stone-50 border border-stone-200 rounded-xl shadow p-4">
+            <img src="img/proyecto2.jpg" alt="Proyecto" class="w-full h-40 object-cover rounded-lg mb-3">
+            <h3 class="text-lg font-bold">Silla de madera</h3>
+            <p class="text-stone-600 text-sm mb-2">Silla ergonómica de roble con cojín tapizado.</p>
+            <p class="text-amber-700 font-semibold">$150.000 COP</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Comentarios -->
+      <section class="mb-8">
+        <h2 class="text-2xl font-bold mb-4">Comentarios</h2>
+        <div class="space-y-4">
+          <div class="bg-stone-50 border border-stone-200 rounded-xl shadow p-4">
+            <p class="font-semibold">Camila Rodríguez ⭐⭐⭐⭐⭐</p>
+            <p class="text-stone-600">Excelente trabajo, la mesa quedó perfecta y el tiempo de entrega fue rápido.</p>
+          </div>
+          <div class="bg-stone-50 border border-stone-200 rounded-xl shadow p-4">
+            <p class="font-semibold">Andrés López ⭐⭐⭐⭐</p>
+            <p class="text-stone-600">Muy buena calidad en la silla, aunque tardó un poco más de lo esperado.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Botón solicitar -->
+      <section class="text-center">
+        <button class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
+          Solicitar proyecto personalizado
+        </button>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function abrirVistaPrevia() {
+      document.getElementById("modal-vista-previa").classList.remove("hidden");
+    }
+
+    function cerrarVistaPrevia() {
+      document.getElementById("modal-vista-previa").classList.add("hidden");
+    }
+  </script>
+</body>
+</html>
+

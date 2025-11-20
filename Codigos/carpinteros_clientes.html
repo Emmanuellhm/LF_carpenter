@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carpinteros - LF Carpintería</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex min-h-screen bg-gradient-to-br from-amber-50 to-stone-100">
+
+<!-- Sidebar -->
+<aside class="w-64 bg-white shadow-xl flex flex-col justify-between border-r border-stone-200">
+  <div>
+    <div class="flex flex-col items-center py-8 border-b border-stone-200">
+      <!-- Foto de perfil -->
+      <img src="img/fotoP.jpg" alt="Foto Perfil"
+           class="w-28 h-28 rounded-full border-4 border-amber-600 object-cover shadow-md" 
+           id="foto-perfil">
+      <span class="mt-3 font-bold text-stone-800 text-lg" id="nombre-usuario">Usuario</span>
+    </div>
+    <nav class="flex flex-col space-y-2 px-6 mt-6">
+      <a href="cliente1.html" 
+         class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium">Perfil</a>
+
+      <a href="historial.html" 
+         class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium">Historial Contrataciones</a>
+      <a href="solicitudes.html" 
+         class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium">Solicitudes</a>
+    </nav>
+  </div>
+  <div id="logout" class="text-center py-5 text-stone-500 hover:text-amber-600 cursor-pointer font-medium border-t border-stone-200">
+    Cerrar sesión
+  </div>
+</aside>
+
+<!-- Script para cargar datos de sesión y cerrar sesión -->
+<script>
+  // Cargar datos de usuario
+  const userData = JSON.parse(localStorage.getItem("usuarioActivo"));
+  if (!userData) {
+    window.location.href = "iniciar-seccion.html";
+  } else {
+    document.getElementById("nombre-usuario").innerText = userData.nombre;
+  }
+
+  // Cerrar sesión
+  document.getElementById("logout").addEventListener("click", () => {
+    localStorage.removeItem("usuarioActivo");
+    window.location.href = "iniciar-seccion.html";
+  });
+</script>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col">
+    <!-- Header -->
+    <header class="flex items-center justify-between bg-white border-b border-stone-200 px-6 h-20 shadow-sm">
+      <div class="logo">
+        <img src="img/Logo de Carpintería LF.png" alt="Logo" class="h-16 w-auto">
+      </div>
+      <nav>
+        <a href="#" class="font-semibold text-stone-700 hover:text-amber-600">Contáctanos</a>
+      </nav>
+    </header>
+
+    <!-- Contenido -->
+    <main class="p-10">
+      <!-- Proyectos Terminados -->
+      <h1 class="text-3xl font-extrabold text-amber-700 text-center mb-8">Proyectos Terminados</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Silla de Madera Roble</h3>
+          <p class="text-sm text-stone-600 mt-2">Diseño ergonómico, hecho con madera de roble. Acabados profesionales.</p>
+          <p class="mt-3 font-bold text-green-600">$250.000</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Estantería Minimalista</h3>
+          <p class="text-sm text-stone-600 mt-2">Estilo moderno, ideal para espacios pequeños. Hecha en pino tratado.</p>
+          <p class="mt-3 font-bold text-green-600">$400.000</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Comedor para 6 personas</h3>
+          <p class="text-sm text-stone-600 mt-2">Incluye mesa y 6 sillas de madera de nogal, con barniz protector.</p>
+          <p class="mt-3 font-bold text-green-600">$1.200.000</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Cómoda Vintage</h3>
+          <p class="text-sm text-stone-600 mt-2">Estilo clásico, barnizada a mano. Ideal para dormitorios elegantes.</p>
+          <p class="mt-3 font-bold text-green-600">$650.000</p>
+        </div>
+      </div>
+
+      <!-- Carpinteros -->
+      <h1 class="text-3xl font-extrabold text-amber-700 text-center my-10">Perfiles de Carpinteros</h1>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Juan Pérez</h3>
+          <p class="text-sm text-stone-600 mt-2">Especialista en muebles a medida. 10 años de experiencia. Disponible para proyectos personalizados.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Laura Gómez</h3>
+          <p class="text-sm text-stone-600 mt-2">Experta en restauración de muebles antiguos. Atención personalizada y garantizada.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Carlos Ruiz</h3>
+          <p class="text-sm text-stone-600 mt-2">Diseño moderno y funcional. Proyectos innovadores y a buen precio.</p>
+        </div>
+        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 hover:shadow-lg transition">
+          <h3 class="text-lg font-bold text-stone-800">Ana Torres</h3>
+          <p class="text-sm text-stone-600 mt-2">Con enfoque ecológico. Trabaja con maderas recicladas y acabados sostenibles.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+</body>
+</html>
+
+
