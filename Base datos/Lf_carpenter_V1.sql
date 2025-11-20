@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 17-09-2025 a las 17:51:43
+-- Tiempo de generación: 12-11-2025 a las 17:25:03
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.0.30
 
@@ -25,6 +25,35 @@ DELIMITER $$
 --
 -- Procedimientos
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `approve_carpenter` (IN `p_carpenter_id` INT)   BEGIN
+    DECLARE v_user_id INT;
+
+    -- Obtener el ID del usuario asociado al carpintero
+    SELECT user_id INTO v_user_id
+    FROM carpenters
+    WHERE carpenter_id = p_carpenter_id;
+
+    -- Validar que exista
+    IF v_user_id IS NOT NULL THEN
+        -- Actualizar estado del carpintero
+        UPDATE carpenters
+        SET approved = 1,
+            is_verified = 1,
+            last_update = NOW()
+        WHERE carpenter_id = p_carpenter_id;
+
+        -- Actualizar rol del usuario a 'carpenter'
+        UPDATE users
+        SET role = 'carpenter'
+        WHERE user_id = v_user_id;
+
+        -- Registrar acción en trazabilidad (si tienes tabla de logs)
+        INSERT INTO traceability (performed_by, affected_user, action_type, affected_table)
+        VALUES (1, v_user_id, 'APPROVE_CARPENTER', 'carpenters'); -- 1 = admin_id (puedes adaptarlo)
+
+    END IF;
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `createRequestWithMaterials` (IN `p_user_id` INT, IN `p_carpenter_id` INT, IN `p_job_type` VARCHAR(100), IN `p_material` VARCHAR(100), IN `p_budget` DECIMAL(10,2), IN `p_material_name` VARCHAR(100), IN `p_quantity` DECIMAL(10,2), IN `p_unit` VARCHAR(50), IN `p_cost` DECIMAL(10,2))   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
     BEGIN
@@ -75,6 +104,34 @@ END$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertUser` (IN `p_full_name` VARCHAR(100), IN `p_email` VARCHAR(100), IN `p_password_hash` VARCHAR(255), IN `p_phone` VARCHAR(20), IN `p_role` ENUM('user','carpenter','admin'))   BEGIN
     INSERT INTO users (full_name, email, password_hash, phone, role)
     VALUES (p_full_name, p_email, p_password_hash, p_phone, p_role);
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `reject_carpenter` (IN `p_carpenter_id` INT)   BEGIN
+    DECLARE v_user_id INT;
+
+    -- Obtener el ID del usuario asociado al carpintero
+    SELECT user_id INTO v_user_id
+    FROM carpenters
+    WHERE carpenter_id = p_carpenter_id;
+
+    -- Validar que exista
+    IF v_user_id IS NOT NULL THEN
+        -- Actualizar estado del carpintero
+        UPDATE carpenters
+        SET approved = 0,
+            is_verified = 0,
+            last_update = NOW()
+        WHERE carpenter_id = p_carpenter_id;
+
+        -- Mantener el rol del usuario como 'client'
+        UPDATE users
+        SET role = 'client'
+        WHERE user_id = v_user_id;
+
+        -- Registrar acción en trazabilidad (si aplica)
+        INSERT INTO traceability (performed_by, affected_user, action_type, affected_table)
+        VALUES (1, v_user_id, 'REJECT_CARPENTER', 'carpenters');
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateMaterial` (IN `p_material_id` INT, IN `p_quantity` DECIMAL(10,2), IN `p_cost` DECIMAL(10,2))   BEGIN
@@ -200,7 +257,11 @@ INSERT INTO `carpenters` (`carpenter_id`, `description`, `approved`, `created_at
 (37, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 47, 'Carpintero 37', 3, 'Reparaciones simples', 4.0, 0),
 (38, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 48, 'Carpintero 38', 12, 'Diseños exclusivos', 4.9, 1),
 (39, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 49, 'Carpintero 39', 14, 'Restauraciones clásicas', 5.0, 1),
-(40, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 50, 'Carpintero 40', 6, 'Muebles minimalistas', 4.5, 1);
+(40, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 50, 'Carpintero 40', 6, 'Muebles minimalistas', 4.5, 1),
+(41, 'Tel: 1111 | Ciudad: Ibague | Portafolio:  | CV:  | Email: miguel@gmail.com', 0, '2025-11-12 10:26:36', '2025-11-12 10:26:36', NULL, NULL, 'Miguel', 0, '', NULL, 0),
+(42, 'Tel: 111111 | Ciudad: Medellin | Portafolio: Prueba de registro | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf | Email: miguel@gmail.com', 1, '2025-11-12 10:31:28', '2025-11-12 10:57:06', NULL, NULL, 'Miguel', 14, 'Carpintero', NULL, 1),
+(44, 'Ciudad: Medellin | Tel: 11111 | Email: Miguel@gmail.com | Portafolio: Prueba | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', 0, '2025-11-12 10:41:46', '2025-11-12 10:41:46', NULL, NULL, 'Miguel', 13, 'Madera', NULL, 0),
+(45, 'Ciudad: Medellin | Tel: 111 | Email: Miguel@gmail.com | Portafolio: prueba de porta | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', 1, '2025-11-12 11:20:05', '2025-11-12 11:20:16', NULL, NULL, 'Miguel', 15, 'porno', NULL, 1);
 
 --
 -- Disparadores `carpenters`
@@ -293,7 +354,8 @@ INSERT INTO `materials` (`material_id`, `request_id`, `name`, `quantity`, `unit`
 (4, 1, 'Madera Pino', 10.00, 'unidades', 250.00, '2025-08-28 10:59:02', '2025-08-28 10:59:02'),
 (5, 2, 'Barniz', 5.00, 'litros', 100.00, '2025-08-28 10:59:02', '2025-08-28 10:59:02'),
 (6, 3, 'Clavos', 500.00, 'unidades', 50.00, '2025-08-28 10:59:02', '2025-08-28 10:59:02'),
-(7, 100, 'Bisagras', 20.00, 'unidades', 200.00, '2025-08-28 10:59:02', '2025-08-28 10:59:02');
+(7, 100, 'Bisagras', 20.00, 'unidades', 200.00, '2025-08-28 10:59:02', '2025-08-28 10:59:02'),
+(8, 3, 'Clavos', 500.00, 'unidades', 125.00, '2025-09-17 11:06:01', '2025-09-17 11:06:01');
 
 --
 -- Disparadores `materials`
@@ -591,7 +653,11 @@ INSERT INTO `users` (`user_id`, `full_name`, `email`, `password_hash`, `phone`, 
 (247, 'Usuario 97', 'user97@example.com', 'hash97', '3000000097', 'user', 1, 0, 0, '2025-08-28 11:12:56', '2025-08-28 11:12:56', NULL),
 (248, 'Usuario 98', 'user98@example.com', 'hash98', '3000000098', 'user', 1, 0, 0, '2025-08-28 11:12:56', '2025-08-28 11:12:56', NULL),
 (249, 'Usuario 99', 'user99@example.com', 'hash99', '3000000099', 'user', 1, 0, 0, '2025-08-28 11:12:56', '2025-08-28 11:12:56', NULL),
-(250, 'Usuario 101', 'user101@example.com', 'hash101', '3000000101', 'user', 1, 0, 0, '2025-08-28 11:12:56', '2025-08-28 11:12:56', NULL);
+(250, 'Usuario 101', 'user101@example.com', 'hash101', '3000000101', 'user', 1, 0, 0, '2025-08-28 11:12:56', '2025-08-28 11:12:56', NULL),
+(251, 'Administrador General', 'admin@lfcarpinter.com', '$2y$10$Qit2QeMt7PCYhSHoxqgVdeJ8sMCGeTclV0G5UKzH0WucLL4oQO48K', '3000000000', 'admin', 1, 0, 0, '2025-11-12 08:07:13', '2025-11-12 08:07:13', 'Medellín'),
+(253, 'Administrador LF', 'admin@lf.com', '$2y$10$yS8bH3f2gGtNd.Aekf.HoOGNhyTvvOUkXycM6mHsxAjgAgfimLQDe', '3000000000', 'admin', 1, 0, 0, '2025-11-12 09:19:14', '2025-11-12 09:19:14', 'Medellín'),
+(254, 'Emmanuel Hincapie Marin', 'Emma@gmail.com', '$2y$10$pJh8QxZwnFMwYPSsfY891.mZ18EmfggwiwTKJL2UCEIBIe7m1M3JG', '3118020103', 'user', 1, 0, 0, '2025-11-12 09:33:45', '2025-11-12 09:33:45', 'Medellin'),
+(255, 'Alejitauwuyt224', 'puta@gmail.com', '$2y$10$yR7Mg8VyFWRDKlpWSgpZjOZO.FXPz8DCCIcMmQejtEgJ5.ImpbfD6', '111', 'user', 1, 0, 0, '2025-11-12 11:14:21', '2025-11-12 11:14:21', 'medellin');
 
 --
 -- Disparadores `users`
@@ -777,7 +843,7 @@ ALTER TABLE `activity_logs`
 -- AUTO_INCREMENT de la tabla `carpenters`
 --
 ALTER TABLE `carpenters`
-  MODIFY `carpenter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `carpenter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `certifications`
@@ -795,7 +861,7 @@ ALTER TABLE `failed_logins`
 -- AUTO_INCREMENT de la tabla `materials`
 --
 ALTER TABLE `materials`
-  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `portafolios`
@@ -825,7 +891,7 @@ ALTER TABLE `traceability`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
 
 --
 -- AUTO_INCREMENT de la tabla `user_behavior`
