@@ -18,8 +18,20 @@
     <nav class="flex gap-8 items-center">
       <a href="index2.html" class="font-medium text-stone-700 hover:text-amber-600">Página de inicio</a>
       <a href="contactanos.html" class="font-medium text-stone-700 hover:text-amber-600">Contáctanos</a>
+      
+      <!-- Desplegable de Registrar -->
+      <div class="relative group">
+        <button class="font-semibold text-white bg-amber-600 hover:bg-amber-700 px-5 py-2 rounded-lg shadow flex items-center gap-2">
+          Registrar
+        </button>
+        <div class="absolute right-0 mt-0 w-48 bg-white border border-stone-200 rounded-lg shadow-lg hidden group-hover:block z-10">
+          <a href="registro-U.html" class="block px-4 py-3 text-stone-700 hover:bg-amber-50 font-medium border-b border-stone-200">Registrar como Usuario</a>
+          <a href="registro-C.html" class="block px-4 py-3 text-stone-700 hover:bg-amber-50 font-medium">Registrar como Carpintero</a>
+        </div>
+      </div>
+      
       <a href="iniciar-seccion.html"
-        class="font-semibold text-white bg-amber-600 hover:bg-amber-700 px-5 py-2 rounded-lg shadow">Iniciar sesión</a>
+        class="font-semibold text-white bg-stone-600 hover:bg-stone-700 px-5 py-2 rounded-lg shadow">Iniciar sesión</a>
     </nav>
   </header>
 
@@ -73,6 +85,10 @@
             class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500">
         </div>
 
+        <div class="text-right">
+          <a href="recuperar_contrasena.html" class="text-sm text-amber-600 hover:text-amber-700 font-medium">¿Olvidaste tu contraseña?</a>
+        </div>
+
         <button type="submit"
           class="w-full bg-amber-600 hover:bg-amber-700 text-white font-semibold py-3 rounded-lg shadow">
           Entrar
@@ -91,6 +107,10 @@
       document.getElementById('rol').value = rol; // guardar el rol en el input oculto
     }
   </script>
+  <!-- Footer (opcional) -->
+  <footer class="mt-16 py-8 text-center text-stone-600 border-t border-stone-200">
+    <p>&copy; 2025 LF Carpintería. Todos los derechos reservados.</p>
+  </footer>
 
 </body>
 </html>
