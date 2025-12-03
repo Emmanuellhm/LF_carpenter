@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 03-12-2025 a las 05:27:52
+-- Tiempo de generación: 03-12-2025 a las 15:26:59
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.2.12
+-- Versión de PHP: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -85,6 +85,25 @@ END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteUser` (IN `p_user_id` INT)   BEGIN
     DELETE FROM users WHERE user_id = p_user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPedidosCompletadosPorCarpintero` (IN `p_carpenter_id` INT)   BEGIN
+    SELECT *
+    FROM requests
+    WHERE carpenter_id = p_carpenter_id
+      AND status = 'completed';
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPedidosPorUsuario` (IN `p_user_id` INT)   BEGIN
+    SELECT *
+    FROM requests
+    WHERE user_id = p_user_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProductosPorCarpintero` (IN `p_carpenter_id` INT)   BEGIN
+    SELECT *
+    FROM portafolio
+    WHERE carpenter_user_id = p_carpenter_id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getUsers` ()   BEGIN
@@ -264,7 +283,7 @@ INSERT INTO `carpenters` (`carpenter_id`, `description`, `cv_file`, `approved`, 
 (41, 'Tel: 1111 | Ciudad: Ibague | Portafolio:  | CV:  | Email: miguel@gmail.com', NULL, -1, '2025-11-12 10:26:36', '2025-12-02 19:16:41', NULL, NULL, 'Miguel', '', '', 0, '', NULL, 0),
 (42, 'Tel: 111111 | Ciudad: Medellin | Portafolio: Prueba de registro | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf | Email: miguel@gmail.com', NULL, 1, '2025-11-12 10:31:28', '2025-11-12 10:57:06', NULL, NULL, 'Miguel', '', '', 14, 'Carpintero', NULL, 1),
 (44, 'Ciudad: Medellin | Tel: 11111 | Email: Miguel@gmail.com | Portafolio: Prueba | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', NULL, -1, '2025-11-12 10:41:46', '2025-12-02 19:16:43', NULL, NULL, 'Miguel', '', '', 13, 'Madera', NULL, 0),
-(266, 'Teléfono: 3118020103 | Ciudad: | Email: | Tel: ', 'uploads/cvs/cv_1764727197_cv_1764721668_Emmanuel_Hincapie_marin_CV.pdf', 1, '2025-12-02 20:59:57', '2025-12-02 22:16:41', NULL, NULL, 'Emmanuel Hincapie Marin', 'Emma@gmail.com', '$2y$10$6ynajB90ccAB.sNaVXFfGuHZMIlVJLPoF3pLiCO1G62.WHPyM0Qs6', 4, 'Madera', NULL, NULL);
+(266, 'Teléfono: 3118020103 | Ciudad: | Email: | Tel: ', 'uploads/cvs/cv_1764727197_cv_1764721668_Emmanuel_Hincapie_marin_CV.pdf', 1, '2025-12-02 20:59:57', '2025-12-03 08:24:29', NULL, NULL, 'Emmanuel Hincapie Marin', 'Emma@gmail.com', '$2y$10$6ynajB90ccAB.sNaVXFfGuHZMIlVJLPoF3pLiCO1G62.WHPyM0Qs6', 4, 'Madera', NULL, NULL);
 
 --
 -- Disparadores `carpenters`
@@ -850,6 +869,103 @@ CREATE TRIGGER `update_user_preferences_last_update` BEFORE UPDATE ON `user_pref
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_pedidos_completados_carpintero`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_pedidos_completados_carpintero` (
+`request_id` int(11)
+,`carpenter_id` int(11)
+,`user_id` int(11)
+,`job_type` varchar(100)
+,`budget` decimal(10,2)
+,`created_at` datetime
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_pedidos_personalizados_usuario`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_pedidos_personalizados_usuario` (
+`request_id` int(11)
+,`user_id` int(11)
+,`carpenter_user_id` int(11)
+,`project_description` text
+,`status` enum('pending','accepted','rejected','completed')
+,`created_at` datetime
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_pedidos_usuario`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_pedidos_usuario` (
+`request_id` int(11)
+,`user_id` int(11)
+,`carpenter_id` int(11)
+,`job_type` varchar(100)
+,`budget` decimal(10,2)
+,`status` enum('pending','accepted','rejected','completed')
+,`created_at` datetime
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura Stand-in para la vista `vista_productos_por_carpintero`
+-- (Véase abajo para la vista actual)
+--
+CREATE TABLE `vista_productos_por_carpintero` (
+`project_id` int(11)
+,`title` varchar(255)
+,`description` text
+,`price` decimal(12,2)
+,`created_at` datetime
+,`carpenter_id` int(11)
+);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_pedidos_completados_carpintero`
+--
+DROP TABLE IF EXISTS `vista_pedidos_completados_carpintero`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_pedidos_completados_carpintero`  AS SELECT `r`.`request_id` AS `request_id`, `r`.`carpenter_id` AS `carpenter_id`, `r`.`user_id` AS `user_id`, `r`.`job_type` AS `job_type`, `r`.`budget` AS `budget`, `r`.`created_at` AS `created_at` FROM `requests` AS `r` WHERE `r`.`status` = 'completed' ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_pedidos_personalizados_usuario`
+--
+DROP TABLE IF EXISTS `vista_pedidos_personalizados_usuario`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_pedidos_personalizados_usuario`  AS SELECT `pr`.`request_id` AS `request_id`, `pr`.`user_id` AS `user_id`, `pr`.`carpenter_user_id` AS `carpenter_user_id`, `pr`.`project_description` AS `project_description`, `pr`.`status` AS `status`, `pr`.`created_at` AS `created_at` FROM `project_requests` AS `pr` ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_pedidos_usuario`
+--
+DROP TABLE IF EXISTS `vista_pedidos_usuario`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_pedidos_usuario`  AS SELECT `r`.`request_id` AS `request_id`, `r`.`user_id` AS `user_id`, `r`.`carpenter_id` AS `carpenter_id`, `r`.`job_type` AS `job_type`, `r`.`budget` AS `budget`, `r`.`status` AS `status`, `r`.`created_at` AS `created_at` FROM `requests` AS `r` ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura para la vista `vista_productos_por_carpintero`
+--
+DROP TABLE IF EXISTS `vista_productos_por_carpintero`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_productos_por_carpintero`  AS SELECT `p`.`project_id` AS `project_id`, `p`.`title` AS `title`, `p`.`description` AS `description`, `p`.`price` AS `price`, `p`.`created_at` AS `created_at`, `p`.`carpenter_user_id` AS `carpenter_id` FROM `portafolio` AS `p` ;
 
 --
 -- Índices para tablas volcadas
