@@ -10,12 +10,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== "user") {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Usuario - LF Carpintería</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="min-h-screen bg-gradient-to-br from-amber-50 to-stone-100 flex flex-col">
+<body class="flex h-screen overflow-hidden bg-gradient-to-br from-amber-50 to-stone-100">
 
 <!-- Mensajes de éxito/error -->
 <?php if (isset($_GET['success'])): ?>
@@ -40,130 +41,222 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== "user") {
 </script>
 <?php endif; ?>
 
-<header class="bg-white shadow-md p-5 flex justify-between items-center border-b border-stone-200">
-  <div class="flex items-center gap-4">
-    <img src="img/Logo de Carpintería LF.png" alt="Logo" class="h-12 w-auto">
-    <h2 class="text-xl font-bold text-stone-800">Bienvenido, <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Usuario'); ?></h2>
-  </div>
-  <div class="flex gap-4">
-    <a href="index.php" class="text-amber-600 font-semibold hover:text-amber-700">Inicio</a>
-    <a href="logout.php" class="text-red-600 font-semibold hover:text-red-700">Cerrar sesión</a>
-  </div>
-</header>
-
-<main class="p-10 max-w-6xl mx-auto">
-  <h1 class="text-4xl font-bold text-stone-800 mb-6">Panel de Usuario</h1>
-  
-  <div class="grid md:grid-cols-2 gap-6">
-    <!-- Buscar Carpinteros -->
-    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
-      <h2 class="text-2xl font-bold text-stone-800 mb-4">🔍 Buscar Carpinteros</h2>
-      <p class="text-stone-600 mb-4">Encuentra al carpintero perfecto para tu proyecto.</p>
-      <a href="ver_carpinteros.php" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
-        Ver Carpinteros
-      </a>
-    </div>
-
-    <!-- Proyectos Destacados -->
-    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
-      <h2 class="text-2xl font-bold text-stone-800 mb-4">✨ Proyectos Destacados</h2>
-      <p class="text-stone-600 mb-4">Explora los mejores trabajos de nuestros carpinteros.</p>
-      <a href="ver_proyectos.php" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
-        Ver Proyectos
-      </a>
-    </div>
-
-    <!-- Mi Perfil -->
-    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
-      <h2 class="text-2xl font-bold text-stone-800 mb-4">👤 Mi Perfil</h2>
-      <p class="text-stone-600 mb-4">Actualiza tu información personal.</p>
-      <button onclick="abrirEditarPerfil()" class="bg-stone-600 hover:bg-stone-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
-        Editar Perfil
-      </button>
-    </div>
-
-    <!-- Mis Solicitudes -->
-    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200">
-      <h2 class="text-2xl font-bold text-stone-800 mb-4">📋 Mis Solicitudes</h2>
-      <p class="text-stone-600 mb-4">Revisa el estado de tus proyectos solicitados.</p>
-      <button class="bg-stone-600 hover:bg-stone-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
-        Ver Solicitudes
-      </button>
-    </div>
-  </div>
-
-  <div class="mt-10 bg-white p-8 rounded-xl shadow-lg border border-stone-200">
-    <h2 class="text-2xl font-bold text-stone-800 mb-4">Información de la Cuenta</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <div>
-        <p class="text-stone-600"><strong>Nombre:</strong> <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'N/A'); ?></p>
+  <!-- Sidebar -->
+  <aside class="w-64 h-full bg-white shadow-xl flex flex-col justify-between border-r border-stone-200 overflow-y-auto">
+    <div>
+      <div class="flex flex-col items-center py-8 border-b border-stone-200">
+        <div class="w-28 h-28 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg border-4 border-amber-600">
+          <?php 
+            $initials = '';
+            $name = $_SESSION['user_name'] ?? 'Usuario';
+            $names = explode(' ', $name);
+            foreach ($names as $i => $n) {
+              if ($i < 2) $initials .= strtoupper(substr($n, 0, 1));
+            }
+            echo htmlspecialchars($initials);
+          ?>
+        </div>
+        <span class="mt-3 font-bold text-stone-800 text-lg text-center px-4">
+          <?php echo htmlspecialchars($_SESSION['user_name'] ?? 'Usuario'); ?>
+        </span>
+        <span class="text-xs text-stone-500 mt-1">Usuario</span>
       </div>
-      <div>
-        <p class="text-stone-600"><strong>Email:</strong> <?php echo htmlspecialchars($_SESSION['user_email'] ?? 'N/A'); ?></p>
-      </div>
-      <div>
-        <p class="text-stone-600"><strong>Teléfono:</strong> <?php echo htmlspecialchars($_SESSION['user_phone'] ?? 'N/A'); ?></p>
-      </div>
-      <div>
-        <p class="text-stone-600"><strong>Ciudad:</strong> <?php echo htmlspecialchars($_SESSION['user_city'] ?? 'N/A'); ?></p>
-      </div>
-    </div>
-  </div>
-</main>
-
-<!-- Modal Editar Perfil -->
-<div id="modal-editar-perfil" class="hidden fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-8 relative">
-    <button onclick="cerrarEditarPerfil()" class="absolute top-4 right-4 text-stone-500 hover:text-stone-800">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    </button>
-    
-    <h2 class="text-2xl font-bold text-stone-800 mb-6">Editar Perfil</h2>
-    
-    <form action="update_user_profile.php" method="POST" class="space-y-4">
-      <div>
-        <label class="block font-semibold text-stone-700 mb-2">Nombre Completo</label>
-        <input type="text" name="nombre" value="<?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?>" required
-               class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-700">
-      </div>
-      
-      <div>
-        <label class="block font-semibold text-stone-700 mb-2">Email</label>
-        <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>" required
-               class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-700">
-      </div>
-      
-      <div>
-        <label class="block font-semibold text-stone-700 mb-2">Teléfono</label>
-        <input type="text" name="telefono" value="<?php echo htmlspecialchars($_SESSION['user_phone'] ?? ''); ?>"
-               class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-700">
-      </div>
-      
-      <div>
-        <label class="block font-semibold text-stone-700 mb-2">Ciudad</label>
-        <input type="text" name="ciudad" value="<?php echo htmlspecialchars($_SESSION['user_city'] ?? ''); ?>"
-               class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-700">
-      </div>
-      
-      <div class="flex gap-3 mt-6">
-        <button type="button" onclick="cerrarEditarPerfil()" 
-                class="flex-1 px-5 py-3 rounded-lg text-stone-600 hover:bg-stone-100 font-medium transition border border-stone-300">
-          Cancelar
+      <nav class="flex flex-col space-y-2 px-6 mt-6">
+        <button onclick="mostrarSeccion('dashboard')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-home w-5"></i>
+          <span>Panel Principal</span>
         </button>
-        <button type="submit" 
-                class="flex-1 px-5 py-3 rounded-lg bg-amber-700 text-white hover:bg-amber-800 font-bold shadow-lg transition">
-          Guardar Cambios
+        <button onclick="mostrarSeccion('perfil')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-user w-5"></i>
+          <span>Mi Perfil</span>
         </button>
-      </div>
-    </form>
-  </div>
-</div>
+        <a href="mis_solicitudes.php" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-clipboard-list w-5"></i>
+          <span>Mis Solicitudes</span>
+        </a>
+        <a href="ver_carpinteros.php" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-search w-5"></i>
+          <span>Buscar Carpinteros</span>
+        </a>
+        <a href="ver_proyectos.php" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-folder-open w-5"></i>
+          <span>Ver Proyectos</span>
+        </a>
+      </nav>
+    </div>
+    <a href="logout.php"
+       class="text-center py-5 text-stone-500 hover:text-amber-600 cursor-pointer font-medium border-t border-stone-200 flex items-center justify-center gap-2">
+       <i class="fas fa-sign-out-alt"></i>
+       <span>Cerrar sesión</span>
+    </a>
+  </aside>
 
-<footer class="mt-10 bg-white py-4 text-center text-stone-600 border-t border-stone-200">
-  <p>&copy; 2025 LF Carpintería. Todos los derechos reservados.</p>
-</footer>
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+    <header class="flex items-center justify-between bg-white border-b border-stone-200 px-6 h-20 shadow-sm flex-shrink-0">
+      <div class="logo">
+        <img src="./img/Logo de Carpintería LF.png" alt="Logo" class="h-16 w-auto">
+      </div>
+      <nav class="flex items-center gap-4">
+        <a href="index.php" class="font-semibold text-stone-700 hover:text-amber-600">Inicio</a>
+        <a href="contactanos.php" class="font-semibold text-stone-700 hover:text-amber-600">Contáctanos</a>
+      </nav>
+    </header>
+
+    <!-- Contenedor con scroll para el contenido principal -->
+    <div class="flex-1 overflow-y-auto">
+      <main class="p-10">
+        
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="seccion">
+          <h1 class="text-4xl font-bold text-stone-800 mb-2">Panel de Usuario</h1>
+          <p class="text-stone-600 mb-8">Bienvenido a tu panel de control</p>
+          
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Buscar Carpinteros -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="bg-amber-100 p-3 rounded-lg">
+                  <i class="fas fa-search text-2xl text-amber-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">Buscar Carpinteros</h2>
+              </div>
+              <p class="text-stone-600 mb-4">Encuentra al carpintero perfecto para tu proyecto.</p>
+              <a href="ver_carpinteros.php" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+                Ver Carpinteros
+              </a>
+            </div>
+
+            <!-- Proyectos Destacados -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="bg-blue-100 p-3 rounded-lg">
+                  <i class="fas fa-star text-2xl text-blue-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">Proyectos Destacados</h2>
+              </div>
+              <p class="text-stone-600 mb-4">Explora los mejores trabajos de nuestros carpinteros.</p>
+              <a href="ver_proyectos.php" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+                Ver Proyectos
+              </a>
+            </div>
+
+            <!-- Mis Solicitudes -->
+            <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+              <div class="flex items-center gap-4 mb-4">
+                <div class="bg-green-100 p-3 rounded-lg">
+                  <i class="fas fa-clipboard-list text-2xl text-green-600"></i>
+                </div>
+                <h2 class="text-xl font-bold text-stone-800">Mis Solicitudes</h2>
+              </div>
+              <p class="text-stone-600 mb-4">Revisa el estado de tus proyectos solicitados.</p>
+              <a href="mis_solicitudes.php" class="inline-block bg-stone-600 hover:bg-stone-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+                Ver Solicitudes
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-10 bg-white p-8 rounded-xl shadow-lg border border-stone-200">
+            <h2 class="text-2xl font-bold text-stone-800 mb-6">Información de la Cuenta</h2>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase mb-1">Nombre</p>
+                <p class="text-stone-800 font-medium"><?php echo htmlspecialchars($_SESSION['user_name'] ?? 'N/A'); ?></p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase mb-1">Email</p>
+                <p class="text-stone-800 font-medium"><?php echo htmlspecialchars($_SESSION['user_email'] ?? 'N/A'); ?></p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase mb-1">Teléfono</p>
+                <p class="text-stone-800 font-medium"><?php echo htmlspecialchars($_SESSION['user_phone'] ?? 'N/A'); ?></p>
+              </div>
+              <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+                <p class="text-xs font-bold text-stone-400 uppercase mb-1">Ciudad</p>
+                <p class="text-stone-800 font-medium"><?php echo htmlspecialchars($_SESSION['user_city'] ?? 'N/A'); ?></p>
+              </div>
+            </div>
+            <div class="mt-6 text-center">
+              <button onclick="mostrarSeccion('perfil')" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-8 py-3 rounded-lg shadow">
+                <i class="fas fa-edit mr-2"></i>
+                Editar Mi Perfil
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Perfil Section -->
+        <section id="perfil" class="seccion hidden">
+          <h1 class="text-3xl font-extrabold text-stone-800 mb-6">Editar Mi Perfil</h1>
+          
+          <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200 max-w-2xl">
+            <form action="update_user_profile.php" method="POST" class="space-y-4">
+              <div>
+                <label class="block font-semibold text-stone-700 mb-2">Nombre Completo</label>
+                <input type="text" name="nombre" value="<?php echo htmlspecialchars($_SESSION['user_name'] ?? ''); ?>" required
+                       class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+              
+              <div>
+                <label class="block font-semibold text-stone-700 mb-2">Email</label>
+                <input type="email" name="email" value="<?php echo htmlspecialchars($_SESSION['user_email'] ?? ''); ?>" required
+                       class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+              
+              <div>
+                <label class="block font-semibold text-stone-700 mb-2">Teléfono</label>
+                <input type="text" name="telefono" value="<?php echo htmlspecialchars($_SESSION['user_phone'] ?? ''); ?>"
+                       class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+              
+              <div>
+                <label class="block font-semibold text-stone-700 mb-2">Ciudad</label>
+                <input type="text" name="ciudad" value="<?php echo htmlspecialchars($_SESSION['user_city'] ?? ''); ?>"
+                       class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+              </div>
+              
+              <div class="flex gap-3 pt-4">
+                <button type="button" onclick="mostrarSeccion('dashboard')" 
+                        class="flex-1 px-5 py-3 rounded-lg text-stone-600 hover:bg-stone-100 font-medium transition border border-stone-300">
+                  Cancelar
+                </button>
+                <button type="submit" 
+                        class="flex-1 px-5 py-3 rounded-lg bg-amber-600 text-white hover:bg-amber-700 font-bold shadow-lg transition">
+                  Guardar Cambios
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+<script>
+  function mostrarSeccion(id) {
+    // Ocultar todas las secciones
+    document.querySelectorAll('.seccion').forEach(sec => sec.classList.add('hidden'));
+    
+    // Mostrar la sección seleccionada
+    document.getElementById(id).classList.remove('hidden');
+    
+    // Actualizar botones activos
+    document.querySelectorAll('.seccion-btn').forEach(btn => {
+      btn.classList.remove('bg-amber-100', 'text-amber-700');
+    });
+    
+    // Marcar botón activo
+    const activeBtn = document.querySelector(`button[onclick="mostrarSeccion('${id}')"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('bg-amber-100', 'text-amber-700');
+    }
+  }
+
+  // Mostrar dashboard por defecto
+  window.addEventListener('DOMContentLoaded', () => {
+    mostrarSeccion('dashboard');
+  });
+</script>
 
 </body>
 </html>
