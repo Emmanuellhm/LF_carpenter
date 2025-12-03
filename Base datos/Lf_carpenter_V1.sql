@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-11-2025 a las 17:25:03
+-- Tiempo de generación: 03-12-2025 a las 05:27:52
 -- Versión del servidor: 10.4.32-MariaDB
--- Versión de PHP: 8.0.30
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -201,12 +201,15 @@ INSERT INTO `activity_logs` (`log_id`, `user_id`, `action_type`, `description`, 
 CREATE TABLE `carpenters` (
   `carpenter_id` int(11) NOT NULL,
   `description` text DEFAULT NULL,
+  `cv_file` varchar(255) DEFAULT NULL,
   `approved` tinyint(1) DEFAULT 0,
   `created_at` datetime DEFAULT current_timestamp(),
   `last_update` datetime DEFAULT current_timestamp(),
   `budget_range` decimal(10,2) DEFAULT NULL COMMENT 'Presupuesto base del carpintero',
   `user_id` int(11) DEFAULT NULL,
   `carpenter_name` varchar(100) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `password_hash` varchar(255) NOT NULL,
   `experience_years` int(11) DEFAULT NULL,
   `specialties` varchar(255) DEFAULT NULL,
   `rating_avg` decimal(2,1) DEFAULT NULL,
@@ -217,51 +220,51 @@ CREATE TABLE `carpenters` (
 -- Volcado de datos para la tabla `carpenters`
 --
 
-INSERT INTO `carpenters` (`carpenter_id`, `description`, `approved`, `created_at`, `last_update`, `budget_range`, `user_id`, `carpenter_name`, `experience_years`, `specialties`, `rating_avg`, `is_verified`) VALUES
-(1, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 11, 'Carpintero 1', 5, 'Muebles de madera, sillas', 4.5, 1),
-(2, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 12, 'Carpintero 2', 8, 'Closets, cocinas integrales', 4.7, 1),
-(3, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 13, 'Carpintero 3', 3, 'Puertas, ventanas', 4.2, 0),
-(4, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 14, 'Carpintero 4', 10, 'Muebles rústicos', 4.8, 1),
-(5, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 15, 'Carpintero 5', 6, 'Decoración en madera', 4.6, 1),
-(6, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 16, 'Carpintero 6', 4, 'Reparaciones de muebles', 4.1, 0),
-(7, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 17, 'Carpintero 7', 7, 'Mesas de comedor', 4.4, 1),
-(8, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 18, 'Carpintero 8', 12, 'Diseño de interiores', 4.9, 1),
-(9, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 19, 'Carpintero 9', 2, 'Estanterías y repisas', 4.0, 0),
-(10, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 20, 'Carpintero 10', 9, 'Muebles de oficina', 4.5, 1),
-(11, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 21, 'Carpintero 11', 11, 'Muebles minimalistas', 4.7, 1),
-(12, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 22, 'Carpintero 12', 5, 'Camas y cabeceros', 4.3, 0),
-(13, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 23, 'Carpintero 13', 14, 'Restauración de muebles', 4.9, 1),
-(14, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 24, 'Carpintero 14', 6, 'Cajoneras y armarios', 4.5, 1),
-(15, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 25, 'Carpintero 15', 8, 'Puertas corredizas', 4.6, 1),
-(16, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 26, 'Carpintero 16', 4, 'Muebles infantiles', 4.2, 0),
-(17, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 27, 'Carpintero 17', 10, 'Cocinas modernas', 4.8, 1),
-(18, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 28, 'Carpintero 18', 3, 'Mesas auxiliares', 4.1, 0),
-(19, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 29, 'Carpintero 19', 7, 'Muebles modulares', 4.6, 1),
-(20, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 30, 'Carpintero 20', 15, 'Todo tipo de carpintería', 5.0, 1),
-(21, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 31, 'Carpintero 21', 5, 'Muebles clásicos', 4.3, 1),
-(22, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 32, 'Carpintero 22', 6, 'Muebles modernos', 4.5, 1),
-(23, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 33, 'Carpintero 23', 8, 'Diseño de estanterías', 4.7, 1),
-(24, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 34, 'Carpintero 24', 12, 'Decoración artesanal', 4.8, 1),
-(25, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 35, 'Carpintero 25', 9, 'Mesas plegables', 4.6, 0),
-(26, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 36, 'Carpintero 26', 11, 'Muebles de lujo', 4.9, 1),
-(27, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 37, 'Carpintero 27', 4, 'Reparaciones básicas', 4.1, 0),
-(28, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 38, 'Carpintero 28', 13, 'Diseño arquitectónico en madera', 4.8, 1),
-(29, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 39, 'Carpintero 29', 7, 'Muebles multifuncionales', 4.5, 1),
-(30, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 40, 'Carpintero 30', 6, 'Estilo rústico', 4.4, 1),
-(31, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 41, 'Carpintero 31', 10, 'Camas personalizadas', 4.7, 1),
-(32, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 42, 'Carpintero 32', 15, 'Bibliotecas grandes', 4.9, 1),
-(33, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 43, 'Carpintero 33', 5, 'Puertas clásicas', 4.3, 0),
-(34, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 44, 'Carpintero 34', 9, 'Closets modernos', 4.6, 1),
-(35, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 45, 'Carpintero 35', 8, 'Muebles ecológicos', 4.8, 1),
-(36, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 46, 'Carpintero 36', 7, 'Mesas de lujo', 4.7, 1),
-(37, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 47, 'Carpintero 37', 3, 'Reparaciones simples', 4.0, 0),
-(38, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 48, 'Carpintero 38', 12, 'Diseños exclusivos', 4.9, 1),
-(39, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 49, 'Carpintero 39', 14, 'Restauraciones clásicas', 5.0, 1),
-(40, NULL, 0, '2025-08-28 11:32:14', '2025-08-28 11:32:14', NULL, 50, 'Carpintero 40', 6, 'Muebles minimalistas', 4.5, 1),
-(41, 'Tel: 1111 | Ciudad: Ibague | Portafolio:  | CV:  | Email: miguel@gmail.com', 0, '2025-11-12 10:26:36', '2025-11-12 10:26:36', NULL, NULL, 'Miguel', 0, '', NULL, 0),
-(42, 'Tel: 111111 | Ciudad: Medellin | Portafolio: Prueba de registro | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf | Email: miguel@gmail.com', 1, '2025-11-12 10:31:28', '2025-11-12 10:57:06', NULL, NULL, 'Miguel', 14, 'Carpintero', NULL, 1),
-(44, 'Ciudad: Medellin | Tel: 11111 | Email: Miguel@gmail.com | Portafolio: Prueba | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', 0, '2025-11-12 10:41:46', '2025-11-12 10:41:46', NULL, NULL, 'Miguel', 13, 'Madera', NULL, 0),
-(45, 'Ciudad: Medellin | Tel: 111 | Email: Miguel@gmail.com | Portafolio: prueba de porta | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', 1, '2025-11-12 11:20:05', '2025-11-12 11:20:16', NULL, NULL, 'Miguel', 15, 'porno', NULL, 1);
+INSERT INTO `carpenters` (`carpenter_id`, `description`, `cv_file`, `approved`, `created_at`, `last_update`, `budget_range`, `user_id`, `carpenter_name`, `email`, `password_hash`, `experience_years`, `specialties`, `rating_avg`, `is_verified`) VALUES
+(1, NULL, NULL, 1, '2025-08-28 11:32:14', '2025-11-26 14:04:18', NULL, 11, 'Carpintero 1', '', '', 5, 'Muebles de madera, sillas', 4.5, 1),
+(2, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:38:51', NULL, 12, 'Carpintero 2', '', '', 8, 'Closets, cocinas integrales', 4.7, 1),
+(3, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:34', NULL, 13, 'Carpintero 3', '', '', 3, 'Puertas, ventanas', 4.2, 0),
+(4, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:35', NULL, 14, 'Carpintero 4', '', '', 10, 'Muebles rústicos', 4.8, 1),
+(5, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:35', NULL, 15, 'Carpintero 5', '', '', 6, 'Decoración en madera', 4.6, 1),
+(6, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:36', NULL, 16, 'Carpintero 6', '', '', 4, 'Reparaciones de muebles', 4.1, 0),
+(7, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:36', NULL, 17, 'Carpintero 7', '', '', 7, 'Mesas de comedor', 4.4, 1),
+(8, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:37', NULL, 18, 'Carpintero 8', '', '', 12, 'Diseño de interiores', 4.9, 1),
+(9, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:37', NULL, 19, 'Carpintero 9', '', '', 2, 'Estanterías y repisas', 4.0, 0),
+(10, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:38', NULL, 20, 'Carpintero 10', '', '', 9, 'Muebles de oficina', 4.5, 1),
+(11, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:38', NULL, 21, 'Carpintero 11', '', '', 11, 'Muebles minimalistas', 4.7, 1),
+(12, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:38', NULL, 22, 'Carpintero 12', '', '', 5, 'Camas y cabeceros', 4.3, 0),
+(13, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:39', NULL, 23, 'Carpintero 13', '', '', 14, 'Restauración de muebles', 4.9, 1),
+(14, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:39', NULL, 24, 'Carpintero 14', '', '', 6, 'Cajoneras y armarios', 4.5, 1),
+(15, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:39', NULL, 25, 'Carpintero 15', '', '', 8, 'Puertas corredizas', 4.6, 1),
+(16, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:40', NULL, 26, 'Carpintero 16', '', '', 4, 'Muebles infantiles', 4.2, 0),
+(17, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:40', NULL, 27, 'Carpintero 17', '', '', 10, 'Cocinas modernas', 4.8, 1),
+(18, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:41', NULL, 28, 'Carpintero 18', '', '', 3, 'Mesas auxiliares', 4.1, 0),
+(19, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:41', NULL, 29, 'Carpintero 19', '', '', 7, 'Muebles modulares', 4.6, 1),
+(20, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:41', NULL, 30, 'Carpintero 20', '', '', 15, 'Todo tipo de carpintería', 5.0, 1),
+(21, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:42', NULL, 31, 'Carpintero 21', '', '', 5, 'Muebles clásicos', 4.3, 1),
+(22, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:42', NULL, 32, 'Carpintero 22', '', '', 6, 'Muebles modernos', 4.5, 1),
+(23, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:42', NULL, 33, 'Carpintero 23', '', '', 8, 'Diseño de estanterías', 4.7, 1),
+(24, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:43', NULL, 34, 'Carpintero 24', '', '', 12, 'Decoración artesanal', 4.8, 1),
+(25, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:43', NULL, 35, 'Carpintero 25', '', '', 9, 'Mesas plegables', 4.6, 0),
+(26, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:44', NULL, 36, 'Carpintero 26', '', '', 11, 'Muebles de lujo', 4.9, 1),
+(27, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:44', NULL, 37, 'Carpintero 27', '', '', 4, 'Reparaciones básicas', 4.1, 0),
+(28, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:44', NULL, 38, 'Carpintero 28', '', '', 13, 'Diseño arquitectónico en madera', 4.8, 1),
+(29, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:45', NULL, 39, 'Carpintero 29', '', '', 7, 'Muebles multifuncionales', 4.5, 1),
+(30, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:46', NULL, 40, 'Carpintero 30', '', '', 6, 'Estilo rústico', 4.4, 1),
+(31, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:46', NULL, 41, 'Carpintero 31', '', '', 10, 'Camas personalizadas', 4.7, 1),
+(32, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:47', NULL, 42, 'Carpintero 32', '', '', 15, 'Bibliotecas grandes', 4.9, 1),
+(33, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:47', NULL, 43, 'Carpintero 33', '', '', 5, 'Puertas clásicas', 4.3, 0),
+(34, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:48', NULL, 44, 'Carpintero 34', '', '', 9, 'Closets modernos', 4.6, 1),
+(35, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:48', NULL, 45, 'Carpintero 35', '', '', 8, 'Muebles ecológicos', 4.8, 1),
+(36, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:49', NULL, 46, 'Carpintero 36', '', '', 7, 'Mesas de lujo', 4.7, 1),
+(37, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:49', NULL, 47, 'Carpintero 37', '', '', 3, 'Reparaciones simples', 4.0, 0),
+(38, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:49', NULL, 48, 'Carpintero 38', '', '', 12, 'Diseños exclusivos', 4.9, 1),
+(39, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:50', NULL, 49, 'Carpintero 39', '', '', 14, 'Restauraciones clásicas', 5.0, 1),
+(40, NULL, NULL, -1, '2025-08-28 11:32:14', '2025-11-26 14:45:51', NULL, 50, 'Carpintero 40', '', '', 6, 'Muebles minimalistas', 4.5, 1),
+(41, 'Tel: 1111 | Ciudad: Ibague | Portafolio:  | CV:  | Email: miguel@gmail.com', NULL, -1, '2025-11-12 10:26:36', '2025-12-02 19:16:41', NULL, NULL, 'Miguel', '', '', 0, '', NULL, 0),
+(42, 'Tel: 111111 | Ciudad: Medellin | Portafolio: Prueba de registro | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf | Email: miguel@gmail.com', NULL, 1, '2025-11-12 10:31:28', '2025-11-12 10:57:06', NULL, NULL, 'Miguel', '', '', 14, 'Carpintero', NULL, 1),
+(44, 'Ciudad: Medellin | Tel: 11111 | Email: Miguel@gmail.com | Portafolio: Prueba | CV: c2a7d670-8fa5-426c-b054-e0a8977b9d11.pdf', NULL, -1, '2025-11-12 10:41:46', '2025-12-02 19:16:43', NULL, NULL, 'Miguel', '', '', 13, 'Madera', NULL, 0),
+(266, 'Teléfono: 3118020103 | Ciudad: | Email: | Tel: ', 'uploads/cvs/cv_1764727197_cv_1764721668_Emmanuel_Hincapie_marin_CV.pdf', 1, '2025-12-02 20:59:57', '2025-12-02 22:16:41', NULL, NULL, 'Emmanuel Hincapie Marin', 'Emma@gmail.com', '$2y$10$6ynajB90ccAB.sNaVXFfGuHZMIlVJLPoF3pLiCO1G62.WHPyM0Qs6', 4, 'Madera', NULL, NULL);
 
 --
 -- Disparadores `carpenters`
@@ -370,6 +373,64 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `notification_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notifications`
+--
+
+INSERT INTO `notifications` (`notification_id`, `user_id`, `message`, `is_read`, `created_at`) VALUES
+(1, 2, 'Nuevo comentario en tu proyecto \"Mesa de Comedor Moderna\"', 0, '2025-12-02 17:10:11'),
+(2, 2, 'Nueva solicitud de proyecto personalizado recibida', 0, '2025-12-02 17:10:11'),
+(3, 3, 'Tu solicitud de proyecto ha sido aceptada', 1, '2025-12-02 17:10:11'),
+(4, 4, 'Nuevo comentario en tu proyecto \"Rec├ímara Completa\"', 0, '2025-12-02 17:10:11'),
+(5, 5, 'Nueva solicitud de proyecto personalizado recibida', 0, '2025-12-02 17:10:11'),
+(6, 1, 'El carpintero ha respondido a tu solicitud', 1, '2025-12-02 17:10:11'),
+(7, 10, 'Tu solicitud ha sido aceptada. El carpintero te contactar├í pronto.', 0, '2025-12-02 17:10:11');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `portafolio`
+--
+
+CREATE TABLE `portafolio` (
+  `project_id` int(11) NOT NULL,
+  `carpenter_user_id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `image_path` varchar(255) DEFAULT NULL,
+  `price` decimal(12,2) DEFAULT 0.00,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `portafolio`
+--
+
+INSERT INTO `portafolio` (`project_id`, `carpenter_user_id`, `title`, `description`, `image_path`, `price`, `created_at`) VALUES
+(1, 2, 'Mesa de Comedor Moderna', 'Mesa de comedor de madera de roble con acabado natural. Capacidad para 6 personas.', 'uploads/mesa_comedor_1.jpg', 15000.00, '2025-12-02 17:10:11'),
+(2, 2, 'Librer├¡a Minimalista', 'Librer├¡a de pino con dise├▒o minimalista, 5 repisas ajustables.', 'uploads/libreria_1.jpg', 8500.00, '2025-12-02 17:10:11'),
+(3, 2, 'Escritorio Ejecutivo', 'Escritorio de cedro con cajones y compartimentos. Ideal para oficina.', 'uploads/escritorio_1.jpg', 12000.00, '2025-12-02 17:10:11'),
+(4, 3, 'Silla de Madera Artesanal', 'Silla hecha a mano con detalles tallados. Dise├▒o tradicional.', 'uploads/silla_1.jpg', 3500.00, '2025-12-02 17:10:11'),
+(5, 3, 'Cama King Size', 'Cama de madera maciza con cabecera tallada. Estilo r├║stico.', 'uploads/cama_1.jpg', 25000.00, '2025-12-02 17:10:11'),
+(6, 4, 'Rec├ímara Completa', 'Juego de rec├ímara completo: cama, bur├│, tocador y ropero.', 'uploads/recamara_1.jpg', 45000.00, '2025-12-02 17:10:11'),
+(7, 4, 'Cocina Integral', 'Muebles de cocina en madera de maple. Incluye alacenas y barra.', 'uploads/cocina_1.jpg', 65000.00, '2025-12-02 17:10:11'),
+(8, 5, 'Puerta Principal Tallada', 'Puerta de entrada en caoba con tallados ornamentales.', 'uploads/puerta_1.jpg', 18000.00, '2025-12-02 17:10:11'),
+(31, 266, 'Mesa de comedor', 'Mesa de madera, mueble funcional con una superficie lisa para comer o trabajar, sostenida por una o varias patas. Destaca por su durabilidad, calidez, y belleza natural, y puede variar en diseño, desde rústico hasta moderno, adaptándose a diferentes usos como mesa de comedor, escritorio o auxiliar.', 'uploads/projects/proj_692fb65baebee.png', 150000.00, '2025-12-02 23:02:35');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `portafolios`
 --
 
@@ -392,6 +453,60 @@ CREATE TRIGGER `update_portafolios_last_update` BEFORE UPDATE ON `portafolios` F
 END
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_comments`
+--
+
+CREATE TABLE `project_comments` (
+  `comment_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `comment` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `project_comments`
+--
+
+INSERT INTO `project_comments` (`comment_id`, `project_id`, `user_id`, `comment`, `created_at`) VALUES
+(1, 1, 1, '┬íHermosa mesa! ┬┐Hacen env├¡os fuera de la ciudad?', '2025-12-02 17:10:11'),
+(2, 1, 10, 'Me encanta el dise├▒o. ┬┐Cu├ínto tiempo toma fabricarla?', '2025-12-02 17:10:11'),
+(3, 2, 1, 'Perfecta para mi sala de lectura. ┬┐Puedo personalizarla?', '2025-12-02 17:10:11'),
+(4, 3, 15, 'Excelente trabajo. ┬┐Aceptan pagos en mensualidades?', '2025-12-02 17:10:11'),
+(5, 5, 20, '┬┐Incluye el colch├│n o solo la estructura?', '2025-12-02 17:10:11'),
+(6, 6, 25, 'Interesado en este proyecto. ┬┐Tienen m├ís fotos?', '2025-12-02 17:10:11');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `project_requests`
+--
+
+CREATE TABLE `project_requests` (
+  `request_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `carpenter_user_id` int(11) NOT NULL,
+  `project_description` text NOT NULL,
+  `contact_info` varchar(255) DEFAULT NULL,
+  `status` enum('pending','accepted','rejected','completed') DEFAULT 'pending',
+  `created_at` datetime DEFAULT current_timestamp(),
+  `updated_at` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `project_requests`
+--
+
+INSERT INTO `project_requests` (`request_id`, `user_id`, `carpenter_user_id`, `project_description`, `contact_info`, `status`, `created_at`, `updated_at`) VALUES
+(1, 1, 2, 'Necesito un closet empotrado de 3 metros con acabado en nogal. Incluir cajones y zapatero.', 'usuario1@email.com / 555-1234', 'pending', '2025-12-02 17:10:11', '2025-12-02 17:10:11'),
+(2, 10, 3, 'Quisiera una mesa de centro moderna con cristal templado y base de madera.', 'usuario10@email.com / 555-5678', 'accepted', '2025-12-02 17:10:11', '2025-12-02 17:10:11'),
+(3, 15, 4, 'Requiero muebles para consultorio m├®dico: escritorio, archivero y sala de espera.', 'usuario15@email.com / 555-9012', 'pending', '2025-12-02 17:10:11', '2025-12-02 17:10:11'),
+(4, 20, 5, 'Barra para bar en casa, estilo industrial con madera y metal.', 'usuario20@email.com / 555-3456', 'rejected', '2025-12-02 17:10:11', '2025-12-02 17:10:11'),
+(5, 25, 2, 'Reparaci├│n y restauraci├│n de muebles antiguos heredados.', 'usuario25@email.com / 555-7890', 'completed', '2025-12-02 17:10:11', '2025-12-02 17:10:11');
 
 -- --------------------------------------------------------
 
@@ -657,7 +772,11 @@ INSERT INTO `users` (`user_id`, `full_name`, `email`, `password_hash`, `phone`, 
 (251, 'Administrador General', 'admin@lfcarpinter.com', '$2y$10$Qit2QeMt7PCYhSHoxqgVdeJ8sMCGeTclV0G5UKzH0WucLL4oQO48K', '3000000000', 'admin', 1, 0, 0, '2025-11-12 08:07:13', '2025-11-12 08:07:13', 'Medellín'),
 (253, 'Administrador LF', 'admin@lf.com', '$2y$10$yS8bH3f2gGtNd.Aekf.HoOGNhyTvvOUkXycM6mHsxAjgAgfimLQDe', '3000000000', 'admin', 1, 0, 0, '2025-11-12 09:19:14', '2025-11-12 09:19:14', 'Medellín'),
 (254, 'Emmanuel Hincapie Marin', 'Emma@gmail.com', '$2y$10$pJh8QxZwnFMwYPSsfY891.mZ18EmfggwiwTKJL2UCEIBIe7m1M3JG', '3118020103', 'user', 1, 0, 0, '2025-11-12 09:33:45', '2025-11-12 09:33:45', 'Medellin'),
-(255, 'Alejitauwuyt224', 'puta@gmail.com', '$2y$10$yR7Mg8VyFWRDKlpWSgpZjOZO.FXPz8DCCIcMmQejtEgJ5.ImpbfD6', '111', 'user', 1, 0, 0, '2025-11-12 11:14:21', '2025-11-12 11:14:21', 'medellin');
+(255, 'Alejitauwuyt224', 'puta@gmail.com', '$2y$10$yR7Mg8VyFWRDKlpWSgpZjOZO.FXPz8DCCIcMmQejtEgJ5.ImpbfD6', '111', 'user', 1, 0, 0, '2025-11-12 11:14:21', '2025-11-12 11:14:21', 'medellin'),
+(259, 'Juan Pérez (Carpintero de Prueba)', 'carpintero@test.com', '$2y$10$/0BfsEEN./pmsksgnBpENOQNmhW0YAMXZJT6miuNhe8n4k8T9ixoe', '555-1234-5678', 'carpenter', 1, 0, 0, '2025-12-02 17:20:23', '2025-12-02 17:20:23', 'Ciudad de México'),
+(260, 'María González (Cliente de Prueba)', 'cliente@test.com', '$2y$10$/0BfsEEN./pmsksgnBpENOQNmhW0YAMXZJT6miuNhe8n4k8T9ixoe', '555-9876-5432', 'user', 1, 0, 0, '2025-12-02 17:20:23', '2025-12-02 17:20:23', 'Guadalajara'),
+(261, 'aleja', 'baba@gmail.com', '$2y$10$A/nYMtCL3O1FjeuGro8CaOWk0w1t.NlQM12xR./jnVDKjbW7PVyeK', NULL, 'carpenter', 1, 0, 0, '2025-12-02 17:39:19', '2025-12-02 17:39:19', NULL),
+(262, 'Emmanuel', 'emmanuelhincm7@gmail.com', '$2y$10$3PCx1EgWDGYGAaPTL7Uczu9HlO4N1/lCc9mjHsQSazyFca1sk4cFq', '3118020103', 'user', 1, 0, 0, '2025-12-02 20:21:08', '2025-12-02 20:21:08', 'Medellin');
 
 --
 -- Disparadores `users`
@@ -773,11 +892,41 @@ ALTER TABLE `materials`
   ADD KEY `fk_materials_request` (`request_id`);
 
 --
+-- Indices de la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indices de la tabla `portafolio`
+--
+ALTER TABLE `portafolio`
+  ADD PRIMARY KEY (`project_id`),
+  ADD KEY `carpenter_user_id` (`carpenter_user_id`);
+
+--
 -- Indices de la tabla `portafolios`
 --
 ALTER TABLE `portafolios`
   ADD PRIMARY KEY (`id_portafolio`),
   ADD KEY `carpenter_id` (`carpenter_id`);
+
+--
+-- Indices de la tabla `project_comments`
+--
+ALTER TABLE `project_comments`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indices de la tabla `project_requests`
+--
+ALTER TABLE `project_requests`
+  ADD PRIMARY KEY (`request_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `carpenter_user_id` (`carpenter_user_id`);
 
 --
 -- Indices de la tabla `requests`
@@ -843,7 +992,7 @@ ALTER TABLE `activity_logs`
 -- AUTO_INCREMENT de la tabla `carpenters`
 --
 ALTER TABLE `carpenters`
-  MODIFY `carpenter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `carpenter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=268;
 
 --
 -- AUTO_INCREMENT de la tabla `certifications`
@@ -864,10 +1013,34 @@ ALTER TABLE `materials`
   MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
+-- AUTO_INCREMENT de la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `portafolio`
+--
+ALTER TABLE `portafolio`
+  MODIFY `project_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+
+--
 -- AUTO_INCREMENT de la tabla `portafolios`
 --
 ALTER TABLE `portafolios`
   MODIFY `id_portafolio` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `project_comments`
+--
+ALTER TABLE `project_comments`
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de la tabla `project_requests`
+--
+ALTER TABLE `project_requests`
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `requests`
@@ -891,7 +1064,7 @@ ALTER TABLE `traceability`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=256;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=265;
 
 --
 -- AUTO_INCREMENT de la tabla `user_behavior`
@@ -938,11 +1111,31 @@ ALTER TABLE `materials`
   ADD CONSTRAINT `materials_ibfk_1` FOREIGN KEY (`request_id`) REFERENCES `requests` (`request_id`);
 
 --
+-- Filtros para la tabla `notifications`
+--
+ALTER TABLE `notifications`
+  ADD CONSTRAINT `notifications_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `portafolios`
 --
 ALTER TABLE `portafolios`
   ADD CONSTRAINT `fk_portafolios_carpenter` FOREIGN KEY (`carpenter_id`) REFERENCES `carpenters` (`carpenter_id`),
   ADD CONSTRAINT `portafolios_ibfk_1` FOREIGN KEY (`carpenter_id`) REFERENCES `carpenters` (`carpenter_id`);
+
+--
+-- Filtros para la tabla `project_comments`
+--
+ALTER TABLE `project_comments`
+  ADD CONSTRAINT `project_comments_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `portafolio` (`project_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `project_comments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `project_requests`
+--
+ALTER TABLE `project_requests`
+  ADD CONSTRAINT `project_requests_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `project_requests_ibfk_2` FOREIGN KEY (`carpenter_user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `requests`
