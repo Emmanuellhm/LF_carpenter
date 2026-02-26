@@ -1,0 +1,243 @@
+# LF CARPINTER - Matriz de Requisitos para Trello
+
+---
+
+## SPRINT 1: AUTENTICACIÓN Y GESTIÓN DE USUARIOS
+
+### TAREA 1: RF01 - Registro de usuarios
+**Descripción:** El sistema debe permitir el registro de los usuarios.
+**Reglas de negocio (RN01):** Solo usuarios registrados pueden enviar solicitudes de contratación.
+**Requisitos de información (RI01):** Nombre, correo electrónico, contraseña
+
+### TAREA 2: RF01.1 - Registro de clientes
+**Descripción:** Permitir el registro por parte de clientes mediante formulario básico.
+**Reglas de negocio (RN01.1):** Solo usuarios autenticados acceden a funcionalidades exclusivas.
+**Requisitos de información (RI01.1):** Nombre, correo, número de teléfono
+
+### TAREA 3: RF01.2 - Registro de carpinteros
+**Descripción:** Permitir el registro de carpinteros mediante formulario de solicitud.
+**Reglas de negocio (RN01.2):** La solicitud del carpintero debe ser verificada por el administrador antes de su activación.
+**Requisitos de información (RI01.2):** Nombre, oficio, experiencia, contacto
+
+### TAREA 4: RF02 - Inicio de sesión
+**Descripción:** Permitir inicio de sesión para todos los roles.
+**Reglas de negocio (RN02):** Se debe autenticar el correo y contraseña registrados.
+**Requisitos de información (RI02):** Correo electrónico, contraseña
+
+### TAREA 5: RF02.1 - Acceso por rol
+**Descripción:** Cada rol debe tener acceso restringido a su panel correspondiente.
+**Reglas de negocio (RN02.1):** Los administradores no pueden acceder como usuarios ni viceversa.
+**Requisitos de información (RI02.1):** Tipo de rol
+
+### TAREA 6: RF03 - Recuperación de contraseña
+**Descripción:** Permitir recuperación de contraseña mediante correo.
+**Reglas de negocio (RN03):** Se debe validar identidad antes de restablecer credenciales.
+**Requisitos de información (RI03):** Correo electrónico
+
+### TAREA 7: RF04 - Creación de administradores
+**Descripción:** Permitir creación de administradores.
+**Reglas de negocio (RN04):** Solo el desarrollador puede crear usuarios administradores.
+**Requisitos de información (RI04):** Correo institucional, nombre completo
+
+### TAREA 8: RF05 - Solicitud de registro de carpintero
+**Descripción:** Permitir que carpinteros envíen solicitud de registro.
+**Reglas de negocio (RN05):** Solo se puede registrar si el administrador acepta la solicitud.
+**Requisitos de información (RI05):** Datos laborales, descripción, contacto
+
+### TAREA 9: RF05.1 - Formulario de solicitud de carpintero
+**Descripción:** Formulario debe incluir datos de contacto, experiencia y tipo de trabajos.
+**Reglas de negocio (RN05.1):** La solicitud debe ser revisada en un plazo máximo de 72 horas.
+**Requisitos de información (RI05.1):** Teléfono, experiencia, especialidad
+
+### TAREA 10: RF05.2 - Notificación de estado
+**Descripción:** Notificar al carpintero sobre el estado de su solicitud.
+**Reglas de negocio (RN05.2):** Solo carpinteros aprobados pueden configurar su portafolio.
+**Requisitos de información (RI05.2):** Estado de aprobación
+
+---
+
+## SPRINT 2: GESTIÓN DE CARPINTEROS
+
+### TAREA 11: RF06 - Solicitud de ingreso
+**Descripción:** El sistema debe permitir a carpinteros enviar una solicitud de ingreso.
+**Reglas de negocio (RN06):** El administrador debe validar la solicitud antes de su aprobación.
+**Requisitos de información (RI06):** Nombre completo, descripción, experiencia, especialidad
+
+### TAREA 12: RF06.1 - Formulario de solicitud
+**Descripción:** El sistema debe permitir que el formulario de solicitud capture descripción, experiencia y datos de contacto.
+**Reglas de negocio (RN06.1):** Solicitudes incompletas o con datos inválidos serán rechazadas automáticamente.
+**Requisitos de información (RI06.1):** Teléfono, tipo de servicio, correo electrónico, experiencia
+
+### TAREA 13: RF07 - Revisión de solicitudes
+**Descripción:** El sistema debe permitir al administrador revisar, aprobar o rechazar solicitudes de carpinteros.
+**Reglas de negocio (RN07):** Solo carpinteros con portafolio verificable serán aprobados.
+**Requisitos de información (RI07):** Estado de solicitud, notas, enlace al portafolio, fecha de revisión
+
+### TAREA 14: RF08 - Listado de carpinteros
+**Descripción:** El sistema debe permitir al administrador consultar el listado de carpinteros registrados y sus perfiles completos.
+**Reglas de negocio (RN08):** Solo el administrador puede acceder al listado completo de carpinteros.
+**Requisitos de información (RI08):** Nombre, oficio, estado de aprobación, calificación promedio
+
+### TAREA 15: RF08.1 - Ver perfil de carpintero
+**Descripción:** El sistema debe permitir al administrador consultar el perfil de un carpintero específico.
+**Requisitos de información:** Información completa del carpintero
+
+### TAREA 16: RF08.2 - Aprobar/Rechazar carpinteros
+**Descripción:** El sistema debe permitir al administrador aprobar o rechazar las solicitudes de registro de carpinteros.
+**Requisitos de información:** Estado de solicitud
+
+### TAREA 17: RF08.3 - Modificar información
+**Descripción:** El sistema debe permitir al administrador modificar la información de un carpintero.
+**Requisitos de información:** Datos del carpintero
+
+### TAREA 18: RF08.4 - Bloquear acceso
+**Descripción:** El sistema debe permitir al administrador bloquear o desbloquear el acceso de un carpintero.
+**Requisitos de información:** Estado de bloqueo
+
+### TAREA 19: RF08.5 - Ver historial
+**Descripción:** El sistema debe permitir al administrador ver el historial de trabajos, calificaciones y comentarios.
+**Requisitos de información:** Historial de trabajos, calificaciones, comentarios
+
+---
+
+## SPRINT 3: PERFILES Y PORTAFOLIO
+
+### TAREA 20: RF09 - Editar perfil
+**Descripción:** El sistema debe permitir a los carpinteros editar su perfil una vez registrados.
+**Requisitos de información:** Datos del perfil
+
+### TAREA 21: RF09.1 - Datos del perfil
+**Descripción:** El sistema debe permitir incluir en el perfil datos como ubicación, tipo de servicio, experiencia y galería de trabajos.
+**Requisitos de información:** Ubicación, tipo de servicio, experiencia, galería
+
+### TAREA 22: RF10 - Ver perfiles de carpinteros
+**Descripción:** El sistema debe permitir que los usuarios visualicen perfiles de carpinteros aprobados.
+**Requisitos de información:** Perfiles de carpinteros
+
+### TAREA 23: RF11 - Galería de trabajos
+**Descripción:** El sistema debe permitir que el perfil del carpintero muestre una galería de trabajos anteriores.
+**Requisitos de información:** Imágenes de trabajos
+
+### TAREA 24: RF11.1 - Detalles de galería
+**Descripción:** El sistema debe permitir que las imágenes de la galería incluyan título, descripción y fecha.
+**Requisitos de información:** Título, descripción, fecha
+
+---
+
+## SPRINT 4: SOLICITUDES DE SERVICIOS
+
+### TAREA 25: RF13 - Visualizar solicitudes
+**Descripción:** El sistema debe permitir a los carpinteros visualizar y consultar las solicitudes recibidas.
+**Requisitos de Información:** Solicitudes recibidas con detalle
+
+### TAREA 26: RF14 - Registrar visualización
+**Descripción:** El sistema debe registrar cada vez que un usuario visualiza o contacta a un carpintero.
+**Requisitos de información:** Registro de actividad
+
+### TAREA 27: RF15 - Notificaciones
+**Descripción:** El sistema debe notificar al carpintero cuando reciba una nueva solicitud.
+**Requisitos de información:** Notificación
+
+### TAREA 28: RF16 - Consultar estado
+**Descripción:** El sistema debe permitir al usuario consultar el estado de su solicitud en tiempo real.
+**Requisitos de información:** Estado de solicitud
+
+### TAREA 29: RF25 - Actualizar estado
+**Descripción:** El sistema debe permitir al carpintero actualizar el estado de las solicitudes.
+**Requisitos de información:** Estado (aceptada, rechazada, completada)
+
+### TAREA 30: RF26 - Notificaciones de estado
+**Descripción:** El sistema debe enviar notificaciones a los usuarios cuando el estado de su solicitud cambie.
+**Requisitos de información:** Notificación de cambio de estado
+
+---
+
+## SPRINT 5: RESEÑAS Y CALIFICACIONES
+
+### TAREA 31: RF12 - Reseñas
+**Descripción:** El sistema debe permitir a los usuarios registrar reseñas con calificación y comentario opcional.
+**Requisitos de información:** Calificación, comentario, promedio
+
+### TAREA 32: RF12.1 - Detalles de reseña
+**Descripción:** El sistema debe permitir incluir en cada reseña la calificación (de 1 a 5) y un comentario opcional.
+**Requisitos de información:** Calificación 1-5, comentario
+
+---
+
+## SPRINT 6: GESTIÓN DE USUARIOS
+
+### TAREA 33: RF21 - Actualizar perfil usuario
+**Descripción:** El sistema debe permitir a los usuarios actualizar su información de perfil.
+**Requisitos de información:** Nombre, teléfono, ciudad
+
+### TAREA 34: RF22 - Cambiar contraseña
+**Descripción:** El sistema debe permitir a los usuarios cambiar su contraseña desde su perfil.
+**Requisitos de información:** Contraseña
+
+### TAREA 35: RF23 - Editar proyectos
+**Descripción:** El sistema debe permitir a los carpinteros editar proyectos de su portafolio.
+**Requisitos de información:** Datos del proyecto
+
+### TAREA 36: RF24 - Eliminar proyectos
+**Descripción:** El sistema debe permitir a los carpinteros eliminar proyectos de su portafolio.
+**Requisitos de información:** Confirmación de eliminación
+
+### TAREA 37: RF27 - Notificaciones leídas
+**Descripción:** El sistema debe permitir a los usuarios marcar notificaciones como leídas.
+**Requisitos de información:** Estado de lectura
+
+### TAREA 38: RF28 - Historial de actividades
+**Descripción:** El sistema debe mostrar un historial de actividades relevantes del usuario.
+**Requisitos de información:** Historial de actividades
+
+---
+
+## SPRINT 7: PÁGINAS PÚBLICAS
+
+### TAREA 39: RF17 - Página de inicio
+**Descripción:** El sistema debe mostrar en la página de inicio la información general del proyecto.
+**Requisitos de información:** Información general
+
+### TAREA 40: RF18 - Sobre Nosotros
+**Descripción:** El sistema debe mostrar la sección "Sobre Nosotros" con el propósito del proyecto y el equipo creador.
+**Requisitos de información:** Historia, misión, visión, equipo
+
+### TAREA 41: RF19 - FAQ
+**Descripción:** El sistema debe mostrar la sección de preguntas frecuentes organizadas.
+**Requisitos de información:** Preguntas y respuestas
+
+### TAREA 42: RF20 - Contacto
+**Descripción:** El sistema debe mostrar la sección de información de contacto con medios oficiales.
+**Requisitos de información:** Email, teléfono, dirección
+
+---
+
+## SPRINT 8: REQUISITOS NO FUNCIONALES
+
+### TAREA 43: RNF1 - Compatibilidad
+**Descripción:** La plataforma debe ser accesible desde cualquier navegador moderno y dispositivo móvil.
+**Atributo:** Compatibilidad
+
+### TAREA 44: RNF2 - Disponibilidad
+**Descripción:** El sistema debe estar disponible al menos el 99% del tiempo.
+**Atributo:** Disponibilidad
+
+### TAREA 45: RNF3 - Seguridad
+**Descripción:** Toda la información должна быть almacenada de forma segura.
+**Atributo:** Seguridad
+
+### TAREA 46: RNF4 - Acceso admin
+**Descripción:** El acceso al perfil de administrador debe estar restringido mediante autenticación segura.
+**Atributo:** Seguridad
+
+### TAREA 47: RNF5 - Mantenibilidad
+**Descripción:** El sistema debe permitir futuras actualizaciones de módulos.
+**Atributo:** Mantenibilidad
+
+### TAREA 48: RNF6 - Usabilidad
+**Descripción:** La interfaz debe ser clara y fácil de usar.
+**Atributo:** Usabilidad
+
+### TAREA 49: RNF7 - SEO
+**Descripción:** Los contenidos públicos deben estar optimizados para motores de búsqueda.
+**Atributo:** Portabilidad / SEO

@@ -130,13 +130,6 @@ $pendiente = isset($_GET['pendiente']);
         <h3 class="text-xl font-bold">Usuario</h3>
         <p class="text-sm text-stone-600">Consulta proyectos o contrata servicios</p>
       </div>
-
-      <div class="card bg-white border border-stone-200 rounded-xl p-6 w-64 text-center cursor-pointer hover:shadow-lg transition"
-           onclick="seleccionarRol(this, 'admin')">
-        <img src="./img/administrador.png" class="w-12 mx-auto mb-3">
-        <h3 class="text-xl font-bold">Administrador</h3>
-        <p class="text-sm text-stone-600">Gestiona la plataforma</p>
-      </div>
     </div>
 
     <!-- FORMULARIO -->

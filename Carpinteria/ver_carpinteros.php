@@ -47,7 +47,7 @@ if ($result && $result->num_rows > 0) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carpinteros - LF Carpintería</title>
+  <title>Carpinteros - LF Carpenter</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -108,7 +108,7 @@ if ($result && $result->num_rows > 0) {
   <header class="bg-white border-b border-stone-200 px-8 py-5 shadow-sm sticky top-0 z-50">
     <div class="max-w-7xl mx-auto flex items-center justify-between">
       <a href="index.php">
-        <img src="./img/Logo de Carpintería LF.png" alt="Logo" class="h-16 w-auto">
+        <img src="./img/Logo de Carpintería LF.png" alt="LF Logo" class="h-16 w-16">
       </a>
       <nav class="flex items-center gap-6">
         <a href="index.php" class="font-semibold text-stone-700 hover:text-amber-600">Inicio</a>

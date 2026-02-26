@@ -1,0 +1,149 @@
+# LF CARPINTER - Historias de Usuario para Taiga
+# Copia cada sección por separado
+
+==========================================
+SPINT 1 - AUTENTICACIÓN Y USUARIOS
+==========================================
+
+HISTORIA 1:
+Sujeto: RF01.1 - Registro de clientes
+Descripción: Como cliente, quiero registrarme mediante un formulario básico con nombre, correo, teléfono y contraseña para acceder a la plataforma. Criterios: Validación de datos y almacenamiento en base de datos.
+Puntos: 3
+
+HISTORIA 2:
+Sujeto: RF01.2 - Registro de carpintero
+Descripción: Como carpintero, quiero enviar una solicitud de registro con mis datos profesionales (nombre, oficio, experiencia, teléfono, especialidad) y adjuntar mi CV. Criterios: La solicitud debe ser revisada por el admin.
+Puntos: 5
+
+HISTORIA 3:
+Sujeto: RF02 - Inicio de sesión multi-rol
+Descripción: Como usuario, quiero iniciar sesión con email y contraseña para acceder a mi panel correspondiente (cliente, carpintero o admin). Criterios: Redirección según rol y sesión segura.
+Puntos: 3
+
+HISTORIA 4:
+Sujeto: RF03 - Recuperar contraseña
+Descripción: Como usuario, quiero recuperar mi contraseña por correo electrónico mediante un enlace seguro. Criterios: Formulario de recuperación, envío de enlace y cambio de contraseña.
+Puntos: 2
+
+==========================================
+SPINT 2 - GESTIÓN DE PERFILES
+==========================================
+
+HISTORIA 5:
+Sujeto: RF09 - Perfil de carpintero
+Descripción: Como carpintero, quiero editar mi perfil incluyendo ubicación, tipo de servicio, experiencia y galería de trabajos. Criterios: Edición de datos personales.
+Puntos: 5
+
+HISTORIA 6:
+Sujeto: RF11 - Portafolio de trabajos
+Descripción: Como carpintero, quiero mostrar mi galería de trabajos anteriores con imágenes, título, descripción y fecha. Criterios: Agregar, editar y eliminar proyectos del portafolio.
+Puntos: 5
+
+HISTORIA 7:
+Sujeto: RF21 - Perfil de cliente
+Descripción: Como cliente, quiero actualizar mi información personal (nombre, teléfono, ciudad) y cambiar mi contraseña. Criterios: Formulario de edición de perfil.
+Puntos: 2
+
+==========================================
+SPINT 3 - BÚSQUEDA Y CONTACTO
+==========================================
+
+HISTORIA 8:
+Sujeto: RF10 - Ver perfiles de carpinteros
+Descripción: Como cliente, quiero ver el listado de carpinteros aprobados con su información de contacto y especialización. Criterios: Solo mostrar carpinteros verificados.
+Puntos: 3
+
+HISTORIA 9:
+Sujeto: RF13 - Solicitar servicio
+Descripción: Como cliente, quiero enviar una solicitud de servicio al carpintero con descripción del proyecto. Criterios: Formulario de solicitud, registro de contacto y notificación al carpintero.
+Puntos: 5
+
+HISTORIA 10:
+Sujeto: RF25 - Responder solicitudes
+Descripción: Como carpintero, quiero aceptar, rechazar o completar las solicitudes recibidas de los clientes. Criterios: Cambiar estado de pendiente a aceptada, rechazada o completada.
+Puntos: 3
+
+==========================================
+SPINT 4 - REVIEWS
+==========================================
+
+HISTORIA 11:
+Sujeto: RF12 - Reseñas y calificaciones
+Descripción: Como cliente, quiero calificar el trabajo del carpintero con estrellas (1-5) y dejar un comentario opcional. Criterios: Mostrar promedio de calificaciones en el perfil del carpintero.
+Puntos: 3
+
+==========================================
+SPINT 5 - NOTIFICACIONES Y HISTORIAL
+==========================================
+
+HISTORIA 12:
+Sujeto: RF15 - Notificaciones
+Descripción: Como usuario, quiero recibir notificaciones cuando reciba una nueva solicitud o cuando el estado de mi solicitud cambie. Criterios: Notificaciones en tiempo real y opción de marcar como leídas.
+Puntos: 5
+
+HISTORIA 13:
+Sujeto: RF16 - Historial de solicitudes
+Descripción: Como usuario, quiero consultar el estado de mis solicitudes en tiempo real y ver el historial de actividades. Criterios: Panel de historial con todas las actividades.
+Puntos: 3
+
+==========================================
+SPINT 6 - ADMINISTRACIÓN
+==========================================
+
+HISTORIA 14:
+Sujeto: RF07 - Aprobar carpinteros
+Descripción: Como administrador, quiero revisar, aprobar o rechazar las solicitudes de registro de carpinteros. Criterios: Ver solicitudes pendientes, aprobar o rechazar, notificar al carpintero.
+Puntos: 5
+
+HISTORIA 15:
+Sujeto: RF08 - Gestionar carpinteros
+Descripción: Como administrador, quiero consultar el listado de carpinteros, ver perfiles individuales, modificar información, bloquear/desbloquear acceso y ver historial de trabajos y calificaciones. Criterios: Panel completo de gestión de carpinteros.
+Puntos: 5
+
+==========================================
+SPINT 7 - PÁGINAS PÚBLICAS
+==========================================
+
+HISTORIA 16:
+Sujeto: RF17 - Página de inicio
+Descripción: Como visitante, quiero ver información general del proyecto LF Carpinter. Criterios: Información del servicio y botones de llamada a la acción (registro).
+Puntos: 2
+
+HISTORIA 17:
+Sujeto: RF18 - Sobre Nosotros
+Descripción: Como visitante, quiero conocer el propósito del proyecto, la historia, misión, visión y el equipo creador. Criterios: Sección con información de la empresa y equipo.
+Puntos: 2
+
+HISTORIA 18:
+Sujeto: RF19 - Preguntas Frecuentes (FAQ)
+Descripción: Como visitante, quiero encontrar respuestas a preguntas frecuentes organizadas por categoría. Criterios: Sección de FAQ accesible para cualquier usuario.
+Puntos: 2
+
+HISTORIA 19:
+Sujeto: RF20 - Página de contacto
+Descripción: Como visitante, quiero encontrar información de contacto de la plataforma. Criterios: Formulario de contacto y datos (email, teléfono, dirección).
+Puntos: 2
+
+==========================================
+SPINT 8 - REQUISITOS NO FUNCIONALES
+==========================================
+
+HISTORIA 20:
+Sujeto: RNF1 - Diseño responsivo
+Descripción: La plataforma debe ser accesible desde cualquier navegador moderno y dispositivo móvil. Criterios: Compatible con Chrome, Firefox, Safari, Edge y dispositivos móviles.
+Puntos: 3
+
+HISTORIA 21:
+Sujeto: RNF3 - Seguridad de datos
+Descripción: Toda la información de usuarios y carpinteros debe almacenarse de forma segura. Criterios: Contraseñas hasheadas, sesiones seguras y acceso restringido al admin.
+Puntos: 5
+
+HISTORIA 22:
+Sujeto: RNF6 - Usabilidad
+Descripción: La interfaz debe ser clara, comprensible y fácil de usar por personas con conocimientos básicos de tecnología. Criterios: Navegación intuitiva.
+Puntos: 2
+
+HISTORIA 23:
+Sujeto: RNF7 - SEO
+Descripción: Los contenidos públicos deben estar optimizados para motores de búsqueda (Google). Criterios: Meta tags, títulos, descripciones y estructura semántica HTML.
+Puntos: 2

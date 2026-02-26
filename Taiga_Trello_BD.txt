@@ -1,0 +1,212 @@
+# LF CARPINTER - Historias de Usuario para Trello/Taiga
+## Basado en la Base de Datos
+
+---
+
+## 📊 ESTRUCTURA DE LA BASE DE DATOS
+
+### Tablas principales:
+- **users** - Usuarios (clientes, carpinteros, admin)
+- **carpenters** - Perfiles de carpinteros
+- **requests** - Solicitudes de servicios
+- **reviews** - Reseñas y calificaciones
+- **notifications** - Notificaciones
+- **portafolio** / **portafolios** - Proyectos del carpintero
+- **materials** - Materiales del proyecto
+- **activity_logs** - Registro de actividades
+- **traceability** - Trazabilidad
+- **project_requests** - Solicitudes de proyectos personalizados
+
+---
+
+## SPRINT 1: AUTENTICACIÓN Y USUARIOS (13 pts)
+
+### Historia 1: Registro de Cliente
+- **ID BD:** Tabla `users`
+- **Título:** RF01.1 - Registro de clientes
+- **Descripción:** Como cliente, quiero registrarme con nombre, correo, teléfono y contraseña. El sistema debe validar los datos y guardarlos en la tabla `users` con role='user'.
+- **Tablas involucradas:** `users`
+- **Puntos:** 3
+
+### Historia 2: Solicitud de Registro de Carpintero
+- **ID BD:** Tabla `carpenters`
+- **Título:** RF01.2, RF05 - Registro de carpintero
+- **Descripción:** Como carpintero, quiero enviar solicitud con: nombre, email, teléfono, especialidad, experiencia, descripción. Los datos se guardan en tabla `carpenters` con approved=0 (pendiente).
+- **Tablas involucradas:** `carpenters`, `users`
+- **Puntos:** 5
+
+### Historia 3: Inicio de Sesión Multi-rol
+- **ID BD:** Tabla `users`.campo role
+- **Título:** RF02 - Inicio de sesión
+- **Descripción:** Como usuario, quiero iniciar sesión con email y contraseña. El sistema verifica en tabla `users` según role (user/carpenter/admin) y crea sesión.
+- **Tablas involucradas:** `users`, `failed_logins`
+- **Puntos:** 3
+
+### Historia 4: Recuperar Contraseña
+- **ID BD:** Tabla `users`.campo password_hash
+- **Título:** RF03 - Recuperar contraseña
+- **Descripción:** Como usuario, quiero recuperar mi contraseña por correo. El sistema envía enlace y actualiza password_hash en tabla `users`.
+- **Tablas involucradas:** `users`
+- **Puntos:** 2
+
+---
+
+## SPRINT 2: GESTIÓN DE PERFILES (12 pts)
+
+### Historia 5: Perfil de Carpintero
+- **ID BD:** Tabla `carpenters`
+- **Título:** RF09 - Editar perfil carpintero
+- **Descripción:** Como carpintero, quiero editar: especialidades, experiencia, descripción, ciudad. Se actualiza en tabla `carpenters`.
+- **Tablas involucradas:** `carpenters`
+- **Puntos:** 5
+
+### Historia 6: Portafolio de Trabajos
+- **ID BD:** Tabla `portafolio` o `portafolios`
+- **Título:** RF11 - Gestión de portafolio
+- **Descripción:** Como carpintero, quiero agregar proyectos con imagen, título, descripción, fecha. CRUD en tabla `portafolio`.
+- **Tablas involucradas:** `portafolio`, `project_comments`
+- **Puntos:** 5
+
+### Historia 7: Perfil de Cliente
+- **ID BD:** Tabla `users`
+- **Título:** RF21 - Editar perfil cliente
+- **Descripción:** Como cliente, quiero editar nombre, teléfono, ciudad y cambiar contraseña. Actualiza tabla `users`.
+- **Tablas involucradas:** `users`, `user_preferences`
+- **Puntos:** 2
+
+---
+
+## SPRINT 3: BÚSQUEDA Y SERVICIOS (11 pts)
+
+### Historia 8: Ver Carpinteros
+- **ID BD:** Tabla `carpenters`, `users`
+- **Título:** RF10 - Directorio de carpinteros
+- **Descripción:** Como cliente, quiero ver lista de carpinteros aprobados. Consulta `carpenters` WHERE approved=1 JOIN `users`.
+- **Tablas involucradas:** `carpenters`, `users`, `reviews`
+- **Puntos:** 3
+
+### Historia 9: Solicitar Servicio
+- **ID BD:** Tabla `requests`
+- **Título:** RF13 - Solicitar servicio
+- **Descripción:** Como cliente, quiero enviar solicitud con descripción, tipo de trabajo, presupuesto. Guarda en tabla `requests`.
+- **Tablas involucradas:** `requests`, `materials`
+- **Puntos:** 5
+
+### Historia 10: Responder Solicitudes
+- **ID BD:** Tabla `requests`.campo status
+- **Título:** RF25 - Responder solicitudes
+- **Descripción:** Como carpintero, quiero aceptar (accept), rechazar (reject) o completar (complete) solicitudes. Actualiza campo status en `requests`.
+- **Tablas involucradas:** `requests`, `notifications`
+- **Puntos:** 3
+
+---
+
+## SPRINT 4: REVIEWS (3 pts)
+
+### Historia 11: Reseñas y Calificaciones
+- **ID BD:** Tabla `reviews`
+- **Título:** RF12 - Reseñas
+- **Descripción:** Como cliente, quiero calificar al carpintero (1-5 estrellas) con comentario opcional. Guarda en tabla `reviews`.rar promedio en perfil Most.
+- **Tablas involucradas:** `reviews`, `carpenters` (rating_avg)
+- **Puntos:** 3
+
+---
+
+## SPRINT 5: NOTIFICACIONES Y ACTIVIDAD (8 pts)
+
+### Historia 12: Sistema de Notificaciones
+- **ID BD:** Tabla `notifications`
+- **Título:** RF15, RF26 - Notificaciones
+- **Descripción:** Como usuario, quiero recibir notificaciones de nuevas solicitudes y cambios de estado. Tabla `notifications` con is_read.
+- **Tablas involucradas:** `notifications`
+- **Puntos:** 5
+
+### Historia 13: Historial de Actividad
+- **ID BD:** Tabla `activity_logs`, `traceability`
+- **Título:** RF16, RF28 - Historial
+- **Descripción:** Como usuario, quiero ver historial de actividades y estado de solicitudes. Consulta `activity_logs` y `requests`.
+- **Tablas involucradas:** `activity_logs`, `traceability`, `requests`
+- **Puntos:** 3
+
+---
+
+## SPRINT 6: ADMINISTRACIÓN (10 pts)
+
+### Historia 14: Aprobar Carpinteros
+- **ID BD:** Tabla `carpenters`.campo approved, `users`.campo role
+- **Título:** RF07 - Aprobar carpinteros
+- **Descripción:** Como admin, quiero aprobar/rechazar solicitudes de carpinteros. Actualiza `carpenters`.approved y cambia `users`.role a 'carpintero'.
+- **Tablas involucradas:** `carpenters`, `users`, `notifications`
+- **Puntos:** 5
+
+### Historia 15: Gestionar Carpinteros
+- **ID BD:** Tablas `carpenters`, `users`, `requests`, `reviews`
+- **Título:** RF08 - Administrar carpinteros
+- **Descripción:** Como admin, quiero: listar carpinteros, ver perfil, modificar info, bloquear (is_active=0), ver historial y calificaciones.
+- **Tablas involucradas:** `carpenters`, `users`, `requests`, `reviews`, `portafolio`
+- **Puntos:** 5
+
+---
+
+## SPRINT 7: PÁGINAS PÚBLICAS (8 pts)
+
+### Historia 16: Página de Inicio
+- **Título:** RF17 - Landing page
+- **Descripción:** Página principal con información del proyecto LF Carpinter y called-to-action.
+- **Puntos:** 2
+
+### Historia 17: Sobre Nosotros
+- **Título:** RF18 - Sobre Nosotros
+- **Descripción:** Historia, misión, visión, equipo del proyecto.
+- **Puntos:** 2
+
+### Historia 18: FAQ
+- **Título:** RF19 - Preguntas frecuentes
+- **Descripción:** Sección de FAQ organizada por categorías.
+- **Puntos:** 2
+
+### Historia 19: Página de Contacto
+- **Título:** RF20 - Contacto
+- **Descripción:** Formulario de contacto e información (email, teléfono, dirección).
+- **Puntos:** 2
+
+---
+
+## SPRINT 8: REQUISITOS NO FUNCIONALES (12 pts)
+
+### Historia 20: Diseño Responsivo
+- **Título:** RNF1 - Compatibilidad
+- **Descripción:** La plataforma debe funcionar en cualquier navegador y dispositivo móvil.
+- **Puntos:** 3
+
+### Historia 21: Seguridad
+- **Título:** RNF3, RNF4 - Seguridad
+- **Descripción:** Contraseñas hasheadas (bcrypt), sesiones seguras, restricción acceso admin, protección SQL injection.
+- **Tablas involucradas:** `users`, `failed_logins`
+- **Puntos:** 5
+
+### Historia 22: Usabilidad
+- **Título:** RNF6 - Usabilidad
+- **Descripción:** Interfaz intuitiva para usuarios con conocimientos básicos.
+- **Puntos:** 2
+
+### Historia 23: SEO
+- **Título:** RNF7 - SEO
+- **Descripción:** Meta tags, estructura semántica, optimización para motores de búsqueda.
+- **Puntos:** 2
+
+---
+
+## 📋 RESUMEN
+
+| Sprint | Módulo | Tablas BD | Puntos |
+|--------|--------|-----------|--------|
+| 1 | Autenticación | users, carpenters, failed_logins | 13 |
+| 2 | Perfiles | users, carpenters, portafolio | 12 |
+| 3 | Servicios | requests, materials, carpenters | 11 |
+| 4 | Reviews | reviews | 3 |
+| 5 | Notificaciones | notifications, activity_logs | 8 |
+| 6 | Admin | carpenters, users, requests | 10 |
+| 7 | Páginas públicas | - | 8 |
+| 8 | No funcionales | users, failed_logins | 12 |
+| **TOTAL** | | | **77** |

@@ -10,6 +10,8 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Contáctanos - LF Carpinter. Estamos disponibles para resolver tus dudas sobre servicios de carpintería.">
+  <meta name="keywords" content="contacto, carpintería, Medellín, soporte">
   <title>Contáctanos - LF Carpinter</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">

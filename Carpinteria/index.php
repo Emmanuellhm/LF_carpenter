@@ -9,9 +9,18 @@ if (session_status() === PHP_SESSION_NONE) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LF Carpinter - Plataforma de contratación de carpinteros profesionales. Encuentra los mejores carpinteros verificados en Medellín para proyectos de carpintería a medida, muebles personalizados y restauración.">
+  <meta name="keywords" content="carpintería, carpinteros, muebles a medida, proyectos de madera, restauración de muebles, cocina integral, Medellín, LF Carpinter">
+  <meta name="author" content="LF Carpinter">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="LF Carpinter - Carpintería de Calidad">
+  <meta property="og:description" content="Encuentra carpinteros profesionales verificados para tus proyectos de carpintería">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_CO">
   <title>LF Carpinter | Carpintería de Calidad</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="canonical" href="https://lfcarpinter.com/">
 </head>
 <body class="bg-amber-50 text-stone-800 font-sans min-h-screen flex flex-col">
 
@@ -39,7 +48,6 @@ if (session_status() === PHP_SESSION_NONE) {
         </span>
       </div>
 
-      <!-- 🔥 Registros debajo del texto -->
       <div class="flex flex-col sm:flex-row gap-6 mt-8">
         <!-- Carpintero -->
         <div class="bg-amber-800 p-6 rounded-xl shadow-lg border border-amber-700 w-full sm:w-64 hover:shadow-xl transition">

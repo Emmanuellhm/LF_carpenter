@@ -41,10 +41,12 @@ if ($isLoggedIn) {
         </a>
       </div>
       
-      <!-- Navigation Links (Centro absoluto) -->
+<!-- Navigation Links (Centro absoluto) -->
       <div class="hidden md:flex justify-center justify-self-center">
         <div class="flex space-x-8">
           <a href="index.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'text-amber-700 font-medium' : 'text-gray-600 hover:text-amber-700'; ?> transition">Página de inicio</a>
+          <a href="sobre_nosotros.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'sobre_nosotros.php') ? 'text-amber-700 font-medium' : 'text-gray-600 hover:text-amber-700'; ?> transition">Sobre Nosotros</a>
+          <a href="faq.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'faq.php') ? 'text-amber-700 font-medium' : 'text-gray-600 hover:text-amber-700'; ?> transition">FAQ</a>
           <a href="contactanos.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'contactanos.php') ? 'text-amber-700 font-medium' : 'text-gray-600 hover:text-amber-700'; ?> transition">Contáctanos</a>
           <?php if ($isLoggedIn && $userRole === 'user'): ?>
           <a href="ver_carpinteros.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'ver_carpinteros.php') ? 'text-amber-700 font-medium' : 'text-gray-600 hover:text-amber-700'; ?> transition">Ver Carpinteros</a>
