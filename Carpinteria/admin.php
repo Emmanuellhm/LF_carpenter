@@ -13,50 +13,219 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Administrador - LF Carpinter</title>
+  <title>Panel Administrador - LF Carpintería</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
-<body class="flex min-h-screen bg-gradient-to-br from-amber-50 to-stone-100">
+<body class="flex h-screen bg-gradient-to-br from-amber-50 to-stone-100">
 
   <!-- Sidebar -->
-  <aside class="w-64 bg-white shadow-xl flex flex-col justify-between border-r border-stone-200">
+  <aside class="w-64 h-full bg-white shadow-xl flex flex-col justify-between border-r border-stone-200 overflow-y-auto">
     
     <div>
       <div class="flex flex-col items-center py-8 border-b border-stone-200">
-        <img src="img/fotoP.jpg" class="w-28 h-28 rounded-full border-4 border-amber-600 object-cover shadow-md">
+        <div class="w-28 h-28 rounded-full bg-gradient-to-br from-red-500 to-red-700 flex items-center justify-center text-white text-4xl font-bold shadow-lg border-4 border-red-700">
+          AD
+        </div>
         <span class="mt-3 font-bold text-stone-800 text-lg">Administrador</span>
+        <span class="text-xs text-stone-500 mt-1">Admin</span>
       </div>
 
       <nav class="flex flex-col space-y-2 px-6 mt-6">
-        <button onclick="mostrarSeccion('solicitudes')" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium text-left">Solicitudes Carpinteros</button>
-        <button onclick="mostrarSeccion('reportes')" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium text-left">Reportes de Clientes</button>
-        <button onclick="mostrarSeccion('sugerencias')" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium text-left">Sugerencias</button>
-        <button onclick="mostrarSeccion('notificaciones')" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-2 font-medium text-left">Notificaciones</button>
+        <button onclick="mostrarSeccion('dashboard')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-home w-5"></i>
+          <span>Panel Principal</span>
+        </button>
+        <button onclick="mostrarSeccion('solicitudes')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-user-check w-5"></i>
+          <span>Solicitudes Carpinteros</span>
+        </button>
+        <button onclick="mostrarSeccion('reportes')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-exclamation-triangle w-5"></i>
+          <span>Reportes de Clientes</span>
+        </button>
+        <button onclick="mostrarSeccion('sugerencias')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-lightbulb w-5"></i>
+          <span>Sugerencias</span>
+        </button>
+        <button onclick="mostrarSeccion('notificaciones')" class="seccion-btn text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-bell w-5"></i>
+          <span>Notificaciones</span>
+        </button>
       </nav>
     </div>
 
     <!-- Cerrar sesión -->
     <a href="logout.php"
-       class="text-center py-5 text-stone-500 hover:text-amber-600 cursor-pointer font-medium border-t border-stone-200">
-      Cerrar sesión
+       class="text-center py-5 text-stone-500 hover:text-amber-600 cursor-pointer font-medium border-t border-stone-200 flex items-center justify-center gap-2">
+       <i class="fas fa-sign-out-alt"></i>
+       <span>Cerrar sesión</span>
     </a>
   </aside>
 
   <!-- Main content -->
-  <div class="flex-1 flex flex-col">
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
 
-    <header class="flex items-center justify-between bg-white border-b border-stone-200 px-6 h-20 shadow-sm">
-      <img src="img/Logo de Carpintería LF.png" class="h-16">
+    <header class="flex items-center justify-between bg-white border-b border-stone-200 px-6 h-20 shadow-sm flex-shrink-0">
+      <div class="logo">
+        <img src="img/Logo de Carpintería LF.png" alt="Logo" class="h-16 w-auto">
+      </div>
       <nav>
         <a href="contacto.php" class="font-semibold text-stone-700 hover:text-amber-600">Contáctanos</a>
       </nav>
     </header>
 
-    <main class="p-10 space-y-10">
+    <!-- Contenedor con scroll para el contenido principal -->
+    <div class="flex-1 overflow-y-auto">
+      <main class="p-10 space-y-10">
+
+      <!-- Dashboard / Panel Principal -->
+      <section id="dashboard" class="seccion">
+        <h1 class="text-4xl font-bold text-stone-800 mb-2">Panel de Administrador</h1>
+        <p class="text-stone-600 mb-8">Bienvenido al panel de control administrativo</p>
+        
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Solicitudes Pendientes -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="bg-amber-100 p-3 rounded-lg">
+                <i class="fas fa-user-check text-2xl text-amber-600"></i>
+              </div>
+              <h2 class="text-xl font-bold text-stone-800">Solicitudes</h2>
+            </div>
+            <p class="text-stone-600 mb-4">Revisa solicitudes de carpinteros.</p>
+            <button onclick="mostrarSeccion('solicitudes')" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+              Ver Solicitudes
+            </button>
+          </div>
+
+          <!-- Reportes -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="bg-orange-100 p-3 rounded-lg">
+                <i class="fas fa-exclamation-triangle text-2xl text-orange-600"></i>
+              </div>
+              <h2 class="text-xl font-bold text-stone-800">Reportes</h2>
+            </div>
+            <p class="text-stone-600 mb-4">Gestiona reportes de clientes.</p>
+            <button onclick="mostrarSeccion('reportes')" class="inline-block bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+              Ver Reportes
+            </button>
+          </div>
+
+          <!-- Sugerencias -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="bg-stone-100 p-3 rounded-lg">
+                <i class="fas fa-lightbulb text-2xl text-stone-600"></i>
+              </div>
+              <h2 class="text-xl font-bold text-stone-800">Sugerencias</h2>
+            </div>
+            <p class="text-stone-600 mb-4">Revisa sugerencias de usuarios.</p>
+            <button onclick="mostrarSeccion('sugerencias')" class="inline-block bg-stone-600 hover:bg-stone-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+              Ver Sugerencias
+            </button>
+          </div>
+
+          <!-- Notificaciones -->
+          <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition">
+            <div class="flex items-center gap-4 mb-4">
+              <div class="bg-stone-200 p-3 rounded-lg">
+                <i class="fas fa-bell text-2xl text-stone-700"></i>
+              </div>
+              <h2 class="text-xl font-bold text-stone-800">Notificaciones</h2>
+            </div>
+            <p class="text-stone-600 mb-4">Revisa notificaciones del sistema.</p>
+            <button onclick="mostrarSeccion('notificaciones')" class="inline-block bg-stone-600 hover:bg-stone-700 text-white font-semibold px-6 py-3 rounded-lg shadow w-full text-center">
+              Ver Notificaciones
+            </button>
+          </div>
+        </div>
+
+        <!-- Estadísticas Rápidas -->
+        <?php
+        // Obtener estadísticas
+        $pendientes_count = 0;
+        $aprobados_count = 0;
+        $total_carpinteros = 0;
+        
+        $stat_query = "SELECT 
+                        COUNT(*) as total,
+                        SUM(CASE WHEN approved = 0 THEN 1 ELSE 0 END) as pendientes,
+                        SUM(CASE WHEN approved = 1 THEN 1 ELSE 0 END) as aprobados
+                       FROM carpenters";
+        $stat_result = $conn->query($stat_query);
+        if ($stat_result && $row = $stat_result->fetch_assoc()) {
+          $total_carpinteros = $row['total'];
+          $pendientes_count = $row['pendientes'];
+          $aprobados_count = $row['aprobados'];
+        }
+        ?>
+        <div class="mt-10 grid md:grid-cols-3 gap-6">
+          <div class="bg-gradient-to-br from-amber-500 to-amber-600 p-6 rounded-xl shadow-lg text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-amber-100 text-sm font-medium mb-1">Solicitudes Pendientes</p>
+                <p class="text-4xl font-bold"><?php echo $pendientes_count; ?></p>
+              </div>
+              <div class="bg-white/20 p-3 rounded-lg">
+                <i class="fas fa-user-clock text-3xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-stone-600 to-stone-700 p-6 rounded-xl shadow-lg text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-stone-200 text-sm font-medium mb-1">Carpinteros Aprobados</p>
+                <p class="text-4xl font-bold"><?php echo $aprobados_count; ?></p>
+              </div>
+              <div class="bg-white/20 p-3 rounded-lg">
+                <i class="fas fa-user-check text-3xl"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-gradient-to-br from-orange-600 to-orange-700 p-6 rounded-xl shadow-lg text-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-orange-100 text-sm font-medium mb-1">Total Carpinteros</p>
+                <p class="text-4xl font-bold"><?php echo $total_carpinteros; ?></p>
+              </div>
+              <div class="bg-white/20 p-3 rounded-lg">
+                <i class="fas fa-users text-3xl"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Información del Sistema -->
+        <div class="mt-10 bg-white p-8 rounded-xl shadow-lg border border-stone-200">
+          <h2 class="text-2xl font-bold text-stone-800 mb-6">Información del Sistema</h2>
+          <div class="grid md:grid-cols-2 gap-6">
+            <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+              <p class="text-xs font-bold text-stone-400 uppercase mb-1">Rol</p>
+              <p class="text-stone-800 font-medium">Administrador</p>
+            </div>
+            <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+              <p class="text-xs font-bold text-stone-400 uppercase mb-1">Acceso</p>
+              <p class="text-stone-800 font-medium">Control Total del Sistema</p>
+            </div>
+            <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+              <p class="text-xs font-bold text-stone-400 uppercase mb-1">Total Carpinteros</p>
+              <p class="text-stone-800 font-medium"><?php echo $total_carpinteros; ?> registrados</p>
+            </div>
+            <div class="bg-stone-50 p-4 rounded-lg border border-stone-100">
+              <p class="text-xs font-bold text-stone-400 uppercase mb-1">Pendientes</p>
+              <p class="text-stone-800 font-medium"><?php echo $pendientes_count; ?> por revisar</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!-- Solicitudes -->
-      <section id="solicitudes" class="seccion">
+      <section id="solicitudes" class="seccion hidden">
         <h1 class="text-3xl font-extrabold text-stone-800 mb-6">Solicitudes de Carpinteros Pendientes</h1>
 
         <?php
@@ -185,6 +354,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
       </section>
 
     </main>
+    </div>
   </div>
 
   <!-- Modal Perfil Completo del Carpintero -->
@@ -317,9 +487,28 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 <script>
   function mostrarSeccion(id) {
+    // Ocultar todas las secciones
     document.querySelectorAll('.seccion').forEach(sec => sec.classList.add('hidden'));
+    
+    // Mostrar la sección seleccionada
     document.getElementById(id).classList.remove('hidden');
+    
+    // Actualizar botones activos
+    document.querySelectorAll('.seccion-btn').forEach(btn => {
+      btn.classList.remove('bg-amber-100', 'text-amber-700');
+    });
+    
+    // Marcar botón activo
+    const activeBtn = document.querySelector(`button[onclick="mostrarSeccion('${id}')"]`);
+    if (activeBtn) {
+      activeBtn.classList.add('bg-amber-100', 'text-amber-700');
+    }
   }
+
+  // Mostrar dashboard por defecto al cargar la página
+  window.addEventListener('DOMContentLoaded', () => {
+    mostrarSeccion('dashboard');
+  });
 
   function abrirModalReporte(carpintero, cliente, descripcion) {
     document.getElementById("rep-carpintero").textContent = carpintero;
@@ -360,7 +549,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     const cvLink = document.getElementById('perfil-cv');
     if (data.cv_file && data.cv_file.trim()) {
       cvLink.href = data.cv_file;
-      const filename = data.cv_file.split('/').pop(); // Obtener nombre del archivo
+      const filename = data.cv_file.split('/').pop();
       cvLink.setAttribute('download', filename);
       cvContainer.classList.remove('hidden');
     } else {
