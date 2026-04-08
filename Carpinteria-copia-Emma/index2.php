@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LF Carpinter</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-amber-50 to-stone-100 text-stone-800 font-sans">
+
+<!-- Header -->
+<header class="flex justify-between items-center px-8 h-20 bg-white shadow-md border-b border-stone-200">
+  <!-- Logo -->
+  <div class="flex items-center">
+    <img src="./img/Logo de CarpinterÃ­a LF.png" alt="LF Logo" class="h-20 w-20">
+  </div>
+  
+  <!-- MenÃº alineado -->
+  <nav class="flex gap-8 items-center">
+    <a href="index.php" class="font-medium text-stone-700 hover:text-amber-600">PÃ¡gina de inicio</a>
+    <a href="contactanos.html" class="font-medium text-stone-700 hover:text-amber-600">ContÃ¡ctanos</a>
+    <a href="iniciar-sesion.php" class="font-semibold text-white bg-amber-600 hover:bg-amber-700 px-5 py-2 rounded-lg shadow">Iniciar sesiÃ³n</a>
+  </nav>
+</header>
+
+<!-- Hero -->
+<section class="flex flex-col md:flex-row items-start justify-between px-8 pt-16 pb-8 gap-10">
+  <!-- Columna izquierda -->
+  <div class="max-w-xl flex flex-col">
+    <small class="uppercase text-amber-600 font-semibold tracking-wide">DiseÃ±o y funcionalidad a tu medida</small>
+    <h1 class="text-4xl font-extrabold mt-3 mb-4 text-stone-800">CarpinterÃ­a de calidad para tu hogar y negocio</h1>
+    <p class="text-stone-600 leading-relaxed mb-6">
+      Descubre la precisiÃ³n y el detalle en cada proyecto. En <span class="font-bold text-amber-700">LF Carpinter</span>,
+      transformamos tus ideas en realidad con madera de primera.
+    </p>
+    <div class="flex flex-wrap gap-4 text-sm font-medium mb-10">
+      <span class="bg-amber-100 text-amber-700 px-3 py-2 rounded-lg shadow-sm">ðŸ”§ AtenciÃ³n personalizada</span>
+      <span class="bg-amber-100 text-amber-700 px-3 py-2 rounded-lg shadow-sm">âœ… GarantÃ­a de calidad</span>
+      <span class="bg-amber-100 text-amber-700 px-3 py-2 rounded-lg shadow-sm">ðŸ“ Servicio local</span>
+    </div>
+
+    <!-- ðŸ”¥ Registros debajo del texto -->
+    <div class="flex flex-col sm:flex-row gap-6">
+      <!-- Carpintero -->
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 w-full sm:w-64 hover:shadow-xl transition">
+        <div class="w-12 h-12 flex items-center justify-center bg-amber-100 rounded-lg mb-3">
+          <img src="./img/contrato.png" alt="Icono Carpintero" class="w-7 h-7">
+        </div>
+        <h3 class="text-lg font-bold text-stone-800 mb-2">Carpintero</h3>
+        <p class="text-stone-600 text-sm mb-3">Ãšnete a nuestra red de profesionales mediante una solicitud de ingreso.</p>
+        <a href="registro_C.php" class="text-amber-600 font-semibold hover:underline">Enviar solicitud â†’</a>
+      </div>
+
+      <!-- Cliente -->
+      <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 w-full sm:w-64 hover:shadow-xl transition">
+        <div class="w-12 h-12 flex items-center justify-center bg-amber-100 rounded-lg mb-3">
+          <img src="./img/nueva-cuenta.png" alt="Icono Cliente" class="w-7 h-7">
+        </div>
+        <h3 class="text-lg font-bold text-stone-800 mb-2">Cliente</h3>
+        <p class="text-stone-600 text-sm mb-3">Encuentra el mejor carpintero para tu proyecto.</p>
+        <a href="registro_U.php" class="text-amber-600 font-semibold hover:underline">Buscar servicios â†’</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Columna derecha (ImÃ¡genes) -->
+  <div class="grid grid-cols-2 gap-4 self-start">
+    <img src="./img/imagen1.jpeg" alt="Imagen 1" class="rounded-xl shadow-md h-56 w-full object-cover">
+    <img src="./img/Sin tÃ­tulo.jpeg" alt="Imagen 2" class="rounded-xl shadow-md h-56 w-full object-cover">
+    <img src="./img/imagen2.jpeg" alt="Imagen 3" class="rounded-xl shadow-md h-56 w-full object-cover">
+    <img src="./img/imagen3.jpeg" alt="Imagen 4" class="rounded-xl shadow-md h-56 w-full object-cover">
+  </div>
+</section>
+
+<!-- Proyectos -->
+<section class="px-10 py-16 bg-white shadow-inner">
+  <h1 class="text-3xl font-extrabold text-center text-stone-800 mb-12">Proyectos Destacados</h1>
+
+  <div class="flex gap-6 overflow-x-auto pb-4">
+    <!-- Proyecto -->
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 w-80 flex-shrink-0 hover:shadow-xl transition">
+      <img src="img/silla_roble.jpeg" alt="Proyecto 1" class="h-48 w-full object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-bold text-stone-800">Silla de Madera Roble</h3>
+        <p class="text-sm text-stone-600 mt-2">DiseÃ±o ergonÃ³mico con madera de roble y acabados profesionales.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 w-80 flex-shrink-0 hover:shadow-xl transition">
+      <img src="img/estanteria.webp" alt="Proyecto 2" class="h-48 w-full object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-bold text-stone-800">EstanterÃ­a Minimalista</h3>
+        <p class="text-sm text-stone-600 mt-2">Estilo moderno, ideal para espacios pequeÃ±os. Hecha en pino tratado.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 w-80 flex-shrink-0 hover:shadow-xl transition">
+      <img src="img/comedor.jpeg" alt="Proyecto 3" class="h-48 w-full object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-bold text-stone-800">Comedor para 6 personas</h3>
+        <p class="text-sm text-stone-600 mt-2">Mesa y sillas de nogal con barniz protector.</p>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 w-80 flex-shrink-0 hover:shadow-xl transition">
+      <img src="img/mesanoche.jpeg" alt="Proyecto 4" class="h-48 w-full object-cover rounded-t-xl">
+      <div class="p-4">
+        <h3 class="text-lg font-bold text-stone-800">Mesa de noche</h3>
+        <p class="text-sm text-stone-600 mt-2">DiseÃ±o clÃ¡sico, barnizada a mano. Ideal para dormitorios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Perfiles -->
+<section class="px-10 py-16">
+  <h2 class="text-2xl font-extrabold text-center text-stone-800 mb-12">Conoce a Nuestros Carpinteros</h2>
+  <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div onclick="window.location.href='cliente2.html'"
+      class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition cursor-pointer">
+      <img src="img/fotoP.jpg" alt="Carpintero 1"
+        class="h-40 w-full object-cover rounded-lg mb-4 shadow">
+      <h3 class="text-lg font-bold text-stone-800">Juan PÃ©rez</h3>
+      <p class="text-sm text-stone-600 mt-2">Especialista en muebles a medida con 10 aÃ±os de experiencia.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition cursor-pointer">
+      <img src="img/fotoP.jpg" alt="Carpintero 2"
+        class="h-40 w-full object-cover rounded-lg mb-4 shadow">
+      <h3 class="text-lg font-bold text-stone-800">Laura GÃ³mez</h3>
+      <p class="text-sm text-stone-600 mt-2">Experta en restauraciÃ³n de muebles antiguos, atenciÃ³n personalizada.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition cursor-pointer">
+      <img src="img/fotoP.jpg" alt="Carpintero 3"
+        class="h-40 w-full object-cover rounded-lg mb-4 shadow">
+      <h3 class="text-lg font-bold text-stone-800">Carlos Ruiz</h3>
+      <p class="text-sm text-stone-600 mt-2">DiseÃ±o moderno y funcional. Proyectos innovadores y a buen precio.</p>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-lg border border-stone-200 hover:shadow-xl transition cursor-pointer">
+      <img src="img/fotoP.jpg" alt="Carpintero 4"
+        class="h-40 w-full object-cover rounded-lg mb-4 shadow">
+      <h3 class="text-lg font-bold text-stone-800">Ana Torres</h3>
+      <p class="text-sm text-stone-600 mt-2">Trabaja con maderas recicladas y acabados sostenibles.</p>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
