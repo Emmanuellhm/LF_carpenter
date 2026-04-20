@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión - LF Carpinter{% endblock %}
+
+{% block content %}
+<main class="px-6 md:px-20 py-16">
+    <h2 class="text-4xl font-extrabold text-center text-stone-800 mb-12">Iniciar Sesión</h2>
+
+    <!-- Selección de rol -->
+    <div class="flex justify-center gap-6 flex-wrap mb-12">
+      <div class="card bg-white border border-stone-200 rounded-xl p-6 w-64 text-center cursor-pointer hover:shadow-lg transition"
+           onclick="seleccionarRol(this, 'carpenter')">
+        <img src="{% static 'img/herramienta-de-martillo.png' %}" class="w-12 mx-auto mb-3">
+        <h3 class="text-xl font-bold">Carpintero</h3>
+        <p class="text-sm text-stone-600">Accede a tu panel de carpintero</p>
+      </div>
+
+      <div class="card bg-white border border-stone-200 rounded-xl p-6 w-64 text-center cursor-pointer hover:shadow-lg transition"
+           onclick="seleccionarRol(this, 'user')">
+        <img src="{% static 'img/nueva-cuenta.png' %}" class="w-12 mx-auto mb-3">
+        <h3 class="text-xl font-bold">Usuario</h3>
+        <p class="text-sm text-stone-600">Consulta proyectos o contrata servicios</p>
+      </div>
+    </div>
+
+    <!-- FORMULARIO -->
+    <div id="form-container" class="hidden max-w-md mx-auto bg-white p-8 rounded-xl shadow-lg border border-stone-200">
+      <form id="login-form" method="post" class="space-y-5">
+        {% csrf_token %}
+        <input type="hidden" id="rol" name="rol" value="">
+
+        <input type="text" name="username" placeholder="Nombre de usuario" required
+               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-700">
+
+        <input type="password" name="password" placeholder="Contraseña" required
+               class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-700">
+
+        {% if form.errors %}
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span class="block sm:inline">Credenciales incorrectas. Por favor verifica.</span>
+          </div>
+        {% endif %}
+
+        <button type="submit" class="w-full bg-amber-700 hover:bg-amber-800 text-white font-semibold py-3 rounded-lg shadow">
+          Entrar
+        </button>
+        
+        <div class="text-center mt-3">
+          <a href="#" class="text-sm text-amber-700 hover:text-amber-800 hover:underline font-medium">
+            ¿Olvidaste tu contraseÃ±a?
+          </a>
+        </div>
+      </form>
+    </div>
+</main>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function seleccionarRol(elemento, rol) {
+      document.querySelectorAll('.card').forEach(c =>
+        c.classList.remove('ring-4', 'ring-amber-700')
+      );
+      elemento.classList.add('ring-4', 'ring-amber-700');
+      document.getElementById('form-container').classList.remove('hidden');
+      document.getElementById('rol').value = rol;
+    }
+</script>
+{% endblock %}

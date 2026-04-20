@@ -1,0 +1,172 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carpinteros - LF Carpintería</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="{% if user.is_authenticated and user.role == 'client' %}flex h-screen overflow-hidden{% endif %} bg-gradient-to-br from-amber-50 to-stone-100 min-h-screen">
+
+{% if user.is_authenticated and user.role == 'client' %}
+  <!-- Sidebar mapping to user_panel layout -->
+  <aside class="w-64 h-full bg-white shadow-xl flex flex-col justify-between border-r border-stone-200 overflow-y-auto">
+    <div>
+      <div class="flex flex-col items-center py-8 border-b border-stone-200">
+        <div class="w-28 h-28 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-4xl font-bold shadow-lg border-4 border-amber-600">
+          {{ user.first_name|slice:":1" }}{{ user.last_name|slice:":1"|default:"" }}
+        </div>
+        <span class="mt-3 font-bold text-stone-800 text-lg text-center px-4">{{ user.first_name }}</span>
+        <span class="text-xs text-stone-500 mt-1">Usuario</span>
+      </div>
+      <nav class="flex flex-col space-y-2 px-6 mt-6">
+        <a href="{% url 'user_panel' %}" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-home w-5"></i>
+          <span>Panel Principal</span>
+        </a>
+        <a href="#" class="text-stone-700 hover:bg-amber-100 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-clipboard-list w-5"></i>
+          <span>Mis Solicitudes</span>
+        </a>
+        <a href="{% url 'carpenter_list' %}" class="bg-amber-100 text-amber-700 rounded-lg px-4 py-3 font-medium text-left flex items-center gap-3 transition">
+          <i class="fas fa-search w-5"></i>
+          <span>Buscar Carpinteros</span>
+        </a>
+      </nav>
+    </div>
+    <form action="{% url 'logout' %}" method="post" class="border-t border-stone-200">
+        {% csrf_token %}
+        <button type="submit" class="w-full py-5 text-stone-500 hover:text-amber-600 font-medium flex items-center justify-center gap-2">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Cerrar sesión</span>
+        </button>
+    </form>
+  </aside>
+  <div class="flex-1 flex flex-col h-full overflow-hidden">
+{% endif %}
+
+  {% if not user.is_authenticated or user.role != 'client' %}
+  <!-- Generic Header -->
+  <header class="bg-white border-b border-stone-200 px-8 py-5 shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <a href="/">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="Logo" class="h-16 w-auto">
+      </a>
+      <nav class="flex items-center gap-6">
+        <a href="/" class="font-semibold text-stone-700 hover:text-amber-600">Inicio</a>
+        <a href="#" class="font-semibold text-stone-700 hover:text-amber-600">Contáctanos</a>
+        {% if user.is_authenticated %}
+            <a href="{% if user.role == 'carpenter' %}{% url 'carpenter_panel' %}{% else %}{% url 'user_panel' %}{% endif %}" class="bg-amber-600 text-white px-4 py-2 rounded-lg">Panel</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="bg-amber-600 text-white px-4 py-2 rounded-lg">Acceder</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  {% else %}
+  <header class="flex items-center justify-between bg-white border-b border-stone-200 px-6 h-20 shadow-sm flex-shrink-0">
+    <div class="logo">
+      <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="Logo" class="h-16 w-auto">
+    </div>
+  </header>
+  {% endif %}
+
+  <main class="{% if user.role == 'client' %}flex-1 overflow-y-auto{% else %}max-w-7xl mx-auto{% endif %} px-8 py-12">
+    <div class="mb-8">
+      <h1 class="text-4xl font-extrabold text-stone-800 mb-2">Nuestros Carpinteros</h1>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for c in carpenters %}
+      <div class="bg-white border border-stone-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition">
+        <div class="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 mx-auto mb-4 flex items-center justify-center text-white text-3xl font-bold shadow-lg">
+          {{ c.first_name|slice:":1" }}{{ c.last_name|slice:":1"|default:"" }}
+        </div>
+        <h3 class="font-bold text-xl text-stone-800 text-center mb-2">{{ c.first_name }}</h3>
+        <div class="space-y-2 mb-4">
+          <div class="bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+            <p class="text-xs font-semibold text-stone-500 uppercase">Especialidad</p>
+            <p class="text-stone-800 font-medium">{{ c.carpenter_profile.specialties|default:"General" }}</p>
+          </div>
+          <div class="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+            <p class="text-xs font-semibold text-stone-500 uppercase">Proyectos</p>
+            <p class="text-stone-800 font-medium">{{ c.project_count }} publicados</p>
+          </div>
+        </div>
+        <button onclick="openModal('modal-{{ c.id }}')" class="w-full bg-stone-600 hover:bg-stone-700 text-white py-2 rounded-lg font-semibold text-sm">
+          Ver Perfil
+        </button>
+      </div>
+
+      <!-- Modal con Formulario de Solicitud -->
+      <div id="modal-{{ c.id }}" class="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center hidden z-50 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full mx-4 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-stone-200 flex justify-between items-center">
+                <h2 class="text-2xl font-bold text-stone-800">Solicitar Proyecto a {{ c.first_name }}</h2>
+                <button onclick="closeModal('modal-{{ c.id }}')" class="text-stone-400 hover:text-stone-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <form action="{% url 'request_project' %}" method="POST" enctype="multipart/form-data" class="p-8 overflow-y-auto">
+                {% csrf_token %}
+                <input type="hidden" name="carpenter_id" value="{{ c.id }}">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Título del Proyecto</label>
+                        <input type="text" name="title" required placeholder="Ej: Mesa de comedor rústica" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+                    
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Descripción Detallada</label>
+                        <textarea name="description" required rows="3" placeholder="Describe lo que necesitas..." class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Presupuesto Estimado ($)</label>
+                        <input type="number" name="budget" step="0.01" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Fecha Límite Deseada</label>
+                        <input type="date" name="deadline" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Dimensiones</label>
+                        <input type="text" name="dimensions" placeholder="Ej: 200x100x75 cm" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Materiales Preferidos</label>
+                        <input type="text" name="materials" placeholder="Ej: Madera de roble, metal" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-500 outline-none">
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-semibold text-stone-700 mb-1">Imagen de Referencia (Opcional)</label>
+                        <input type="file" name="reference_image" accept="image/*" class="w-full text-sm text-stone-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-amber-100 file:text-amber-700 hover:file:bg-amber-200">
+                    </div>
+                </div>
+
+                <div class="mt-8 flex gap-4">
+                    <button type="button" onclick="closeModal('modal-{{ c.id }}')" class="flex-1 px-6 py-3 border border-stone-300 text-stone-600 rounded-lg font-bold hover:bg-stone-50">Cancelar</button>
+                    <button type="submit" class="flex-1 px-6 py-3 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-700 shadow-lg">Enviar Solicitud</button>
+                </div>
+            </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </main>
+
+{% if user.is_authenticated and user.role == 'client' %}
+  </div>
+{% endif %}
+
+<script>
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+</script>
+</body>
+</html>
