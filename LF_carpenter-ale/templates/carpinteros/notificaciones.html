@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notificaciones | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] py-12 px-4 sm:px-6 lg:px-8 bg-amber-50">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-900">Notificaciones</h1>
+        <p class="mt-2 text-gray-600">Tus notificaciones recientes</p>
+      </div>
+      {% if notificaciones %}
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="bg-stone-600 hover:bg-stone-700 text-white font-semibold px-4 py-2 rounded-lg">
+          <i class="fas fa-check-double mr-2"></i> Marcar todas como leídas
+        </button>
+      </form>
+      {% endif %}
+    </div>
+
+    {% if notificaciones %}
+    <div class="space-y-3">
+      {% for notificacion in notificaciones %}
+      <div class="bg-white rounded-xl shadow-lg border {% if not notificacion.is_read %}border-amber-300{% else %}border-stone-200{% endif %} p-6">
+        <div class="flex items-start gap-4">
+          <div class="{% if not notificacion.is_read %}bg-amber-100{% else %}bg-stone-100{% endif %} p-3 rounded-lg">
+            <i class="fas fa-bell {% if not notificacion.is_read %}text-amber-600{% else %}text-stone-400{% endif %} text-xl"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-stone-800">{{ notificacion.message }}</p>
+            <p class="text-sm text-stone-500 mt-2">{{ notificacion.created_at|date:"d/m/Y H:i" }}</p>
+          </div>
+          {% if not notificacion.is_read %}
+          <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 p-12 text-center">
+      <div class="text-6xl mb-4">🔔</div>
+      <h3 class="text-xl font-bold text-stone-800 mb-2">No hay notificaciones</h3>
+      <p class="text-stone-600">Cuando tengas nuevas notificaciones, aparecerán aquí</p>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

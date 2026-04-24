@@ -1,0 +1,79 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<table role="presentation" style="width: 100%;">
+    <tr>
+        <td>
+            {% if status == 'accepted' %}
+            <h2 style="margin: 0 0 20px 0; color: #15803d; font-size: 24px;">
+                ✅ Tu proyecto ha sido aceptado
+            </h2>
+            {% elif status == 'rejected' %}
+            <h2 style="margin: 0 0 20px 0; color: #dc2626; font-size: 24px;">
+                ❌ Actualización de tu solicitud
+            </h2>
+            {% elif status == 'completed' %}
+            <h2 style="margin: 0 0 20px 0; color: #1c1917; font-size: 24px;">
+                🎉 ¡Proyecto completado!
+            </h2>
+            {% endif %}
+
+            <p style="margin: 0 0 15px 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Hola <strong>{{ user.full_name }}</strong>, {{ status_message }}.
+            </p>
+
+            <div style="background-color: #f5f5f4; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                <h3 style="margin: 0 0 15px 0; color: #1c1917; font-size: 18px;">
+                    📋 Detalles del proyecto
+                </h3>
+                <table role="presentation" style="width: 100%;">
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px; width: 120px;"><strong>Título:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ solicitud.title }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Carpintero:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ carpenter.user.full_name }}</td>
+                    </tr>
+                    {% if solicitud.budget %}
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Presupuesto:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">${{ solicitud.budget }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if solicitud.deadline %}
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Fecha límite:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ solicitud.deadline|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            {% if solicitud.response_message %}
+            <div style="background-color: #fef3c7; border-radius: 8px; padding: 15px; margin: 20px 0; border-left: 4px solid #d97706;">
+                <p style="margin: 0; color: #44403c; font-size: 14px;">
+                    <strong>Mensaje del carpintero:</strong><br>
+                    {{ solicitud.response_message }}
+                </p>
+            </div>
+            {% endif %}
+
+            <p style="margin: 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Puedes ver más detalles en tu panel de usuario.
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block button %}
+<tr>
+    <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <a href="{{ site_url }}/usuarios/mis-solicitudes/"
+           style="display: inline-block; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.4);">
+            Ver mis solicitudes
+        </a>
+    </td>
+</tr>
+{% endblock %}

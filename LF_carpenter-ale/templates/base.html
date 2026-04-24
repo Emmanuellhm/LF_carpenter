@@ -1,0 +1,254 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LF Carpinter — Carpintería artesanal de alta calidad. Encuentra al carpintero ideal para tu proyecto.">
+  <title>{% block title %}LF Carpinter{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --wood-dark: #1a0f0a;
+      --wood: #3d2417;
+      --caramel: #c2813d;
+      --cream: #faf6f1;
+      --sand: #e8ddd0;
+    }
+    .font-display { font-family: 'DM Serif Display', serif; }
+    .font-body { font-family: 'Outfit', sans-serif; }
+
+    /* Glass panel */
+    .glass-panel { background: rgba(255,255,255,0.82); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.35); }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Stagger children */
+    .stagger > *:nth-child(1) { transition-delay: 0.05s; }
+    .stagger > *:nth-child(2) { transition-delay: 0.12s; }
+    .stagger > *:nth-child(3) { transition-delay: 0.19s; }
+    .stagger > *:nth-child(4) { transition-delay: 0.26s; }
+    .stagger > *:nth-child(5) { transition-delay: 0.33s; }
+    .stagger > *:nth-child(6) { transition-delay: 0.40s; }
+
+    /* Hover lift */
+    .hover-lift { transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease; }
+    .hover-lift:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(26,15,10,0.12); }
+
+    /* Grain overlay */
+    .grain::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.025; z-index: 9999; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+
+    /* Fade in up animation */
+    .fade-in-up { animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Nav link underline animation */
+    .nav-link { position: relative; }
+    .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background: var(--caramel); transition: width 0.3s ease; }
+    .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+  </style>
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="grain font-body min-h-screen flex flex-col" style="background-color: var(--cream); color: var(--wood-dark);">
+
+<!-- Header -->
+<header class="bg-white/90 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-stone-200/50">
+  <div class="container mx-auto px-6 py-3">
+    <div class="flex justify-between items-center md:grid md:grid-cols-3">
+      <!-- Logo -->
+      <div class="flex items-center justify-self-start">
+        <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+          <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-14 w-auto group-hover:scale-105 transition-transform">
+          <span class="hidden lg:block font-display text-xl" style="color: var(--wood);">LF Carpinter</span>
+        </a>
+      </div>
+
+      <!-- Navigation Links -->
+      <div class="hidden md:flex justify-center justify-self-center">
+        <div class="flex space-x-8 font-body text-sm tracking-wide">
+          <a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" style="color: var(--wood);">Inicio</a>
+          <a href="{% url 'sobre_nosotros' %}" class="nav-link {% if request.resolver_match.url_name == 'sobre_nosotros' %}active{% endif %}" style="color: var(--wood);">Nosotros</a>
+          <a href="{% url 'contactanos' %}" class="nav-link {% if request.resolver_match.url_name == 'contactanos' %}active{% endif %}" style="color: var(--wood);">Contacto</a>
+          <a href="{% url 'faq' %}" class="nav-link {% if request.resolver_match.url_name == 'faq' %}active{% endif %}" style="color: var(--wood);">FAQ</a>
+          {% if user.is_authenticated and user.role == 'user' %}
+          <a href="{% url 'usuarios:ver_carpinteros' %}" class="nav-link" style="color: var(--wood);">Carpinteros</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex items-center justify-self-end gap-3">
+        {% if user.is_authenticated %}
+          <div class="flex items-center gap-3">
+            <span class="font-body font-medium hidden md:inline text-sm" style="color: var(--wood);">Hola, {{ user.full_name }}</span>
+
+            {% if user.role == 'admin' %}
+              <a href="{% url 'admin_dashboard' %}" class="font-body text-white px-5 py-2 rounded-lg transition shadow-md text-sm hover:opacity-90" style="background: var(--wood);">
+                Panel Admin
+              </a>
+            {% elif user.role == 'carpenter' %}
+              <a href="{% url 'carpinteros:panel' %}" class="font-body text-white px-5 py-2 rounded-lg transition shadow-md text-sm hover:opacity-90" style="background: var(--caramel);">
+                Mi Panel
+              </a>
+            {% else %}
+              <a href="{% url 'usuarios:panel' %}" class="font-body text-white px-5 py-2 rounded-lg transition shadow-md text-sm hover:opacity-90" style="background: var(--caramel);">
+                Mi Panel
+              </a>
+            {% endif %}
+
+            <a href="{% url 'logout' %}" class="text-stone-500 hover:text-red-500 transition text-sm">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </div>
+        {% else %}
+          <a href="{% url 'login' %}" class="font-body font-medium text-sm hover:opacity-70 transition" style="color: var(--wood);">
+            Iniciar sesión
+          </a>
+
+          <div class="relative" id="dropdown-registrar">
+            <button onclick="toggleDropdown()"
+                    class="font-body text-white px-5 py-2 rounded-lg transition shadow-md text-sm flex items-center gap-2 hover:opacity-90" style="background: var(--caramel);">
+              Registrar
+              <i class="fas fa-chevron-down text-xs"></i>
+            </button>
+            <div id="dropdown-menu"
+                 class="hidden absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-2xl border border-stone-100 overflow-hidden z-50">
+              <a href="{% url 'registro_usuario' %}"
+                 class="block px-5 py-3 text-stone-700 hover:bg-stone-50 transition flex items-center gap-3 font-body text-sm">
+                <img src="{% static 'img/nueva-cuenta.png' %}" class="w-5 h-5">
+                <span class="font-medium">Usuario</span>
+              </a>
+              <a href="{% url 'registro_carpintero' %}"
+                 class="block px-5 py-3 text-stone-700 hover:bg-stone-50 transition flex items-center gap-3 border-t border-stone-100 font-body text-sm">
+                <img src="{% static 'img/herramienta-de-martillo.png' %}" class="w-5 h-5">
+                <span class="font-medium">Carpintero</span>
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Messages -->
+{% if messages %}
+<div class="container mx-auto px-6 mt-4">
+  {% for message in messages %}
+  <div class="mb-2 p-4 rounded-xl font-body text-sm {% if message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% elif message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% elif message.tags == 'warning' %}bg-yellow-50 text-yellow-800 border border-yellow-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+    {{ message }}
+  </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<!-- Main Content -->
+<main class="flex-grow">
+  {% block content %}{% endblock %}
+</main>
+
+<!-- Footer -->
+{% block footer %}
+<footer style="background: var(--wood-dark);" class="text-stone-400 mt-auto">
+  <div class="container mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-3 mb-5">
+          <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-12 w-12">
+          <span class="font-display text-xl text-white">LF Carpinter</span>
+        </div>
+        <p class="text-sm leading-relaxed font-body">Creando muebles con alma. Calidad, tradición e innovación en cada proyecto de carpintería artesanal.</p>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-body font-semibold text-white mb-4 uppercase tracking-wider">Navegación</h4>
+        <ul class="space-y-2 text-sm font-body">
+          <li><a href="{% url 'home' %}" class="hover:text-white transition">Inicio</a></li>
+          <li><a href="{% url 'sobre_nosotros' %}" class="hover:text-white transition">Sobre Nosotros</a></li>
+          <li><a href="{% url 'contactanos' %}" class="hover:text-white transition">Contacto</a></li>
+          <li><a href="{% url 'faq' %}" class="hover:text-white transition">Preguntas Frecuentes</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-body font-semibold text-white mb-4 uppercase tracking-wider">Legal</h4>
+        <ul class="space-y-2 text-sm font-body">
+          <li><a href="{% url 'terminos' %}" class="hover:text-white transition">Términos y Condiciones</a></li>
+          <li><a href="{% url 'login' %}" class="hover:text-white transition">Iniciar Sesión</a></li>
+          <li><a href="{% url 'registro_usuario' %}" class="hover:text-white transition">Registrarse</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-sm font-body font-semibold text-white mb-4 uppercase tracking-wider">Contacto</h4>
+        <div class="space-y-3 text-sm font-body">
+          <div class="flex items-start gap-3">
+            <i class="fas fa-map-marker-alt mt-0.5" style="color: var(--caramel);"></i>
+            <span>Taller LF Carpinter, Localidad</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-phone mt-0.5" style="color: var(--caramel);"></i>
+            <span>+57 311 80 20 103</span>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-envelope mt-0.5" style="color: var(--caramel);"></i>
+            <span>info@lfcarpinter.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-stone-700/50 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-xs font-body text-stone-500">&copy; {% now "Y" %} LF Carpintería. Todos los derechos reservados.</p>
+      <div class="flex gap-4">
+        <a href="#" class="w-9 h-9 rounded-full border border-stone-600 flex items-center justify-center hover:border-white hover:text-white transition text-stone-500">
+          <i class="fab fa-facebook-f text-xs"></i>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full border border-stone-600 flex items-center justify-center hover:border-white hover:text-white transition text-stone-500">
+          <i class="fab fa-instagram text-xs"></i>
+        </a>
+        <a href="#" class="w-9 h-9 rounded-full border border-stone-600 flex items-center justify-center hover:border-white hover:text-white transition text-stone-500">
+          <i class="fab fa-whatsapp text-xs"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+
+<script>
+  // Dropdown
+  function toggleDropdown() {
+    document.getElementById('dropdown-menu').classList.toggle('hidden');
+  }
+  document.addEventListener('click', function(e) {
+    const d = document.getElementById('dropdown-registrar');
+    const m = document.getElementById('dropdown-menu');
+    if (d && !d.contains(e.target)) m.classList.add('hidden');
+  });
+
+  // Scroll Reveal (IntersectionObserver)
+  document.addEventListener('DOMContentLoaded', function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          // Also reveal stagger children
+          entry.target.querySelectorAll('.reveal').forEach(child => child.classList.add('visible'));
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  });
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

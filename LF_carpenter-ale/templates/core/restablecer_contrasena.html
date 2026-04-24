@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Restablecer Contraseña - LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center py-12 px-4">
+    <div class="max-w-md w-full">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
+            {% if validlink %}
+            <div class="text-center mb-8">
+                <div class="mx-auto w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H5v-2H3v-2h1.586l.707-.707A5.996 5.996 0 0116 11a6 6 0 016 6z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-stone-800 mb-2">Crear nueva contraseña</h1>
+                <p class="text-stone-600">Ingresa tu nueva contraseña para recuperar el acceso a tu cuenta.</p>
+            </div>
+
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+                    {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <div>
+                    <label for="{{ form.new_password1.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-2">
+                        Nueva contraseña
+                    </label>
+                    {{ form.new_password1 }}
+                    {% if form.new_password1.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.new_password1.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ form.new_password2.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-2">
+                        Confirmar nueva contraseña
+                    </label>
+                    {{ form.new_password2 }}
+                    {% if form.new_password2.errors %}
+                    <p class="mt-1 text-sm text-red-600">{{ form.new_password2.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <button type="submit"
+                        class="w-full bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 px-4 rounded-lg font-medium hover:from-amber-700 hover:to-amber-800 transition shadow-md">
+                    Restablecer contraseña
+                </button>
+            </form>
+
+            {% else %}
+            <div class="text-center">
+                <div class="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-4">
+                    <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <h1 class="text-2xl font-bold text-stone-800 mb-2">Enlace inválido</h1>
+                <p class="text-stone-600 mb-6">
+                    El enlace para restablecer tu contraseña es inválido o ha expirado.
+                </p>
+                <a href="{% url 'recuperar_contrasena' %}"
+                   class="inline-block bg-gradient-to-r from-amber-600 to-amber-700 text-white py-3 px-6 rounded-lg font-medium hover:from-amber-700 hover:to-amber-800 transition shadow-md">
+                    Solicitar nuevo enlace
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <p class="text-center mt-6 text-stone-600">
+            <a href="{% url 'login' %}" class="text-amber-600 hover:text-amber-700 font-medium">
+                ← Volver al inicio de sesión
+            </a>
+        </p>
+    </div>
+</div>
+{% endblock %}

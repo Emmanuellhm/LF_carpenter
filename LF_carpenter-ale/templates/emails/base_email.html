@@ -1,0 +1,65 @@
+{% autoescape off %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title }}{% endblock %}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fef3c7;">
+    <table role="presentation" style="width: 100%; max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; margin-top: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+
+        <!-- Header -->
+        <tr>
+            <td style="background: linear-gradient(135deg, #92400e 0%, #78350f 100%); padding: 30px; text-align: center;">
+                <table role="presentation" style="width: 100%;">
+                    <tr>
+                        <td style="text-align: center;">
+                            <h1 style="margin: 0; color: #fef3c7; font-size: 28px; font-weight: 700; letter-spacing: 1px;">
+                                {{ site_name }}
+                            </h1>
+                            <p style="margin: 10px 0 0 0; color: #fcd34d; font-size: 14px;">
+                                Artesanía en madera con pasión
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+
+        <!-- Content -->
+        <tr>
+            <td style="padding: 40px 30px;">
+                {% block content %}
+                {% endblock %}
+            </td>
+        </tr>
+
+        <!-- Button -->
+        {% block button %}
+        {% endblock %}
+
+        <!-- Footer -->
+        <tr>
+            <td style="background-color: #1c1917; padding: 30px; text-align: center;">
+                <p style="margin: 0 0 15px 0; color: #fef3c7; font-size: 14px;">
+                    <strong>LF Carpinter</strong><br>
+                    Taller de Carpintería Profesional
+                </p>
+                <p style="margin: 0; color: #a8a29e; font-size: 12px;">
+                    Este correo fue enviado a {{ user.email }}<br>
+                    {% if site_url %}
+                    <a href="{{ site_url }}" style="color: #f59e0b; text-decoration: none;">Visitar sitio web</a>
+                    {% endif %}
+                </p>
+                <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #44403c;">
+                    <p style="margin: 0; color: #78716c; font-size: 11px;">
+                        © {% now "Y" %} LF Carpinter. Todos los derechos reservados.
+                    </p>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+{% endautoescape %}

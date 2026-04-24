@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ carpintero.user.full_name }} | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] py-12 px-4 sm:px-6 lg:px-8" style="background: var(--cream);">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header del perfil -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 reveal" style="border: 1px solid var(--sand);">
+      <div class="h-32" style="background: linear-gradient(135deg, var(--wood-dark), var(--wood));"></div>
+      <div class="px-8 pb-8">
+        <div class="relative">
+          <!-- Avatar overlapping the banner -->
+          <div class="absolute -top-16 left-0 w-32 h-32 rounded-full bg-white p-2 shadow-lg flex-shrink-0">
+            {% if carpintero.hoja_vida and carpintero.hoja_vida.url|slice:"-4:"|lower in ".jpg .png .gif jpeg" %}
+            <img src="{{ carpintero.hoja_vida.url }}" alt="Avatar" class="w-full h-full object-cover rounded-full">
+            {% else %}
+            <div class="w-full h-full rounded-full flex items-center justify-center font-display text-4xl text-white shadow-inner" style="background: linear-gradient(135deg, var(--caramel), var(--wood));">
+              {{ carpintero.user.full_name|slice:":1" }}
+            </div>
+            {% endif %}
+          </div>
+          
+          <!-- Content next to/below avatar -->
+          <div class="pt-20 md:pt-4 md:pl-40 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+            <div class="flex-1">
+              <div class="flex flex-wrap items-center gap-3 mb-2">
+                <h1 class="font-display text-3xl" style="color: var(--wood-dark);">{{ carpintero.user.full_name }}</h1>
+                {% if carpintero.is_verified %}
+                <span class="bg-green-50 text-green-700 text-xs px-3 py-1 rounded-full flex items-center gap-1 font-body shadow-sm" style="border: 1px solid rgba(22, 163, 74, 0.2);">
+                  <i class="fas fa-check-circle"></i> Verificado
+                </span>
+                {% endif %}
+              </div>
+              <p class="font-body font-medium text-lg mb-2" style="color: var(--caramel);">{{ carpintero.specialties }}</p>
+              <div class="flex items-center gap-4 font-body text-stone-500 text-sm">
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-briefcase" style="color: var(--caramel);"></i> {{ carpintero.experience_years }} años de experiencia
+                </span>
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-map-marker-alt" style="color: var(--caramel);"></i> {{ carpintero.user.city|default:"No especificada" }}
+                </span>
+              </div>
+            </div>
+            <div class="flex-shrink-0 mt-4 md:mt-0">
+              <a href="{% url 'proyectos:solicitar' carpintero.id %}"
+                 class="font-body font-medium text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-2 hover:shadow-xl hover:-translate-y-0.5 transition" style="background: linear-gradient(135deg, var(--caramel), var(--wood));">
+                <i class="fas fa-paper-plane"></i> Solicitar Proyecto
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Información principal -->
+      <div class="lg:col-span-2 space-y-8">
+        <!-- Descripción -->
+        <div class="bg-white rounded-2xl shadow-md p-6 reveal" style="border: 1px solid var(--sand);">
+          <h2 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Sobre mí</h2>
+          <p class="font-body text-stone-600 leading-relaxed">{{ carpintero.description|default:"Sin descripción disponible" }}</p>
+          {% if carpintero.portfolio_url %}
+          <a href="{{ carpintero.portfolio_url }}" target="_blank" class="inline-flex items-center gap-2 font-body text-sm mt-4 hover:underline" style="color: var(--caramel);">
+            <i class="fas fa-external-link-alt"></i> Ver portafolio externo
+          </a>
+          {% endif %}
+        </div>
+
+        <!-- Portafolio -->
+        <div class="bg-white rounded-2xl shadow-md p-6 reveal" style="border: 1px solid var(--sand);">
+          <h2 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Proyectos del Portafolio</h2>
+          {% if portafolio %}
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for proyecto in portafolio %}
+            <div class="rounded-xl overflow-hidden hover-lift" style="border: 1px solid var(--sand);">
+              {% if proyecto.image %}
+              <img src="{{ proyecto.image.url }}" alt="{{ proyecto.title }}" class="w-full h-40 object-cover">
+              {% else %}
+              <div class="w-full h-40 flex items-center justify-center" style="background: var(--sand);">
+                <i class="fas fa-image text-4xl text-stone-300"></i>
+              </div>
+              {% endif %}
+              <div class="p-4">
+                <h3 class="font-display text-base" style="color: var(--wood-dark);">{{ proyecto.title }}</h3>
+                <p class="font-body text-stone-500 text-sm">{{ proyecto.description|truncatewords:15 }}</p>
+                {% if proyecto.price %}
+                <p class="font-body font-bold mt-2" style="color: var(--caramel);">${{ proyecto.price }}</p>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <p class="font-body text-stone-400 text-center py-8">Este carpintero aún no tiene proyectos.</p>
+          {% endif %}
+        </div>
+
+        <!-- Reseñas -->
+        <div class="mt-8 reveal">
+          <h2 class="font-display text-2xl mb-8 pb-4" style="color: var(--wood-dark); border-bottom: 2px solid var(--sand);">
+            Reseñas de Clientes
+          </h2>
+          
+          {% if puede_calificar %}
+          <div class="glass-panel rounded-2xl p-8 mb-10 shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-2 h-full" style="background: var(--caramel);"></div>
+            <h3 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Deja tu Reseña</h3>
+            <p class="font-body text-stone-500 mb-6 text-sm">Tu opinión ayuda a mantener la calidad de nuestra comunidad.</p>
+            
+            <form action="{% url 'usuarios:dejar_resena' carpintero.id %}" method="POST" class="space-y-6">
+              {% csrf_token %}
+              <div>
+                <label class="block text-xs font-body font-medium uppercase tracking-wider mb-3" style="color: var(--wood);">Tu Calificación</label>
+                <div class="flex items-center gap-2 text-3xl" id="star-rating">
+                  {% for i in "12345" %}
+                  <button type="button" data-rating="{{ forloop.counter }}" class="star-btn text-stone-300 hover:text-amber-400 transition-colors duration-200 focus:outline-none">
+                    <i class="fas fa-star"></i>
+                  </button>
+                  {% endfor %}
+                </div>
+                <input type="hidden" name="rating" id="rating-input" required>
+              </div>
+              <div>
+                <label for="comment" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Comentario (Opcional)</label>
+                <textarea name="comment" id="comment" rows="3" class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2 bg-white/50" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);" placeholder="Comparte tu experiencia..."></textarea>
+              </div>
+              <button type="submit" class="font-body font-medium text-white px-8 py-3 rounded-xl shadow-lg transition hover:opacity-90 hover:-translate-y-0.5 transform" style="background: var(--wood-dark);">
+                Publicar Reseña
+              </button>
+            </form>
+          </div>
+          {% endif %}
+          
+          {% if reviews %}
+          <div class="space-y-6">
+            {% for review in reviews %}
+            <div class="bg-white rounded-2xl p-6 shadow-md relative group hover:shadow-lg transition-all duration-300" style="border: 1px solid var(--sand);">
+              <i class="fas fa-quote-right absolute top-6 right-6 text-4xl opacity-10 group-hover:opacity-20 transition-opacity" style="color: var(--caramel);"></i>
+              <div class="flex items-center gap-4 mb-4 relative z-10">
+                <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-display text-xl font-bold shadow-md" style="background: linear-gradient(135deg, var(--caramel), var(--wood));">
+                  {{ review.user.full_name|slice:":1" }}
+                </div>
+                <div>
+                  <h4 class="font-body font-bold text-lg" style="color: var(--wood-dark);">{{ review.user.full_name }}</h4>
+                  <div class="flex items-center gap-2">
+                    <div class="flex text-sm">
+                      {% for i in "12345" %}
+                        {% if review.rating >= forloop.counter %}
+                          <i class="fas fa-star" style="color: var(--caramel);"></i>
+                        {% else %}
+                          <i class="fas fa-star text-stone-200"></i>
+                        {% endif %}
+                      {% endfor %}
+                    </div>
+                    <span class="text-xs text-stone-400 font-body">{{ review.created_at|date:"d M Y" }}</span>
+                  </div>
+                </div>
+              </div>
+              {% if review.comment %}
+              <p class="font-body text-stone-600 leading-relaxed relative z-10 italic">"{{ review.comment }}"</p>
+              {% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          
+          {% if reviews.has_other_pages %}
+          <div class="mt-8 flex justify-center">
+            <nav class="flex gap-2 font-body">
+              {% if reviews.has_previous %}
+              <a href="?reviews_page={{ reviews.previous_page_number }}" class="px-4 py-2 rounded-lg transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--caramel);">Anterior</a>
+              {% endif %}
+              <span class="px-4 py-2 rounded-lg text-white" style="background: var(--wood-dark);">{{ reviews.number }} / {{ reviews.paginator.num_pages }}</span>
+              {% if reviews.has_next %}
+              <a href="?reviews_page={{ reviews.next_page_number }}" class="px-4 py-2 rounded-lg transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--caramel);">Siguiente</a>
+              {% endif %}
+            </nav>
+          </div>
+          {% endif %}
+          
+          {% else %}
+          <div class="text-center py-12 glass-panel rounded-2xl" style="border: 2px dashed var(--sand);">
+            <i class="fas fa-star-half-alt text-5xl mb-4" style="color: var(--sand);"></i>
+            <h3 class="font-display text-xl mb-2" style="color: var(--wood-dark);">Aún no hay reseñas</h3>
+            <p class="font-body text-stone-400 text-sm">Este carpintero está esperando su primera calificación.</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <div class="bg-white rounded-2xl shadow-md p-6 reveal" style="border: 1px solid var(--sand);">
+          <h2 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Estadísticas</h2>
+          <div class="space-y-4 font-body text-sm">
+            <div class="flex justify-between items-center">
+              <span class="text-stone-500">Proyectos</span>
+              <span class="font-bold" style="color: var(--wood-dark);">{{ portafolio.count }}</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-stone-500">Experiencia</span>
+              <span class="font-bold" style="color: var(--wood-dark);">{{ carpintero.experience_years }} años</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span class="text-stone-500">Reseñas</span>
+              <span class="font-bold" style="color: var(--wood-dark);">{{ reviews.paginator.count }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const starBtns = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('rating-input');
+    if (starBtns.length > 0) {
+      starBtns.forEach(btn => {
+        btn.addEventListener('mouseenter', function() { highlightStars(this.getAttribute('data-rating')); });
+        document.getElementById('star-rating').addEventListener('mouseleave', function() { highlightStars(ratingInput.value || 0); });
+        btn.addEventListener('click', function() {
+          const r = this.getAttribute('data-rating');
+          ratingInput.value = r;
+          highlightStars(r);
+          this.style.transform = 'scale(1.2)';
+          setTimeout(() => { this.style.transform = 'scale(1)'; }, 150);
+        });
+      });
+      function highlightStars(rating) {
+        starBtns.forEach(btn => {
+          if (btn.getAttribute('data-rating') <= rating) {
+            btn.classList.remove('text-stone-300'); btn.classList.add('text-amber-500');
+          } else {
+            btn.classList.remove('text-amber-500'); btn.classList.add('text-stone-300');
+          }
+        });
+      }
+    }
+  });
+</script>
+{% endblock %}

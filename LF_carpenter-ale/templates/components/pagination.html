@@ -1,0 +1,113 @@
+{% load pagination_utils %}
+
+{% if page_obj.has_other_pages %}
+<nav class="flex items-center justify-between px-4 py-3 bg-white border-t border-stone-200 sm:px-6" aria-label="Paginación">
+    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+        <div>
+            <p class="text-sm text-stone-600">
+                Mostrando <span class="font-medium text-stone-800">{{ page_obj.start_index }}</span>
+                a <span class="font-medium text-stone-800">{{ page_obj.end_index }}</span>
+                de <span class="font-medium text-stone-800">{{ page_obj.paginator.count }}</span> resultados
+            </p>
+        </div>
+        <div>
+            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Paginación">
+                <!-- Primera página -->
+                {% if page_obj.has_previous %}
+                <a href="?page=1{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                   class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition">
+                    <span class="sr-only">Primera</span>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"/>
+                    </svg>
+                </a>
+                <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                   class="relative inline-flex items-center px-2 py-2 border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition">
+                    <span class="sr-only">Anterior</span>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                {% else %}
+                <span class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-stone-200 bg-stone-50 text-sm font-medium text-stone-400 cursor-not-allowed">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </span>
+                {% endif %}
+
+                <!-- Números de página -->
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_obj.number == page_num %}
+                    <span class="relative inline-flex items-center px-4 py-2 border border-amber-500 bg-amber-50 text-sm font-medium text-amber-700">
+                        {{ page_num }}
+                    </span>
+                    {% elif page_num == '...' %}
+                    <span class="relative inline-flex items-center px-4 py-2 border border-stone-300 bg-white text-sm font-medium text-stone-500">
+                        ...
+                    </span>
+                    {% else %}
+                    <a href="?page={{ page_num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                       class="relative inline-flex items-center px-4 py-2 border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition">
+                        {{ page_num }}
+                    </a>
+                    {% endif %}
+                {% endfor %}
+
+                <!-- Página siguiente y última -->
+                {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                   class="relative inline-flex items-center px-2 py-2 border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition">
+                    <span class="sr-only">Siguiente</span>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <a href="?page={{ page_obj.paginator.num_pages }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-amber-50 hover:text-amber-600 transition">
+                    <span class="sr-only">Última</span>
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                {% else %}
+                <span class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-stone-200 bg-stone-50 text-sm font-medium text-stone-400 cursor-not-allowed">
+                    <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+                    </svg>
+                </span>
+                {% endif %}
+            </nav>
+        </div>
+    </div>
+
+    <!-- Versión móvil -->
+    <div class="flex flex-1 justify-between sm:hidden">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+           class="relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-amber-50 transition">
+            Anterior
+        </a>
+        {% else %}
+        <span class="relative inline-flex items-center px-4 py-2 border border-stone-200 text-sm font-medium rounded-md text-stone-400 bg-stone-50 cursor-not-allowed">
+            Anterior
+        </span>
+        {% endif %}
+
+        <span class="text-sm text-stone-600 flex items-center">
+            {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+           class="relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-amber-50 transition">
+            Siguiente
+        </a>
+        {% else %}
+        <span class="relative inline-flex items-center px-4 py-2 border border-stone-200 text-sm font-medium rounded-md text-stone-400 bg-stone-50 cursor-not-allowed">
+            Siguiente
+        </span>
+        {% endif %}
+    </div>
+</nav>
+{% endif %}

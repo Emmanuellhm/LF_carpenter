@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Términos y Condiciones | LF Carpinter{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-16 px-6" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+  <div class="container mx-auto text-center">
+    <h1 class="font-display text-5xl text-white mb-4 reveal">Términos y Condiciones</h1>
+    <p class="font-body text-stone-300 reveal">Última actualización: {% now "d \d\e F \d\e Y" %}</p>
+  </div>
+</section>
+
+<!-- Content -->
+<section class="py-16 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-3xl">
+    <div class="bg-white rounded-2xl shadow-lg p-10 md:p-14 reveal" style="border: 1px solid var(--sand);">
+      
+      <!-- Navegación interna -->
+      <nav class="mb-10 p-5 rounded-xl" style="background: var(--sand);">
+        <h3 class="font-body text-sm font-semibold uppercase tracking-wider mb-3" style="color: var(--wood);">Contenido</h3>
+        <ol class="font-body text-sm space-y-2" style="color: var(--caramel);">
+          <li><a href="#s1" class="hover:underline">1. Aceptación de los términos</a></li>
+          <li><a href="#s2" class="hover:underline">2. Uso de la plataforma</a></li>
+          <li><a href="#s3" class="hover:underline">3. Registro de cuentas</a></li>
+          <li><a href="#s4" class="hover:underline">4. Responsabilidades</a></li>
+          <li><a href="#s5" class="hover:underline">5. Propiedad intelectual</a></li>
+          <li><a href="#s6" class="hover:underline">6. Privacidad</a></li>
+          <li><a href="#s7" class="hover:underline">7. Modificaciones</a></li>
+        </ol>
+      </nav>
+
+      <div class="prose-custom space-y-10 font-body text-stone-600 leading-relaxed text-sm">
+        <div id="s1">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">1. Aceptación de los Términos</h2>
+          <p>Al acceder y utilizar la plataforma LF Carpinter, usted acepta estar sujeto a estos Términos y Condiciones de uso. Si no está de acuerdo con alguno de estos términos, le solicitamos no utilizar nuestros servicios.</p>
+        </div>
+
+        <div id="s2">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">2. Uso de la Plataforma</h2>
+          <p class="mb-3">LF Carpinter es una plataforma de intermediación que conecta a carpinteros profesionales con clientes potenciales. Nuestros servicios incluyen:</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li>Directorio de carpinteros verificados.</li>
+            <li>Sistema de solicitudes de proyectos.</li>
+            <li>Portafolios de trabajos realizados.</li>
+            <li>Sistema de calificaciones y reseñas.</li>
+          </ul>
+        </div>
+
+        <div id="s3">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">3. Registro de Cuentas</h2>
+          <p class="mb-3">Para utilizar ciertas funciones de la plataforma, es necesario crear una cuenta proporcionando información veraz y actualizada. Existen dos tipos de cuentas:</p>
+          <ul class="list-disc pl-5 space-y-1">
+            <li><strong>Cliente:</strong> Registro libre con acceso inmediato a la búsqueda de carpinteros.</li>
+            <li><strong>Carpintero:</strong> Registro sujeto a aprobación administrativa para garantizar la calidad del servicio.</li>
+          </ul>
+        </div>
+
+        <div id="s4">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">4. Responsabilidades</h2>
+          <p>LF Carpinter actúa exclusivamente como intermediario. No somos responsables de la calidad, tiempos de entrega o resultados de los trabajos realizados por los carpinteros registrados. Los acuerdos comerciales entre clientes y carpinteros son responsabilidad exclusiva de las partes involucradas.</p>
+        </div>
+
+        <div id="s5">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">5. Propiedad Intelectual</h2>
+          <p>Todo el contenido de la plataforma, incluyendo logos, diseños e interfaces, es propiedad de LF Carpinter. Las imágenes de portafolio subidas por los carpinteros son propiedad de sus respectivos autores.</p>
+        </div>
+
+        <div id="s6">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">6. Privacidad</h2>
+          <p>Nos comprometemos a proteger la información personal de nuestros usuarios. Los datos recopilados se utilizan exclusivamente para el funcionamiento de la plataforma y no se comparten con terceros sin consentimiento expreso.</p>
+        </div>
+
+        <div id="s7">
+          <h2 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">7. Modificaciones</h2>
+          <p>LF Carpinter se reserva el derecho de modificar estos términos en cualquier momento. Los cambios serán notificados a través de la plataforma y entrarán en vigor a partir de su publicación.</p>
+        </div>
+      </div>
+
+      <div class="mt-12 pt-8 border-t text-center" style="border-color: var(--sand);">
+        <p class="font-body text-stone-400 text-sm">Si tienes dudas sobre estos términos, no dudes en <a href="{% url 'contactanos' %}" class="underline" style="color: var(--caramel);">contactarnos</a>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

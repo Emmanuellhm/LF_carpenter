@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4" style="background: var(--cream);">
+  <div class="max-w-4xl w-full grid md:grid-cols-2 rounded-2xl shadow-2xl overflow-hidden reveal">
+    
+    <!-- Left: Visual Panel -->
+    <div class="hidden md:flex flex-col justify-center p-12 relative overflow-hidden" style="background: linear-gradient(160deg, var(--wood-dark) 0%, var(--wood) 100%);">
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;%3E%3Cpath d=&quot;M0 40L40 0H20L0 20M40 40V20L20 40&quot;/%3E%3C/g%3E%3C/svg%3E');"></div>
+      </div>
+      <div class="relative z-10">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-16 w-16 mb-8">
+        <h2 class="font-display text-3xl text-white mb-4">Bienvenido de vuelta</h2>
+        <p class="font-body text-stone-400 leading-relaxed">Accede a tu cuenta para gestionar tus proyectos, revisar solicitudes y conectar con los mejores carpinteros artesanales.</p>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="bg-white p-10 md:p-12">
+      <div class="md:hidden text-center mb-8">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="mx-auto h-16 w-16 mb-4">
+        <h2 class="font-display text-2xl" style="color: var(--wood-dark);">Iniciar Sesión</h2>
+      </div>
+      <h2 class="hidden md:block font-display text-2xl mb-8" style="color: var(--wood-dark);">Iniciar Sesión</h2>
+
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-body text-sm">
+          {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+            Correo electrónico
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-envelope text-stone-400 text-sm"></i>
+            </div>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <p class="mt-1 text-xs text-red-500 font-body">{{ form.email.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div>
+          <label for="{{ form.password.id_for_label }}" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+            Contraseña
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-stone-400 text-sm"></i>
+            </div>
+            {{ form.password }}
+            {% if form.password.errors %}
+            <p class="mt-1 text-xs text-red-500 font-body">{{ form.password.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-stone-300 focus:ring-2" style="accent-color: var(--caramel);">
+            <label for="remember-me" class="ml-2 text-sm font-body text-stone-600">Recordarme</label>
+          </div>
+          <a href="{% url 'recuperar_contrasena' %}" class="font-body text-sm font-medium hover:underline" style="color: var(--caramel);">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <button type="submit" class="w-full font-body font-medium py-3.5 rounded-xl text-white transition shadow-lg hover:shadow-xl hover:opacity-90" style="background: var(--caramel);">
+          Iniciar Sesión
+        </button>
+
+        <div class="text-center pt-4 border-t" style="border-color: var(--sand);">
+          <p class="font-body text-stone-500 text-sm">
+            ¿No tienes cuenta?
+            <a href="{% url 'registro_usuario' %}" class="font-medium hover:underline" style="color: var(--caramel);">Regístrate</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+    inputs.forEach(input => {
+      input.classList.remove('form-control');
+      input.classList.add('w-full', 'pl-11', 'pr-4', 'py-3', 'border', 'rounded-xl', 'focus:ring-2', 'font-body', 'text-sm');
+      input.style.borderColor = '#e8ddd0';
+      input.style.setProperty('--tw-ring-color', '#c2813d');
+    });
+  });
+</script>
+{% endblock %}

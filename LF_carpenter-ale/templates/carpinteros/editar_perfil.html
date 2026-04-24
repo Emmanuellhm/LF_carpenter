@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil | LF Carpinter{% endblock %}
+
+{% block extra_css %}
+<style>
+  .upload-zone { border: 2px dashed var(--sand); transition: all 0.3s ease; }
+  .upload-zone:hover, .upload-zone.dragover { border-color: var(--caramel); background: rgba(194,129,61,0.03); }
+  .field-group:focus-within label { color: var(--caramel); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] py-12 px-4 sm:px-6 lg:px-8" style="background: var(--cream);">
+  <div class="max-w-3xl mx-auto">
+    
+    <div class="mb-10 reveal">
+      <a href="{% url 'carpinteros:panel' %}" class="inline-flex items-center gap-2 font-body text-sm text-stone-500 hover:opacity-70 transition mb-4">
+        <i class="fas fa-arrow-left"></i> Volver al panel
+      </a>
+      <h1 class="font-display text-4xl" style="color: var(--wood-dark);">Editar Perfil</h1>
+      <p class="font-body text-stone-500 mt-2">Actualiza tu información profesional para que los clientes te encuentren.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-8">
+      {% csrf_token %}
+
+      <!-- Datos personales -->
+      <div class="bg-white rounded-2xl shadow-lg p-8 reveal" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-3 mb-6 pb-4" style="border-bottom: 1px solid var(--sand);">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: rgba(194,129,61,0.1);">
+            <i class="fas fa-user" style="color: var(--caramel);"></i>
+          </div>
+          <h2 class="font-display text-xl" style="color: var(--wood-dark);">Datos Personales</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="field-group">
+            <label for="full_name" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Nombre Completo</label>
+            <input type="text" name="full_name" id="full_name" value="{{ request.user.full_name }}" 
+              class="w-full px-4 py-3 rounded-xl font-body text-sm focus:ring-2 transition" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div class="field-group">
+            <label for="phone" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Teléfono</label>
+            <input type="text" name="phone" id="phone" value="{{ request.user.phone }}" placeholder="+57 300 000 0000"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm focus:ring-2 transition" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div class="field-group md:col-span-2">
+            <label for="city" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Ciudad</label>
+            <input type="text" name="city" id="city" value="{{ request.user.city }}" placeholder="Ej. Bogotá"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm focus:ring-2 transition" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+        </div>
+      </div>
+
+      <!-- Info profesional -->
+      <div class="bg-white rounded-2xl shadow-lg p-8 reveal" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-3 mb-6 pb-4" style="border-bottom: 1px solid var(--sand);">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: rgba(194,129,61,0.1);">
+            <i class="fas fa-tools" style="color: var(--caramel);"></i>
+          </div>
+          <h2 class="font-display text-xl" style="color: var(--wood-dark);">Información Profesional</h2>
+        </div>
+        <div class="space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="field-group">
+              <label for="id_specialties" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Especialidades</label>
+              {{ form.specialties }}
+            </div>
+            <div class="field-group">
+              <label for="id_experience_years" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Años de Experiencia</label>
+              {{ form.experience_years }}
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="id_description" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Sobre Mí</label>
+            {{ form.description }}
+            <p class="text-xs text-stone-400 mt-2 font-body">Describe tu estilo de trabajo, los materiales que usas y lo que te diferencia.</p>
+          </div>
+          <div class="field-group">
+            <label for="id_portfolio_url" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">URL de Portafolio Externo</label>
+            {{ form.portfolio_url }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Foto -->
+      <div class="bg-white rounded-2xl shadow-lg p-8 reveal" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-3 mb-6 pb-4" style="border-bottom: 1px solid var(--sand);">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center" style="background: rgba(194,129,61,0.1);">
+            <i class="fas fa-camera" style="color: var(--caramel);"></i>
+          </div>
+          <h2 class="font-display text-xl" style="color: var(--wood-dark);">Foto / Hoja de Vida</h2>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 items-start">
+          <div class="w-32 h-32 rounded-2xl overflow-hidden shadow-md flex-shrink-0" style="border: 2px solid var(--sand);">
+            {% if perfil.hoja_vida %}
+            <img src="{{ perfil.hoja_vida.url }}" alt="Foto actual" class="w-full h-full object-cover" id="preview-img">
+            {% else %}
+            <div class="w-full h-full flex items-center justify-center" style="background: var(--sand);" id="preview-placeholder">
+              <i class="fas fa-user text-4xl text-stone-300"></i>
+            </div>
+            <img src="" alt="Vista previa" class="w-full h-full object-cover hidden" id="preview-img">
+            {% endif %}
+          </div>
+          <div class="flex-1">
+            <div class="upload-zone rounded-xl p-6 text-center" id="upload-zone">
+              <i class="fas fa-cloud-upload-alt text-3xl text-stone-400 mb-3"></i>
+              <p class="font-body font-medium text-stone-600 mb-1">Arrastra tu archivo aquí o haz clic</p>
+              <p class="font-body text-xs text-stone-400">JPG, PNG o PDF (máx 5MB)</p>
+              {{ form.hoja_vida }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-end pt-4 reveal">
+        <a href="{% url 'carpinteros:panel' %}" class="px-8 py-3 rounded-xl font-body font-medium text-center transition text-stone-600 hover:bg-stone-100" style="border: 1px solid var(--sand);">
+          Cancelar
+        </a>
+        <button type="submit" class="px-8 py-3 rounded-xl font-body font-medium text-white shadow-lg hover:-translate-y-0.5 transform transition flex items-center justify-center gap-2 hover:opacity-90" style="background: var(--wood-dark);">
+          <i class="fas fa-save"></i> Guardar Cambios
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const fileInput = document.getElementById('id_hoja_vida');
+  const previewImg = document.getElementById('preview-img');
+  const previewPlaceholder = document.getElementById('preview-placeholder');
+  if (fileInput) {
+    fileInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          if (previewImg) { previewImg.src = e.target.result; previewImg.classList.remove('hidden'); }
+          if (previewPlaceholder) { previewPlaceholder.classList.add('hidden'); }
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+  const uploadZone = document.getElementById('upload-zone');
+  if (uploadZone) {
+    ['dragenter','dragover'].forEach(evt => { uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.add('dragover'); }); });
+    ['dragleave','drop'].forEach(evt => { uploadZone.addEventListener(evt, e => { e.preventDefault(); uploadZone.classList.remove('dragover'); }); });
+    uploadZone.addEventListener('drop', function(e) { if (fileInput && e.dataTransfer.files.length) { fileInput.files = e.dataTransfer.files; fileInput.dispatchEvent(new Event('change')); } });
+  }
+});
+</script>
+{% endblock %}
+
+{% block footer %}{% endblock %}
