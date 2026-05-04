@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard Admin | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="flex min-h-[80vh]" style="background: var(--cream);">
+  <!-- Sidebar -->
+  <aside class="w-64 shadow-xl flex-shrink-0" style="background: var(--wood-dark);">
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col items-center py-8" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-display font-bold shadow-lg" style="background: linear-gradient(135deg, var(--caramel), var(--wood)); border: 3px solid var(--caramel);">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <span class="mt-3 font-body font-bold text-white text-center px-4">{{ user.full_name }}</span>
+        <span class="text-xs text-stone-500 font-body mt-1">Administrador</span>
+      </div>
+      <nav class="flex flex-col space-y-1 px-4 mt-6 flex-grow">
+        <a href="{% url 'admin_dashboard' %}" class="text-white rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3" style="background: rgba(194,129,61,0.2);">
+          <i class="fas fa-chart-bar w-5"></i> Dashboard
+        </a>
+        <a href="{% url 'admin:core_user_changelist' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-users w-5"></i> Gestionar Usuarios
+        </a>
+        <a href="{% url 'admin:carpinteros_carpintero_changelist' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-hammer w-5"></i> Gestionar Carpinteros
+          {% if carpinteros_pendientes.count > 0 %}
+          <span class="text-white text-xs px-2 py-0.5 rounded-full" style="background: var(--caramel);">{{ carpinteros_pendientes.count }}</span>
+          {% endif %}
+        </a>
+        <a href="{% url 'admin:proyectos_solicitudproyecto_changelist' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-file-signature w-5"></i> Solicitudes
+        </a>
+        <a href="{% url 'admin:carpinteros_portafolio_changelist' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-images w-5"></i> Portafolios
+        </a>
+        <a href="{% url 'admin:index' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-cogs w-5"></i> Admin Django
+        </a>
+      </nav>
+      <a href="{% url 'logout' %}"
+         class="text-center py-5 text-stone-600 hover:text-white cursor-pointer font-body text-sm flex items-center justify-center gap-2 transition" style="border-top: 1px solid rgba(255,255,255,0.1);">
+         <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-10">
+    <h1 class="font-display text-4xl mb-2" style="color: var(--wood-dark);">Panel de Control</h1>
+    <p class="font-body text-stone-500 mb-8">Visión general y gestión de la plataforma.</p>
+
+    <!-- KPIs -->
+    <div class="grid md:grid-cols-4 gap-6 mb-10">
+      <div class="glass-panel p-6 rounded-2xl shadow-md hover-lift relative overflow-hidden group" style="border: 1px solid var(--sand);">
+        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <i class="fas fa-users text-5xl" style="color: var(--wood);"></i>
+        </div>
+        <h3 class="font-body text-xs uppercase tracking-wider text-stone-500 mb-2">Total Usuarios</h3>
+        <p class="font-display text-3xl" style="color: var(--wood-dark);">{{ total_usuarios }}</p>
+        <p class="font-body text-xs text-stone-500 mt-2"><span class="font-bold" style="color: var(--caramel);">{{ clientes }}</span> clientes</p>
+      </div>
+
+      <div class="glass-panel p-6 rounded-2xl shadow-md hover-lift relative overflow-hidden group" style="border: 1px solid var(--sand);">
+        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <i class="fas fa-hammer text-5xl" style="color: var(--wood);"></i>
+        </div>
+        <h3 class="font-body text-xs uppercase tracking-wider text-stone-500 mb-2">Carpinteros</h3>
+        <p class="font-display text-3xl" style="color: var(--wood-dark);">{{ carpinteros_count }}</p>
+        <p class="font-body text-xs text-stone-500 mt-2"><span class="font-bold text-red-500">{{ carpinteros_pendientes.count }}</span> pendientes</p>
+      </div>
+
+      <div class="glass-panel p-6 rounded-2xl shadow-md hover-lift relative overflow-hidden group" style="border: 1px solid var(--sand);">
+        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <i class="fas fa-project-diagram text-5xl" style="color: var(--wood);"></i>
+        </div>
+        <h3 class="font-body text-xs uppercase tracking-wider text-stone-500 mb-2">Portafolios</h3>
+        <p class="font-display text-3xl" style="color: var(--wood-dark);">{{ total_proyectos }}</p>
+        <p class="font-body text-xs text-stone-500 mt-2">Trabajos subidos</p>
+      </div>
+
+      <div class="glass-panel p-6 rounded-2xl shadow-md hover-lift relative overflow-hidden group" style="border: 1px solid var(--sand);">
+        <div class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+          <i class="fas fa-file-contract text-5xl" style="color: var(--wood);"></i>
+        </div>
+        <h3 class="font-body text-xs uppercase tracking-wider text-stone-500 mb-2">Solicitudes</h3>
+        <p class="font-display text-3xl" style="color: var(--wood-dark);">{{ solicitudes_pendientes }}</p>
+        <p class="font-body text-xs text-stone-500 mt-2">Pendientes ({{ solicitudes_completadas }} completadas)</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Tablas de Carpinteros (Tabs) -->
+      <div class="lg:col-span-2">
+        <!-- Controles de Tabs -->
+        <div class="flex gap-4 mb-6 reveal" style="border-bottom: 2px solid var(--sand);">
+          <button onclick="switchTab('pendientes')" id="btn-pendientes" class="px-6 py-3 font-display text-xl transition-colors relative" style="color: var(--wood-dark);">
+            Pendientes
+            <span class="bg-red-100 text-red-700 ml-2 px-2 py-0.5 rounded-full text-xs font-body font-bold">{{ total_pendientes }}</span>
+            <div id="indicator-pendientes" class="absolute bottom-[-2px] left-0 w-full h-0.5" style="background-color: var(--caramel);"></div>
+          </button>
+          <button onclick="switchTab('activos')" id="btn-activos" class="px-6 py-3 font-display text-xl text-stone-400 transition-colors relative hover:text-stone-600">
+            Activos
+            <span class="bg-green-100 text-green-700 ml-2 px-2 py-0.5 rounded-full text-xs font-body font-bold">{{ total_activos }}</span>
+            <div id="indicator-activos" class="absolute bottom-[-2px] left-0 w-full h-0.5 hidden" style="background-color: var(--caramel);"></div>
+          </button>
+        </div>
+
+        <!-- Tabla Carpinteros Pendientes -->
+        <div id="tab-pendientes" class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8 reveal" style="border: 1px solid var(--sand);">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="font-body text-xs text-stone-500 uppercase tracking-wider" style="border-bottom: 1px solid var(--sand); background: var(--sand);">
+                  <th class="px-6 py-4 font-medium">Nombre</th>
+                  <th class="px-6 py-4 font-medium">Especialidad</th>
+                  <th class="px-6 py-4 font-medium">Experiencia</th>
+                  <th class="px-6 py-4 text-right font-medium">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="font-body text-sm">
+                {% for c in carpinteros_pendientes %}
+                <tr class="hover:bg-stone-50 transition" style="border-bottom: 1px solid var(--sand);">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background: var(--caramel);">
+                        {{ c.user.full_name|slice:":1" }}
+                      </div>
+                      <div>
+                        <p class="font-bold" style="color: var(--wood-dark);">{{ c.user.full_name }}</p>
+                        <p class="text-xs text-stone-400">{{ c.user.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-stone-600">{{ c.specialties }}</td>
+                  <td class="px-6 py-4 text-stone-600">{{ c.experience_years }} años</td>
+                  <td class="px-6 py-4 text-right">
+                    <form method="POST" action="{% url 'admin_dashboard' %}">
+                      {% csrf_token %}
+                      <input type="hidden" name="action" value="approve_carpenter">
+                      <input type="hidden" name="carpintero_id" value="{{ c.id }}">
+                      <button type="submit" class="bg-green-50 hover:bg-green-100 text-green-700 px-4 py-2 rounded-lg font-body text-xs font-medium transition">
+                        <i class="fas fa-check mr-1"></i> Aprobar
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="px-6 py-8 text-center text-stone-400 italic font-body">
+                    No hay carpinteros pendientes de aprobación.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- Paginación -->
+          {% if carpinteros_pendientes.has_other_pages %}
+          <div class="px-6 py-4 flex justify-between items-center font-body text-sm text-stone-500 bg-stone-50" style="border-top: 1px solid var(--sand);">
+            <div>
+              Mostrando página {{ carpinteros_pendientes.number }} de {{ carpinteros_pendientes.paginator.num_pages }}
+            </div>
+            <div class="flex gap-2">
+              {% if carpinteros_pendientes.has_previous %}
+              <a href="?page_pendientes={{ carpinteros_pendientes.previous_page_number }}&tab=pendientes" class="px-3 py-1 rounded-md bg-white hover:bg-stone-100 transition" style="border: 1px solid var(--sand);">
+                <i class="fas fa-chevron-left text-xs"></i> Anterior
+              </a>
+              {% endif %}
+              {% if carpinteros_pendientes.has_next %}
+              <a href="?page_pendientes={{ carpinteros_pendientes.next_page_number }}&tab=pendientes" class="px-3 py-1 rounded-md bg-white hover:bg-stone-100 transition" style="border: 1px solid var(--sand);">
+                Siguiente <i class="fas fa-chevron-right text-xs"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- Tabla Carpinteros Activos -->
+        <div id="tab-activos" class="bg-white rounded-2xl shadow-lg overflow-hidden reveal hidden" style="border: 1px solid var(--sand);">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="font-body text-xs text-stone-500 uppercase tracking-wider" style="border-bottom: 1px solid var(--sand); background: var(--sand);">
+                  <th class="px-6 py-4 font-medium">Nombre</th>
+                  <th class="px-6 py-4 font-medium">Especialidad</th>
+                  <th class="px-6 py-4 font-medium">Ciudad</th>
+                  <th class="px-6 py-4 font-medium text-center">Estado</th>
+                  <th class="px-6 py-4 text-right font-medium">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="font-body text-sm">
+                {% for c in carpinteros_activos %}
+                <tr class="hover:bg-stone-50 transition" style="border-bottom: 1px solid var(--sand);">
+                  <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-bold text-sm" style="background: var(--caramel);">
+                        {{ c.user.full_name|slice:":1" }}
+                      </div>
+                      <div>
+                        <p class="font-bold" style="color: var(--wood-dark);">{{ c.user.full_name }}</p>
+                        <p class="text-xs text-stone-400">{{ c.user.email }}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 text-stone-600">{{ c.specialties|default:"—" }}</td>
+                  <td class="px-6 py-4 text-stone-600">{{ c.user.city|default:"—" }}</td>
+                  <td class="px-6 py-4 text-center">
+                    {% if c.is_verified %}
+                    <span class="bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium"><i class="fas fa-check-circle mr-1"></i>Verificado</span>
+                    {% else %}
+                    <span class="bg-stone-100 text-stone-600 px-2 py-1 rounded text-xs font-medium">Regular</span>
+                    {% endif %}
+                  </td>
+                  <td class="px-6 py-4 text-right">
+                    <a href="{% url 'usuarios:ver_carpintero_detalle' c.id %}" target="_blank" class="text-stone-500 hover:text-caramel transition" title="Ver Perfil">
+                      <i class="fas fa-external-link-alt" style="color: var(--caramel);"></i>
+                    </a>
+                  </td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="5" class="px-6 py-8 text-center text-stone-400 italic font-body">
+                    No hay carpinteros activos.
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <script>
+            function switchTab(tabId) {
+              const tabPendientes = document.getElementById('tab-pendientes');
+              const tabActivos = document.getElementById('tab-activos');
+              const btnPendientes = document.getElementById('btn-pendientes');
+              const btnActivos = document.getElementById('btn-activos');
+              const indPendientes = document.getElementById('indicator-pendientes');
+              const indActivos = document.getElementById('indicator-activos');
+
+              if (tabId === 'pendientes') {
+                tabPendientes.classList.remove('hidden');
+                tabActivos.classList.add('hidden');
+                
+                btnPendientes.classList.remove('text-stone-400');
+                btnPendientes.style.color = 'var(--wood-dark)';
+                indPendientes.classList.remove('hidden');
+                
+                btnActivos.style.color = '';
+                btnActivos.classList.add('text-stone-400');
+                indActivos.classList.add('hidden');
+              } else {
+                tabPendientes.classList.add('hidden');
+                tabActivos.classList.remove('hidden');
+                
+                btnActivos.classList.remove('text-stone-400');
+                btnActivos.style.color = 'var(--wood-dark)';
+                indActivos.classList.remove('hidden');
+                
+                btnPendientes.style.color = '';
+                btnPendientes.classList.add('text-stone-400');
+                indPendientes.classList.add('hidden');
+              }
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              const urlParams = new URLSearchParams(window.location.search);
+              const tab = urlParams.get('tab');
+              if (tab === 'activos' || window.location.search.includes('page_activos')) {
+                switchTab('activos');
+              } else {
+                switchTab('pendientes');
+              }
+            });
+          </script>
+          <!-- Paginación Activos -->
+          {% if carpinteros_activos.has_other_pages %}
+          <div class="px-6 py-4 flex justify-between items-center font-body text-sm text-stone-500 bg-stone-50" style="border-top: 1px solid var(--sand);">
+            <div>
+              Mostrando página {{ carpinteros_activos.number }} de {{ carpinteros_activos.paginator.num_pages }}
+            </div>
+            <div class="flex gap-2">
+              {% if carpinteros_activos.has_previous %}
+              <a href="?page_activos={{ carpinteros_activos.previous_page_number }}&tab=activos" class="px-3 py-1 rounded-md bg-white hover:bg-stone-100 transition" style="border: 1px solid var(--sand);">
+                <i class="fas fa-chevron-left text-xs"></i> Anterior
+              </a>
+              {% endif %}
+              {% if carpinteros_activos.has_next %}
+              <a href="?page_activos={{ carpinteros_activos.next_page_number }}&tab=activos" class="px-3 py-1 rounded-md bg-white hover:bg-stone-100 transition" style="border: 1px solid var(--sand);">
+                Siguiente <i class="fas fa-chevron-right text-xs"></i>
+              </a>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Accesos Rápidos -->
+      <div class="lg:col-span-1">
+        <div class="glass-panel rounded-2xl shadow-lg p-6 reveal" style="border: 1px solid var(--sand);">
+          <h3 class="font-display text-xl mb-6" style="color: var(--wood-dark);">Accesos Rápidos</h3>
+          <div class="space-y-3">
+            <a href="{% url 'admin:core_user_changelist' %}" class="block w-full p-4 rounded-xl bg-white hover:shadow-md transition group" style="border: 1px solid var(--sand);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i class="fas fa-users text-sm"></i>
+                  </div>
+                  <span class="font-body text-sm font-medium" style="color: var(--wood);">Usuarios</span>
+                </div>
+                <i class="fas fa-chevron-right text-xs text-stone-300 group-hover:translate-x-1 transition-transform" style="color: var(--caramel);"></i>
+              </div>
+            </a>
+            <a href="{% url 'admin:carpinteros_carpintero_changelist' %}" class="block w-full p-4 rounded-xl bg-white hover:shadow-md transition group" style="border: 1px solid var(--sand);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform" style="background: rgba(194,129,61,0.1);">
+                    <i class="fas fa-hammer text-sm" style="color: var(--caramel);"></i>
+                  </div>
+                  <span class="font-body text-sm font-medium" style="color: var(--wood);">Carpinteros</span>
+                </div>
+                <i class="fas fa-chevron-right text-xs text-stone-300 group-hover:translate-x-1 transition-transform" style="color: var(--caramel);"></i>
+              </div>
+            </a>
+            <a href="{% url 'admin:proyectos_solicitudproyecto_changelist' %}" class="block w-full p-4 rounded-xl bg-white hover:shadow-md transition group" style="border: 1px solid var(--sand);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <i class="fas fa-file-signature text-sm"></i>
+                  </div>
+                  <span class="font-body text-sm font-medium" style="color: var(--wood);">Solicitudes</span>
+                </div>
+                <i class="fas fa-chevron-right text-xs text-stone-300 group-hover:translate-x-1 transition-transform" style="color: var(--caramel);"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

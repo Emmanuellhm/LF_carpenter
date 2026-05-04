@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mis Proyectos | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="flex min-h-[80vh] bg-amber-50">
+  <!-- Sidebar -->
+  <aside class="w-64 bg-white shadow-xl border-r border-stone-200 flex-shrink-0">
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col items-center py-8 border-b border-stone-200">
+        <div class="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-white text-2xl font-bold shadow-lg border-4 border-amber-600 overflow-hidden">
+          {% if perfil.hoja_vida %}
+          <img src="{{ perfil.hoja_vida.url }}" alt="{{ user.full_name }}" class="w-full h-full object-cover">
+          {% else %}
+          {{ user.full_name|slice:":1" }}
+          {% endif %}
+        </div>
+        <span class="mt-2 font-bold text-stone-800 text-sm">{{ user.full_name }}</span>
+      </div>
+      <nav class="flex flex-col space-y-2 px-4 mt-4 flex-grow">
+        <a href="{% url 'carpinteros:panel' %}" class="text-stone-700 hover:bg-amber-100 rounded-lg px-3 py-2 font-medium text-left flex items-center gap-2 transition text-sm">
+          <i class="fas fa-home w-4"></i><span>Panel</span>
+        </a>
+        <a href="{% url 'carpinteros:mis_proyectos' %}" class="text-stone-700 bg-amber-100 rounded-lg px-3 py-2 font-medium text-left flex items-center gap-2 text-sm">
+          <i class="fas fa-folder w-4"></i><span>Mis Proyectos</span>
+        </a>
+        <a href="{% url 'carpinteros:ver_solicitudes' %}" class="text-stone-700 hover:bg-amber-100 rounded-lg px-3 py-2 font-medium text-left flex items-center gap-2 transition text-sm">
+          <i class="fas fa-clipboard-list w-4"></i><span>Solicitudes</span>
+        </a>
+        <a href="{% url 'carpinteros:notificaciones' %}" class="text-stone-700 hover:bg-amber-100 rounded-lg px-3 py-2 font-medium text-left flex items-center gap-2 transition text-sm">
+          <i class="fas fa-bell w-4"></i><span>Notificaciones</span>
+        </a>
+      </nav>
+      <a href="{% url 'logout' %}" class="text-center py-3 text-stone-500 hover:text-amber-600 text-sm">
+        <i class="fas fa-sign-out-alt mr-1"></i> Cerrar sesión
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-10">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-stone-800">Mis Proyectos</h1>
+      <a href="{% url 'carpinteros:subir_proyecto' %}" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow">
+        <i class="fas fa-plus mr-2"></i> Nuevo Proyecto
+      </a>
+    </div>
+
+    {% if proyectos %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for proyecto in proyectos %}
+      <div class="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+        {% if proyecto.image %}
+        <img src="{{ proyecto.image.url }}" alt="{{ proyecto.title }}" class="w-full h-48 object-cover">
+        {% else %}
+        <div class="w-full h-48 bg-stone-100 flex items-center justify-center">
+          <i class="fas fa-image text-6xl text-stone-300"></i>
+        </div>
+        {% endif %}
+        <div class="p-4">
+          <h3 class="font-bold text-lg text-stone-800 mb-1">{{ proyecto.title }}</h3>
+          <p class="text-stone-600 text-sm mb-2">{{ proyecto.description|truncatewords:20 }}</p>
+          {% if proyecto.price %}
+          <p class="text-amber-700 font-bold">${{ proyecto.price }}</p>
+          {% endif %}
+          <p class="text-xs text-stone-400 mt-2">{{ proyecto.created_at|date:"d/m/Y" }}</p>
+          <div class="flex gap-2 mt-4">
+            <a href="{% url 'carpinteros:editar_proyecto' proyecto.id %}" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-center py-2 rounded-lg text-sm">
+              <i class="fas fa-edit mr-1"></i> Editar
+            </a>
+            <form action="{% url 'carpinteros:eliminar_proyecto' proyecto.id %}" method="post" class="flex-1" onsubmit="return confirm('¿Estás seguro de eliminar este proyecto?')">
+              {% csrf_token %}
+              <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm">
+                <i class="fas fa-trash mr-1"></i> Eliminar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 p-12 text-center">
+      <div class="text-6xl mb-4">📁</div>
+      <h3 class="text-xl font-bold text-stone-800 mb-2">No tienes proyectos aún</h3>
+      <p class="text-stone-600 mb-6">Sube tu primer proyecto para mostrar tu trabajo</p>
+      <a href="{% url 'carpinteros:subir_proyecto' %}" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-3 rounded-lg shadow inline-block">
+        <i class="fas fa-plus mr-2"></i> Subir Proyecto
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

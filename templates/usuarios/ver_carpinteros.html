@@ -1,0 +1,237 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Buscar Carpinteros | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] py-14 px-4 sm:px-6 lg:px-8" style="background: var(--cream);">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="text-center mb-12 reveal">
+      <span class="font-body text-sm uppercase tracking-widest mb-3 block" style="color: var(--caramel);">Directorio</span>
+      <h1 class="font-display text-4xl md:text-5xl mb-3" style="color: var(--wood-dark);">
+        Encuentra tu Carpintero Ideal
+      </h1>
+      <p class="font-body text-stone-500 max-w-2xl mx-auto">
+        Explora nuestra red de profesionales calificados y encuentra el perfecto para tu proyecto
+      </p>
+    </div>
+
+    <!-- Búsqueda Avanzada -->
+    <div class="bg-white rounded-2xl shadow-lg p-6 mb-10 reveal" style="border: 1px solid var(--sand);">
+      <form method="get" class="space-y-6">
+        <!-- Fila principal -->
+        <div class="flex flex-col lg:flex-row gap-4">
+          <div class="flex-1">
+            <label for="q" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+              <i class="fas fa-search mr-1" style="color: var(--caramel);"></i> Buscar
+            </label>
+            <input type="text" name="q" id="q" value="{{ query }}"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);"
+              placeholder="Nombre, especialidad, descripción...">
+          </div>
+
+          <div class="lg:w-64">
+            <label for="especialidad" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+              <i class="fas fa-tools mr-1" style="color: var(--caramel);"></i> Especialidad
+            </label>
+            <select name="especialidad" id="especialidad"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+              <option value="">Todas</option>
+              <option value="muebles" {% if especialidad == 'muebles' %}selected{% endif %}>Muebles</option>
+              <option value="cocinas" {% if especialidad == 'cocinas' %}selected{% endif %}>Cocinas</option>
+              <option value="restauración" {% if especialidad == 'restauración' %}selected{% endif %}>Restauración</option>
+              <option value="puertas" {% if especialidad == 'puertas' %}selected{% endif %}>Puertas</option>
+              <option value="ventanas" {% if especialidad == 'ventanas' %}selected{% endif %}>Ventanas</option>
+              <option value="escaleras" {% if especialidad == 'escaleras' %}selected{% endif %}>Escaleras</option>
+              <option value="decoración" {% if especialidad == 'decoración' %}selected{% endif %}>Decoración</option>
+            </select>
+          </div>
+
+          <div class="lg:w-64">
+            <label for="ciudad" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+              <i class="fas fa-map-marker-alt mr-1" style="color: var(--caramel);"></i> Ciudad
+            </label>
+            <select name="ciudad" id="ciudad"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+              <option value="">Todas</option>
+              {% for c in ciudades %}
+              <option value="{{ c }}" {% if ciudad == c %}selected{% endif %}>{{ c }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
+        <!-- Filtros avanzados -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div>
+            <label for="experiencia_min" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Exp. mínima (años)</label>
+            <input type="number" name="experiencia_min" id="experiencia_min" value="{{ experiencia_min }}" min="0" max="50"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div>
+            <label for="experiencia_max" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Exp. máxima (años)</label>
+            <input type="number" name="experiencia_max" id="experiencia_max" value="{{ experiencia_max }}" min="0" max="50"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div>
+            <label for="calificacion_min" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Calificación mínima</label>
+            <select name="calificacion_min" id="calificacion_min"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+              <option value="">Cualquiera</option>
+              <option value="4.5" {% if calificacion_min == '4.5' %}selected{% endif %}>⭐ 4.5+ Excelente</option>
+              <option value="4.0" {% if calificacion_min == '4.0' %}selected{% endif %}>⭐ 4.0+ Muy bueno</option>
+              <option value="3.5" {% if calificacion_min == '3.5' %}selected{% endif %}>⭐ 3.5+ Bueno</option>
+              <option value="3.0" {% if calificacion_min == '3.0' %}selected{% endif %}>⭐ 3.0+ Aceptable</option>
+            </select>
+          </div>
+          <div>
+            <label for="orden" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Ordenar por</label>
+            <select name="orden" id="orden"
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2"
+              style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+              <option value="-created_at" {% if orden == '-created_at' %}selected{% endif %}>Más recientes</option>
+              <option value="-rating_avg" {% if orden == '-rating_avg' %}selected{% endif %}>Mejor calificación</option>
+              <option value="-experience_years" {% if orden == '-experience_years' %}selected{% endif %}>Más experiencia</option>
+              <option value="user__full_name" {% if orden == 'user__full_name' %}selected{% endif %}>Nombre A-Z</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex flex-col sm:flex-row gap-3 justify-end">
+          <a href="{% url 'usuarios:ver_carpinteros' %}"
+             class="px-6 py-3 rounded-xl font-body font-medium text-center transition text-stone-600 hover:bg-stone-100" style="border: 1px solid var(--sand);">
+            <i class="fas fa-times mr-2"></i> Limpiar
+          </a>
+          <button type="submit"
+                  class="px-8 py-3 rounded-xl text-white font-body font-medium shadow-lg hover:shadow-xl transition hover:opacity-90" style="background: var(--caramel);">
+            <i class="fas fa-search mr-2"></i> Buscar
+          </button>
+        </div>
+      </form>
+
+      {% if query or especialidad or ciudad or experiencia_min or experiencia_max or calificacion_min %}
+      <div class="mt-4 pt-4 font-body text-sm text-stone-500" style="border-top: 1px solid var(--sand);">
+        <i class="fas fa-info-circle mr-1" style="color: var(--caramel);"></i>
+        Se encontraron <strong>{{ total_resultados }}</strong> carpinteros
+        {% if query %}para "<strong>{{ query }}</strong>"{% endif %}
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Lista de Carpinteros -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 stagger reveal">
+      {% for carpintero in page_obj %}
+      <a href="{% url 'usuarios:ver_carpintero_detalle' carpintero.id %}" class="group bg-white rounded-2xl shadow-md overflow-hidden hover-lift" style="border: 1px solid var(--sand);">
+        <div class="relative overflow-hidden">
+          {% if carpintero.hoja_vida %}
+          <img src="{{ carpintero.hoja_vida.url }}" alt="{{ carpintero.user.full_name }}"
+               class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700">
+          {% else %}
+          <img src="{% static 'img/fotoP.jpg' %}" alt="{{ carpintero.user.full_name }}"
+               class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-700">
+          {% endif %}
+
+          {% if carpintero.is_verified %}
+          <div class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-body font-medium flex items-center gap-1">
+            <i class="fas fa-check-circle"></i> Verificado
+          </div>
+          {% endif %}
+
+          {% if carpintero.rating_avg %}
+          <div class="absolute bottom-3 left-3 glass-panel px-3 py-1 rounded-full text-sm font-body font-medium flex items-center gap-1 shadow">
+            <i class="fas fa-star" style="color: var(--caramel);"></i>
+            {{ carpintero.rating_avg|floatformat:1 }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1 group-hover:opacity-80 transition" style="color: var(--wood-dark);">
+            {{ carpintero.user.full_name }}
+          </h3>
+          <p class="font-body text-sm font-medium mb-2" style="color: var(--caramel);">
+            <i class="fas fa-tools mr-1"></i> {{ carpintero.specialties }}
+          </p>
+          <p class="font-body text-stone-500 text-sm mb-4 line-clamp-2">
+            {{ carpintero.description|truncatewords:15 }}
+          </p>
+          <div class="flex items-center gap-4 text-xs font-body text-stone-400">
+            <span class="flex items-center gap-1">
+              <i class="fas fa-briefcase" style="color: var(--caramel);"></i>
+              {{ carpintero.experience_years }} años
+            </span>
+            {% if carpintero.user.city %}
+            <span class="flex items-center gap-1">
+              <i class="fas fa-map-marker-alt" style="color: var(--caramel);"></i>
+              {{ carpintero.user.city }}
+            </span>
+            {% endif %}
+          </div>
+        </div>
+      </a>
+      {% empty %}
+      <div class="col-span-3 text-center py-16">
+        <div class="text-6xl mb-4">🔍</div>
+        <h3 class="font-display text-2xl mb-2" style="color: var(--wood-dark);">No se encontraron carpinteros</h3>
+        <p class="font-body text-stone-500 mb-6">Intenta con otros criterios de búsqueda</p>
+        <a href="{% url 'usuarios:ver_carpinteros' %}"
+           class="inline-block px-6 py-3 rounded-xl text-white font-body font-medium transition hover:opacity-90" style="background: var(--caramel);">
+          Ver todos
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Paginación -->
+    {% if page_obj.has_other_pages %}
+    <nav class="flex items-center justify-center gap-2 mt-8 reveal">
+      {% if page_obj.has_previous %}
+      <a href="?page=1{% if query %}&q={{ query }}{% endif %}{% if especialidad %}&especialidad={{ especialidad }}{% endif %}{% if ciudad %}&ciudad={{ ciudad }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}"
+         class="px-3 py-2 rounded-lg font-body text-sm transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--wood);">
+        <i class="fas fa-angle-double-left"></i>
+      </a>
+      <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if especialidad %}&especialidad={{ especialidad }}{% endif %}{% if ciudad %}&ciudad={{ ciudad }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}"
+         class="px-3 py-2 rounded-lg font-body text-sm transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--wood);">
+        <i class="fas fa-angle-left"></i>
+      </a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <span class="px-4 py-2 rounded-lg text-white font-body text-sm font-medium" style="background: var(--caramel);">
+          {{ num }}
+        </span>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+        <a href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}{% if especialidad %}&especialidad={{ especialidad }}{% endif %}{% if ciudad %}&ciudad={{ ciudad }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}"
+           class="px-4 py-2 rounded-lg font-body text-sm transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--wood);">
+          {{ num }}
+        </a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if especialidad %}&especialidad={{ especialidad }}{% endif %}{% if ciudad %}&ciudad={{ ciudad }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}"
+         class="px-3 py-2 rounded-lg font-body text-sm transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--wood);">
+        <i class="fas fa-angle-right"></i>
+      </a>
+      <a href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}{% if especialidad %}&especialidad={{ especialidad }}{% endif %}{% if ciudad %}&ciudad={{ ciudad }}{% endif %}{% if orden %}&orden={{ orden }}{% endif %}"
+         class="px-3 py-2 rounded-lg font-body text-sm transition hover:opacity-70" style="border: 1px solid var(--sand); color: var(--wood);">
+        <i class="fas fa-angle-double-right"></i>
+      </a>
+      {% endif %}
+    </nav>
+    <p class="text-center font-body text-stone-400 text-sm mt-4">
+      Mostrando {{ page_obj.start_index }} - {{ page_obj.end_index }} de {{ page_obj.paginator.count }} carpinteros
+    </p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<table role="presentation" style="width: 100%;">
+    <tr>
+        <td>
+            <h2 style="margin: 0 0 20px 0; color: #1c1917; font-size: 24px;">
+                🔔 ¡Tienes una nueva solicitud de proyecto!
+            </h2>
+            <p style="margin: 0 0 15px 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Hola <strong>{{ user.full_name }}</strong>, un cliente está interesado en tus servicios de carpintería.
+            </p>
+
+            <div style="background-color: #fef3c7; border-radius: 8px; padding: 20px; margin: 25px 0; border: 2px solid #d97706;">
+                <h3 style="margin: 0 0 15px 0; color: #92400e; font-size: 18px;">
+                    📝 {{ solicitud.title }}
+                </h3>
+                <p style="margin: 0 0 15px 0; color: #44403c; font-size: 14px; line-height: 1.6;">
+                    {{ solicitud.description|truncatewords:50 }}
+                </p>
+
+                <table role="presentation" style="width: 100%; margin-top: 15px;">
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px; width: 120px;"><strong>Cliente:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ client.full_name }}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Ciudad:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ client.city }}</td>
+                    </tr>
+                    {% if solicitud.budget %}
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Presupuesto:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">${{ solicitud.budget }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if solicitud.deadline %}
+                    <tr>
+                        <td style="padding: 8px 0; color: #78716c; font-size: 14px;"><strong>Fecha límite:</strong></td>
+                        <td style="padding: 8px 0; color: #1c1917; font-size: 14px;">{{ solicitud.deadline|date:"d/m/Y" }}</td>
+                    </tr>
+                    {% endif %}
+                </table>
+            </div>
+
+            <p style="margin: 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Revisa los detalles y decide si quieres aceptar o rechazar esta solicitud.
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block button %}
+<tr>
+    <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <a href="{{ solicitudes_url }}"
+           style="display: inline-block; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.4);">
+            Ver solicitud
+        </a>
+    </td>
+</tr>
+{% endblock %}
