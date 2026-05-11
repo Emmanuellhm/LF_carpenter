@@ -1,0 +1,6 @@
+Django==5.0.4
+python-dotenv==1.0.1
+# psycopg2-binary==2.9.9  # Descomentar si usas PostgreSQL en producción
+django-crispy-forms==2.1
+crispy-tailwind
+pillow

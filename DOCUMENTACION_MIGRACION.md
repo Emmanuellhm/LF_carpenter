@@ -9,7 +9,7 @@ Este proyecto es una migración de un sistema web de carpintería desarrollado o
 ## Tecnologías Utilizadas
 
 ### Backend
-- **Django 6.0.3** - Framework web Python
+- **Django 5.0** - Framework web Python
 - **SQLite** - Base de datos (desarrollo) / PostgreSQL (producción)
 - **Python 3.12** - Lenguaje de programación
 
@@ -40,7 +40,7 @@ LF_carpenter-main/
 │   ├── cvs/
 │   └── solicitudes/
 ├── venv/                   # Entorno virtual
-├── db.sqlite3             # Base de datos SQLiteo
+├── db.sqlite3             # Base de datos SQLite
 └── manage.py
 ```
 
@@ -194,10 +194,10 @@ class Interaccion:
 
 ## Comandos Útiles
 
-### Activar entorno virtual
-```bash
-cd /home/miguel/Documentos/LF_carpenter-main
-source venv/bin/activate
+### Activar entorno virtual (Windows / PowerShell)
+```powershell
+python -m venv venv
+.\venv\Scripts\Activate.ps1
 ```
 
 ### Ejecutar servidor de desarrollo

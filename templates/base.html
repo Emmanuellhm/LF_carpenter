@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}LF Carpinter{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind Config for Custom Colors -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf8f6',
+                            100: '#f2e8e5',
+                            500: '#8b5a2b', // Wood color
+                            600: '#6b4226',
+                            900: '#3d2616',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen font-sans text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex-shrink-0 flex items-center gap-2">
+                        <i class="fa-solid fa-hammer text-brand-500 text-2xl"></i>
+                        <span class="font-bold text-xl tracking-tight text-gray-900">LF Carpinter</span>
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    {% if user.is_authenticated %}
+                        {% if user.role == 'admin' %}
+                            <a href="{% url 'admin_dashboard' %}" class="text-gray-600 hover:text-brand-500 font-medium px-3 py-2 rounded-md transition">Dashboard Admin</a>
+                        {% elif user.role == 'carpenter' %}
+                            <a href="{% url 'carpinteros:panel' %}" class="text-gray-600 hover:text-brand-500 font-medium px-3 py-2 rounded-md transition">Mi Panel</a>
+                        {% else %}
+                            <a href="{% url 'usuarios:panel' %}" class="text-gray-600 hover:text-brand-500 font-medium px-3 py-2 rounded-md transition">Mi Panel</a>
+                        {% endif %}
+                        
+                        <div class="border-l border-gray-300 h-6 mx-2"></div>
+                        
+                        <span class="text-sm text-gray-500 font-medium">{{ user.full_name }}</span>
+                        
+                        <form method="post" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="text-red-500 hover:text-red-700 font-medium px-3 py-2 rounded-md transition">
+                                <i class="fa-solid fa-sign-out-alt"></i> Salir
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="text-gray-600 hover:text-brand-500 font-medium px-3 py-2 rounded-md transition">Iniciar Sesión</a>
+                        <a href="{% url 'registro_usuario' %}" class="bg-brand-500 hover:bg-brand-600 text-white font-medium px-4 py-2 rounded-md transition shadow-sm">Registrarse</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+        {% for message in messages %}
+            <div class="p-4 rounded-md shadow-sm mb-4 {% if message.tags == 'error' %}bg-red-50 text-red-800 border border-red-200{% elif message.tags == 'success' %}bg-green-50 text-green-800 border border-green-200{% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        {% if message.tags == 'error' %}
+                            <i class="fa-solid fa-circle-exclamation text-red-400"></i>
+                        {% elif message.tags == 'success' %}
+                            <i class="fa-solid fa-circle-check text-green-400"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-info text-blue-400"></i>
+                        {% endif %}
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-medium">{{ message }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% block content %}
+        {% endblock content %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="text-xl font-bold tracking-tight">
+                        <i class="fa-solid fa-hammer text-brand-500 mr-2"></i>LF Carpinter
+                    </span>
+                    <p class="text-gray-400 text-sm mt-2">Conectando a los mejores carpinteros con tus proyectos.</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="{% url 'sobre_nosotros' %}" class="text-gray-400 hover:text-white transition">Nosotros</a>
+                    <a href="{% url 'contactanos' %}" class="text-gray-400 hover:text-white transition">Contacto</a>
+                    <a href="{% url 'faq' %}" class="text-gray-400 hover:text-white transition">FAQ</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 flex justify-between items-center text-sm text-gray-400">
+                <p>&copy; {% now "Y" %} LF Carpinter. Todos los derechos reservados.</p>
+                <p>Desarrollado para SENA.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>
