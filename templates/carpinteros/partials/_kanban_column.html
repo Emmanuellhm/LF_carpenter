@@ -1,0 +1,50 @@
+<div class="kanban-column flex-shrink-0 bg-stone-100/50 border border-stone-200 rounded-2xl flex flex-col h-full max-h-[calc(100vh-140px)] shadow-sm">
+  
+  <!-- Encabezado de Columna -->
+  <div class="px-4 py-3 border-b border-stone-200 bg-white rounded-t-2xl flex justify-between items-center sticky top-0 z-10 shadow-sm">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-lg {{ color_class }} {{ text_color }} flex items-center justify-center">
+        <i class="fas {{ icon }} text-sm"></i>
+      </div>
+      <h2 class="font-bold text-stone-700 text-sm m-0">{{ status_name }}</h2>
+    </div>
+    <span class="count-badge bg-stone-100 text-stone-500 text-xs font-bold px-2 py-1 rounded-full border border-stone-200">{{ items|length }}</span>
+  </div>
+
+  <!-- Zona de Drag & Drop -->
+  <div class="kanban-items flex-1 p-3 space-y-3 overflow-y-auto custom-scrollbar" data-status="{{ status_id }}">
+    {% for item in items %}
+      <div class="kanban-card bg-white border border-stone-200 p-4 rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-grab group relative" data-id="{{ item.id }}">
+        
+        <!-- Etiqueta de Presupuesto/Fecha si aplica -->
+        <div class="flex justify-between items-start mb-2">
+          <span class="text-xs font-bold text-stone-400 bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">#{{ item.id }}</span>
+          {% if item.budget %}
+          <span class="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded flex items-center gap-1">
+            <i class="fas fa-dollar-sign"></i> {{ item.budget|floatformat:"0" }}
+          </span>
+          {% endif %}
+        </div>
+        
+        <!-- Título y Cliente -->
+        <h3 class="font-bold text-stone-800 text-sm mb-1 leading-tight">{{ item.title }}</h3>
+        <p class="text-xs text-stone-500 flex items-center gap-1.5 mb-3">
+          <i class="fas fa-user text-stone-400"></i> {{ item.user.full_name }}
+        </p>
+        
+        <!-- Footer de la tarjeta -->
+        <div class="flex items-center justify-between mt-auto pt-3 border-t border-stone-100">
+          <div class="text-[10px] text-stone-400 flex items-center gap-1">
+            <i class="far fa-calendar-alt"></i> {{ item.created_at|date:"d M" }}
+          </div>
+          <a href="{% url 'carpinteros:detalle_solicitud' item.id %}" class="text-[10px] font-bold text-[var(--caramel)] hover:text-[#a6652c] transition-colors bg-orange-50 px-2 py-1 rounded">Ver Detalle</a>
+        </div>
+      </div>
+    {% empty %}
+      <!-- Este div vacío es importante para que Sortable funcione cuando la columna está vacía -->
+      <div class="hidden-empty-state text-center py-6">
+        <span class="text-xs font-medium text-stone-400 border border-dashed border-stone-300 rounded-lg py-2 px-4 inline-block bg-stone-50">Arrastrar aquí</span>
+      </div>
+    {% endfor %}
+  </div>
+</div>

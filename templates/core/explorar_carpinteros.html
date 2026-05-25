@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Explorar Carpinteros | LF Carpinter{% endblock %}
+
+{% block extra_head %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap');
+
+  .page-hero {
+    background-color: #1c1109;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(184,115,51,0.15) 0%, transparent 60%);
+  }
+  .card-wood {
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+  .card-wood:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(44,26,16,0.15); }
+  
+  .star-full  { color: #b87333; }
+  .star-empty { color: #d6d3d1; }
+
+  .filter-pill {
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .animate-card { animation: fadeUp 0.5s ease forwards; opacity: 0; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ========== HERO ========== -->
+<section class="page-hero py-20 text-white relative overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none" style="background-image: url('{% static 'img/estanteria.webp' %}'); background-size: cover; background-position: center; opacity: 0.06;"></div>
+  <div class="container mx-auto px-6 relative z-10 text-center">
+    <span class="inline-block font-sans text-xs tracking-[0.3em] uppercase text-[var(--caramel)] mb-6 opacity-80">Red de Artesanos Verificados</span>
+    <h1 style="font-family:'Cormorant Garamond',serif;" class="text-6xl md:text-7xl font-semibold leading-tight mb-5">
+      Encuentra tu<br><em class="text-[var(--caramel)]">maestro</em> ideal
+    </h1>
+    <p style="font-family:'DM Sans',sans-serif;" class="text-stone-400 max-w-xl mx-auto text-lg mb-10 leading-relaxed">
+      {{ total }} artesano{{ total|pluralize:"s" }} verificado{{ total|pluralize:"s" }} listo{{ total|pluralize:"s" }} para transformar tu espacio con madera de calidad.
+    </p>
+
+    <!-- Search bar -->
+    <form method="get" class="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto">
+      <div class="flex-1 relative">
+        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-stone-500 z-10"></i>
+        <input type="text" name="q" value="{{ q }}" placeholder="Buscar por nombre, especialidad o ciudad…"
+               class="w-full pl-11 pr-4 py-4 rounded-2xl bg-white/10 border border-white/20 text-white placeholder-stone-500 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[var(--caramel)] focus:bg-white/15 transition"
+               style="font-family:'DM Sans',sans-serif;">
+      </div>
+      <button type="submit" class="px-8 py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-2xl font-semibold transition shadow-[0_4px_24px_rgba(184,115,51,0.4)] hover:-translate-y-0.5">
+        Buscar
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- ========== FILTROS Y GRID ========== -->
+<main class="bg-[var(--cream)] min-h-[60vh]">
+  <div class="container mx-auto px-6 py-10">
+    <div class="flex flex-col lg:flex-row gap-8">
+      
+      <!-- ── SIDEBAR (Filtros) ── -->
+      <aside class="w-full lg:w-1/4 shrink-0">
+        <div class="bg-white rounded-3xl border border-stone-200 p-6 sticky top-24 shadow-sm">
+          <div class="flex items-center justify-between mb-5 border-b border-stone-100 pb-3">
+            <h2 style="font-family:'Cormorant Garamond',serif;" class="text-2xl font-semibold text-[var(--wood-dark)]">Filtros</h2>
+            {% if q or ciudad_filtro or especialidad_filtro %}
+            <a href="{% url 'explorar_carpinteros' %}" class="text-xs text-red-500 hover:text-red-600 font-medium transition flex items-center gap-1">
+              <i class="fas fa-times-circle"></i> Limpiar
+            </a>
+            {% endif %}
+          </div>
+
+          <form method="get" class="space-y-6">
+            {% if q %}<input type="hidden" name="q" value="{{ q }}">{% endif %}
+
+            <!-- Filtro Especialidad -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-stone-400 font-bold mb-3">Especialidad</label>
+              <div class="relative">
+                <i class="fas fa-hammer absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                <input type="text" name="especialidad" value="{{ especialidad_filtro }}" placeholder="Ej. Cocinas..."
+                       class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-[var(--caramel)] focus:ring-2 focus:ring-[var(--caramel)]/20 outline-none transition bg-stone-50/50 focus:bg-white">
+              </div>
+            </div>
+
+            <!-- Filtro Ciudad -->
+            <div>
+              <label class="block text-xs uppercase tracking-widest text-stone-400 font-bold mb-3">Ciudad</label>
+              <div class="relative">
+                <i class="fas fa-map-marker-alt absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400"></i>
+                <select name="ciudad" class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-[var(--caramel)] focus:ring-2 focus:ring-[var(--caramel)]/20 outline-none transition bg-stone-50/50 focus:bg-white appearance-none">
+                  <option value="">Todas las ciudades</option>
+                  {% for ciudad in ciudades %}
+                  <option value="{{ ciudad }}" {% if ciudad_filtro == ciudad %}selected{% endif %}>{{ ciudad }}</option>
+                  {% endfor %}
+                </select>
+                <i class="fas fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 text-xs pointer-events-none"></i>
+              </div>
+            </div>
+
+            <button type="submit" class="w-full py-3 bg-[var(--wood-dark)] hover:bg-[var(--wood)] text-white rounded-xl text-sm font-bold transition shadow-md hover:shadow-lg">
+              Aplicar filtros
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <!-- ── RESULTADOS (Grid) ── -->
+      <div class="flex-1">
+        <div class="flex items-center justify-between mb-6">
+          <p class="text-stone-500 text-sm"><strong class="text-[var(--wood-dark)]">{{ total }}</strong> resultado{{ total|pluralize:"s" }} encontrado{{ total|pluralize:"s" }}</p>
+        </div>
+
+        {% if carpinteros %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+          {% for c in carpinteros %}
+          <a href="{% url 'perfil_publico_carpintero' c.id %}"
+             class="card-wood block bg-white rounded-3xl overflow-hidden border border-stone-200/80 animate-card"
+             style="animation-delay: {{ forloop.counter0|add:"1" }}00ms;">
+            
+            <!-- Avatar / foto de portada -->
+            <div class="relative h-44 bg-gradient-to-br from-stone-200 to-stone-100 overflow-hidden">
+              {% if c.portafolio.first and c.portafolio.first.image %}
+                <img src="{{ c.portafolio.first.image.url }}" alt="{{ c.user.full_name }}"
+                     class="w-full h-full object-cover">
+              {% else %}
+                <div class="absolute inset-0 flex items-center justify-center"
+                     style="background: linear-gradient(135deg, #2c1a10 0%, #5e3a21 100%);">
+                  <span style="font-family:'Cormorant Garamond',serif;"
+                        class="text-6xl font-bold text-[var(--caramel)]/60">
+                    {{ c.user.full_name|slice:":1"|upper }}
+                  </span>
+                </div>
+              {% endif %}
+              <!-- Badge ciudad -->
+              {% if c.user.city %}
+              <div class="absolute bottom-3 left-3 bg-black/50 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full flex items-center gap-1.5">
+                <i class="fas fa-map-marker-alt text-[var(--caramel)]"></i> {{ c.user.city }}
+              </div>
+              {% endif %}
+            </div>
+
+            <!-- Info -->
+            <div class="p-5">
+              <h3 style="font-family:'Cormorant Garamond',serif;" class="text-xl font-semibold text-[var(--wood-dark)] mb-0.5 truncate">
+                {{ c.user.full_name }}
+              </h3>
+              <p class="text-[var(--caramel)] text-xs font-medium tracking-wide uppercase mb-3 truncate">
+                {{ c.specialties|default:"Carpintero General" }}
+              </p>
+
+              <!-- Estrellas -->
+              <div class="flex items-center gap-2 mb-3">
+                <div class="flex gap-0.5">
+                  {% for i in rating_range %}
+                    <i class="fas fa-star text-xs {% if i <= c.avg_rating|default:0 %}star-full{% else %}star-empty{% endif %}"></i>
+                  {% endfor %}
+                </div>
+                <span class="text-xs text-stone-500">
+                  {{ c.avg_rating|default:0|floatformat:1 }}
+                  <span class="text-stone-400">({{ c.total_reviews }})</span>
+                </span>
+              </div>
+
+              <!-- Stats rápidos -->
+              <div class="flex gap-4 text-xs text-stone-500 border-t border-stone-100 pt-3 mt-3">
+                <span class="flex items-center gap-1.5"><i class="fas fa-images text-stone-300"></i> {{ c.total_proyectos }} proyectos</span>
+                <span class="flex items-center gap-1.5"><i class="fas fa-briefcase text-stone-300"></i> {{ c.experience_years }} años exp.</span>
+              </div>
+            </div>
+          </a>
+          {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- Empty state -->
+        <div class="flex flex-col items-center justify-center py-20 bg-white rounded-3xl border border-stone-200 border-dashed text-center">
+          <div class="w-20 h-20 rounded-full bg-stone-50 flex items-center justify-center mb-5">
+            <i class="fas fa-search text-3xl text-stone-300"></i>
+          </div>
+          <h2 style="font-family:'Cormorant Garamond',serif;" class="text-3xl text-[var(--wood-dark)] mb-2">Sin resultados</h2>
+          <p class="text-stone-500 text-sm max-w-sm mb-6">No encontramos especialistas que coincidan con tu búsqueda actual.</p>
+          <a href="{% url 'explorar_carpinteros' %}" class="px-6 py-2.5 bg-stone-100 text-stone-600 rounded-xl text-sm font-bold hover:bg-stone-200 transition">
+            Ver todos los expertos
+          </a>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</main>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  // Intersection Observer para activar la animación al llegar al viewport
+  const cards = document.querySelectorAll('.animate-card');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.style.animationPlayState = 'running'; obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  cards.forEach(c => { c.style.animationPlayState = 'paused'; obs.observe(c); });
+</script>
+{% endblock %}

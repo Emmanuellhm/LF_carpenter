@@ -1,0 +1,41 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<table role="presentation" style="width: 100%;">
+    <tr>
+        <td>
+            <h2 style="margin: 0 0 20px 0; color: #1c1917; font-size: 24px;">
+                ¡Confirma tu cuenta, {{ user.full_name }}!
+            </h2>
+            <p style="margin: 0 0 15px 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Gracias por registrarte en <strong>LF Carpinter</strong>. Para completar tu registro y acceder a todas las funcionalidades, por favor confirma tu cuenta de correo electrónico.
+            </p>
+
+            <div style="background-color: #fef3c7; border-radius: 8px; padding: 20px; margin: 25px 0; border-left: 4px solid #d97706;">
+                <p style="margin: 0; color: #44403c; font-size: 14px;">
+                    <strong>⚠️ Importante:</strong> Este enlace expirará en <strong>{{ expiration_hours }} horas</strong>.
+                </p>
+            </div>
+
+            <p style="margin: 0 0 15px 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Si no solicitaste este registro, puedes ignorar este correo de forma segura.
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block button %}
+<tr>
+    <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <a href="{{ confirmation_url }}"
+           style="display: inline-block; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.4);">
+            Confirmar mi cuenta
+        </a>
+        <p style="margin: 15px 0 0 0; color: #78716c; font-size: 13px;">
+            Si el botón no funciona, copia y pega este enlace:<br>
+            <a href="{{ confirmation_url }}" style="color: #d97706; word-break: break-all;">{{ confirmation_url }}</a>
+        </p>
+    </td>
+</tr>
+{% endblock %}

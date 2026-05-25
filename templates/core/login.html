@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center py-16 px-4" style="background: var(--cream);">
+  <div class="max-w-4xl w-full grid md:grid-cols-2 rounded-2xl shadow-2xl overflow-hidden reveal">
+    
+    <!-- Left: Visual Panel -->
+    <div class="hidden md:flex flex-col justify-center p-12 relative overflow-hidden" style="background: linear-gradient(160deg, var(--wood-dark) 0%, var(--wood) 100%);">
+      <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;%3E%3Cpath d=&quot;M0 40L40 0H20L0 20M40 40V20L20 40&quot;/%3E%3C/g%3E%3C/svg%3E');"></div>
+      </div>
+      <div class="relative z-10">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-16 w-16 mb-8">
+        <h2 class="font-display text-3xl text-white mb-4">Bienvenido de vuelta</h2>
+        <p class="font-body text-stone-400 leading-relaxed">Accede a tu cuenta para gestionar tus proyectos, revisar solicitudes y conectar con los mejores carpinteros artesanales.</p>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="bg-white p-10 md:p-12">
+      <div class="md:hidden text-center mb-8">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="mx-auto h-16 w-16 mb-4">
+        <h2 class="font-display text-2xl" style="color: var(--wood-dark);">Iniciar Sesión</h2>
+      </div>
+      <h2 class="hidden md:block font-display text-2xl mb-8" style="color: var(--wood-dark);">Iniciar Sesión</h2>
+
+      <form method="post" class="space-y-5">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl font-body text-sm">
+          {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+        <div>
+          <label for="{{ form.email.id_for_label }}" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+            Correo electrónico
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-envelope text-stone-400 text-sm"></i>
+            </div>
+            {{ form.email }}
+            {% if form.email.errors %}
+            <p class="mt-1 text-xs text-red-500 font-body">{{ form.email.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div>
+          <label for="{{ form.password.id_for_label }}" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">
+            Contraseña
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-stone-400 text-sm"></i>
+            </div>
+            {{ form.password }}
+            {% if form.password.errors %}
+            <p class="mt-1 text-xs text-red-500 font-body">{{ form.password.errors.0 }}</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember-me" name="remember-me" type="checkbox" class="h-4 w-4 rounded border-stone-300 focus:ring-2" style="accent-color: var(--caramel);">
+            <label for="remember-me" class="ml-2 text-sm font-body text-stone-600">Recordarme</label>
+          </div>
+          <a href="{% url 'recuperar_contrasena' %}" class="font-body text-sm font-medium hover:underline" style="color: var(--caramel);">
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <button type="submit" class="w-full font-body font-medium py-3.5 rounded-xl text-white transition shadow-lg hover:shadow-xl hover:opacity-90" style="background: var(--caramel);">
+          Iniciar Sesión
+        </button>
+
+        <div class="mt-6">
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-stone-200"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-white text-stone-500 font-medium">O continúa con</span>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <a href="{% url 'social:begin' 'google-oauth2' %}" class="w-full inline-flex justify-center items-center gap-3 py-3 px-4 border border-stone-300 rounded-xl shadow-sm bg-white text-sm font-bold text-stone-700 hover:bg-stone-50 hover:border-stone-400 transition-all">
+              <svg class="w-5 h-5" viewBox="0 0 24 24">
+                <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+                <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+              </svg>
+              Google
+            </a>
+          </div>
+        </div>
+
+        <div class="text-center pt-4 border-t" style="border-color: var(--sand);">
+          <p class="font-body text-stone-500 text-sm">
+            ¿No tienes cuenta?
+            <a href="{% url 'registro_usuario' %}" class="font-medium hover:underline" style="color: var(--caramel);">Regístrate</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
+    inputs.forEach(input => {
+      input.classList.remove('form-control');
+      input.classList.add('w-full', 'pl-11', 'pr-4', 'py-3', 'border', 'rounded-xl', 'focus:ring-2', 'font-body', 'text-sm');
+      input.style.borderColor = '#e8ddd0';
+      input.style.setProperty('--tw-ring-color', '#c2813d');
+    });
+  });
+</script>
+{% endblock %}

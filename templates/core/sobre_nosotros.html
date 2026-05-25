@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre Nosotros | LF Carpinter{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="relative overflow-hidden py-24 px-6" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;0.3&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
+  </div>
+  <div class="container mx-auto text-center relative z-10">
+    <h1 class="font-display text-5xl md:text-6xl text-white mb-6 reveal">Sobre Nosotros</h1>
+    <p class="font-body text-lg text-stone-300 max-w-2xl mx-auto reveal" style="animation-delay: 0.1s;">
+      Somos una plataforma que conecta a los mejores carpinteros artesanales con clientes que valoran la calidad, el detalle y la tradición en cada pieza de madera.
+    </p>
+  </div>
+</section>
+
+<!-- Historia -->
+<section class="py-20 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-5xl">
+    <div class="grid md:grid-cols-2 gap-16 items-center">
+      <div class="reveal">
+        <span class="font-body text-sm uppercase tracking-widest mb-4 block" style="color: var(--caramel);">Nuestra Historia</span>
+        <h2 class="font-display text-4xl mb-6" style="color: var(--wood-dark);">Del taller a la plataforma digital</h2>
+        <p class="font-body text-stone-600 leading-relaxed mb-4">
+          LF Carpinter nació de la pasión por la carpintería artesanal colombiana. Vimos cómo cientos de talentosos carpinteros luchaban por encontrar clientes que valoraran su trabajo, mientras familias buscaban profesionales confiables para sus proyectos.
+        </p>
+        <p class="font-body text-stone-600 leading-relaxed">
+          Decidimos crear un puente entre ambos mundos: una plataforma donde la tradición del oficio se encontrara con la tecnología moderna, permitiendo que cada carpintero muestre su talento y cada cliente encuentre exactamente lo que necesita.
+        </p>
+      </div>
+      <div class="reveal">
+        <div class="relative">
+          <img src="{% static 'img/comedor.jpeg' %}" alt="Taller de carpintería" class="rounded-2xl shadow-2xl w-full h-80 object-cover">
+          <div class="absolute -bottom-6 -left-6 w-32 h-32 rounded-xl overflow-hidden shadow-xl border-4 border-white">
+            <img src="{% static 'img/silla_roble.jpeg' %}" alt="Detalle" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Valores -->
+<section class="py-20 px-6" style="background: var(--sand);">
+  <div class="container mx-auto max-w-5xl text-center">
+    <span class="font-body text-sm uppercase tracking-widest mb-4 block reveal" style="color: var(--caramel);">Lo que nos define</span>
+    <h2 class="font-display text-4xl mb-14 reveal" style="color: var(--wood-dark);">Nuestros Valores</h2>
+    
+    <div class="grid md:grid-cols-3 gap-8 stagger reveal">
+      <div class="bg-white p-8 rounded-2xl shadow-md hover-lift">
+        <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: linear-gradient(135deg, var(--caramel), #d4954f);">
+          <i class="fas fa-award text-white text-2xl"></i>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Calidad Artesanal</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Cada carpintero en nuestra plataforma es evaluado para garantizar estándares de excelencia en su trabajo.</p>
+      </div>
+      <div class="bg-white p-8 rounded-2xl shadow-md hover-lift">
+        <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: linear-gradient(135deg, var(--wood), #5a3a2a);">
+          <i class="fas fa-handshake text-white text-2xl"></i>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Confianza</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Sistema de reseñas verificadas y perfiles profesionales completos para tomar decisiones informadas.</p>
+      </div>
+      <div class="bg-white p-8 rounded-2xl shadow-md hover-lift">
+        <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: linear-gradient(135deg, var(--caramel), var(--wood));">
+          <i class="fas fa-leaf text-white text-2xl"></i>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Sostenibilidad</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Promovemos el uso responsable de la madera y apoyamos a los artesanos locales en sus comunidades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Misión y Visión -->
+<section class="py-20 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-5xl">
+    <div class="grid md:grid-cols-2 gap-10">
+      <div class="p-10 rounded-2xl reveal hover-lift" style="background: var(--wood-dark);">
+        <i class="fas fa-bullseye text-3xl mb-5" style="color: var(--caramel);"></i>
+        <h3 class="font-display text-2xl text-white mb-4">Nuestra Misión</h3>
+        <p class="font-body text-stone-400 leading-relaxed">Democratizar el acceso a carpintería artesanal de calidad en Colombia, conectando el talento de nuestros carpinteros con las necesidades de cada hogar y negocio a través de la tecnología.</p>
+      </div>
+      <div class="bg-white p-10 rounded-2xl shadow-lg reveal hover-lift border" style="border-color: var(--sand);">
+        <i class="fas fa-eye text-3xl mb-5" style="color: var(--caramel);"></i>
+        <h3 class="font-display text-2xl mb-4" style="color: var(--wood-dark);">Nuestra Visión</h3>
+        <p class="font-body text-stone-500 leading-relaxed">Ser la plataforma líder en Latinoamérica para la carpintería artesanal, donde cada profesional pueda construir su reputación y cada cliente encuentre el mueble perfecto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 px-6 text-center" style="background: linear-gradient(135deg, var(--caramel), #d4954f);">
+  <div class="container mx-auto max-w-2xl reveal">
+    <h2 class="font-display text-3xl text-white mb-4">¿Listo para empezar tu proyecto?</h2>
+    <p class="font-body text-white/80 mb-8">Únete a nuestra comunidad como cliente o como carpintero profesional.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="{% url 'registro_usuario' %}" class="font-body font-medium px-8 py-3 bg-white rounded-xl shadow-lg hover:shadow-xl transition" style="color: var(--wood-dark);">
+        Registrarme como Cliente
+      </a>
+      <a href="{% url 'registro_carpintero' %}" class="font-body font-medium px-8 py-3 rounded-xl border-2 border-white text-white hover:bg-white/10 transition">
+        Soy Carpintero
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}

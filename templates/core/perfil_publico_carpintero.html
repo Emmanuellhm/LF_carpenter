@@ -1,0 +1,483 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ carpintero.user.full_name }} | LF Carpinter{% endblock %}
+
+{% block meta %}
+<meta name="description" content="Artesano y ebanista en {{ carpintero.user.city }}. Especialidad: {{ carpintero.specialties }}.">
+<meta property="og:title" content="{{ carpintero.user.full_name }} - LF Carpinter">
+<meta property="og:description" content="Mira el portafolio de {{ carpintero.user.full_name }} y encarga tu pieza de madera personalizada.">
+<meta property="og:type" content="profile">
+{% if carpintero.user.avatar %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ carpintero.user.avatar.url }}">
+{% else %}
+<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'img/Logo de Carpintería LF.png' %}">
+{% endif %}
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
+  :root { --cg: 'Cormorant Garamond', serif; --dm: 'DM Sans', sans-serif; }
+
+  .profile-hero { background: linear-gradient(140deg,#1c1109 0%,#2c1a10 55%,#3d2010 100%); position:relative; overflow:hidden; }
+  .profile-hero::after { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 55% 70% at 85% 50%,rgba(184,115,51,.13) 0%,transparent 65%); }
+
+  .product-card { transition: transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s; }
+  .product-card:hover { transform:translateY(-5px); box-shadow:0 20px 48px rgba(44,26,16,.14); }
+  .product-card:hover .buy-btn { opacity:1; transform:translateY(0); }
+  .buy-btn { opacity:0; transform:translateY(8px); transition: opacity .25s, transform .25s; }
+
+  .star-on { color:#b87333; } .star-off { color:#d6d3d1; }
+
+  /* Modal */
+  .modal-overlay { transition: opacity .25s; }
+  .modal-box { transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .3s; }
+
+  /* Input spacing — visible labels always above, never inside */
+  .field-label { display:block; font-size:.7rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#78716c; margin-bottom:.375rem; }
+  .field-input { width:100%; padding:.75rem 1rem; border:1.5px solid #e7e5e4; border-radius:.75rem; font-size:.875rem; line-height:1.5; color:#1c1917; transition:border-color .2s, box-shadow .2s; }
+  .field-input:focus { outline:none; border-color:#b87333; box-shadow:0 0 0 3px rgba(184,115,51,.15); }
+
+  .sticky-col { position:sticky; top:5.5rem; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  .au { animation:fadeUp .55s ease both; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HERO -->
+<div class="profile-hero py-14 md:py-20">
+  <div class="container mx-auto px-6 relative z-10">
+    <a href="{% url 'explorar_carpinteros' %}" class="inline-flex items-center gap-2 text-stone-400 hover:text-[var(--caramel)] text-sm mb-8 transition">
+      <i class="fas fa-arrow-left text-xs"></i> Volver al directorio
+    </a>
+    <div class="flex flex-col sm:flex-row items-start sm:items-end gap-7">
+      <div class="w-28 h-28 rounded-2xl border-2 border-[var(--caramel)]/30 bg-[var(--wood)]/30 flex items-center justify-center overflow-hidden shrink-0">
+        {% if carpintero.portafolio.first and carpintero.portafolio.first.image %}
+          <img src="{{ carpintero.portafolio.first.image.url }}" alt="" class="w-full h-full object-cover">
+        {% else %}
+          <span style="font-family:var(--cg);" class="text-6xl font-semibold text-[var(--caramel)]/60">{{ carpintero.user.full_name|slice:":1"|upper }}</span>
+        {% endif %}
+      </div>
+      <div class="text-white au" style="animation-delay:.1s">
+        <p class="text-xs tracking-[.22em] uppercase text-[var(--caramel)] mb-2">{{ carpintero.specialties|default:"Artesano" }}</p>
+        <h1 style="font-family:var(--cg);" class="text-5xl md:text-6xl font-semibold leading-tight mb-3">{{ carpintero.user.full_name }}</h1>
+        <div class="flex flex-wrap gap-5 text-stone-400 text-sm">
+          {% if carpintero.user.city %}<span><i class="fas fa-map-marker-alt text-[var(--caramel)] mr-1"></i>{{ carpintero.user.city }}</span>{% endif %}
+          <span><i class="fas fa-briefcase text-[var(--caramel)] mr-1"></i>{{ carpintero.experience_years }} año{{ carpintero.experience_years|pluralize:"s" }}</span>
+          <span><i class="fas fa-star text-[var(--caramel)] mr-1"></i>{{ rating_avg }}/5 <span class="text-stone-600">({{ total_reviews }})</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MENSAJES -->
+{% if messages %}
+<div class="bg-[var(--cream)] border-b border-stone-200">
+  <div class="container mx-auto px-6 py-3 space-y-2">
+    {% for m in messages %}
+    <div class="flex items-center gap-3 text-sm px-4 py-3 rounded-xl {% if m.tags == 'success' %}bg-emerald-50 border border-emerald-200 text-emerald-800{% else %}bg-red-50 border border-red-200 text-red-700{% endif %}">
+      <i class="fas {% if m.tags == 'success' %}fa-check-circle text-emerald-500{% else %}fa-exclamation-circle text-red-500{% endif %} shrink-0"></i>
+      <span>{{ m }}</span>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<!-- CONTENIDO PRINCIPAL -->
+<div class="bg-[var(--cream)] min-h-screen">
+  <div class="container mx-auto px-6 py-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+
+      <!-- COLUMNA IZQUIERDA -->
+      <div class="lg:col-span-2 space-y-14">
+
+        <!-- Sobre mí -->
+        {% if carpintero.description %}
+        <section class="au" style="animation-delay:.15s">
+          <h2 style="font-family:var(--cg);" class="text-3xl font-semibold text-[var(--wood-dark)] mb-3">Sobre mí</h2>
+          <p style="font-family:var(--dm); line-height:1.75;" class="text-stone-600 max-w-prose">{{ carpintero.description }}</p>
+        </section>
+        {% endif %}
+
+        <!-- ══ PORTAFOLIO: trabajos de inspiración ══ -->
+        <section class="au" style="animation-delay:.2s">
+          <div class="flex items-baseline justify-between mb-2">
+            <h2 style="font-family:var(--cg);" class="text-3xl font-semibold text-[var(--wood-dark)]">Portafolio de Inspiración</h2>
+            <span class="text-sm text-stone-400">{{ portafolio.count }} proyecto{{ portafolio.count|pluralize:"s" }}</span>
+          </div>
+          <p class="text-stone-500 text-sm mb-6" style="font-family:var(--dm);">
+            Trabajos anteriores realizados por {{ carpintero.user.full_name|truncatewords:1 }}. Úsalos de inspiración para solicitar una cotización a medida.
+          </p>
+
+          {% if portafolio %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {% for p in portafolio %}
+            <article class="product-card bg-white rounded-2xl border border-stone-200 overflow-hidden flex flex-col">
+              <!-- Imagen fija 240px -->
+              <div class="relative w-full shrink-0 cursor-pointer"
+                   style="height:220px;"
+                   onclick="openProductModal(
+                     '{% if p.image %}{{ p.image.url }}{% endif %}',
+                     {{ p.id }},
+                     '{{ p.title|escapejs }}',
+                     '{{ p.description|default:""|escapejs }}',
+                     {{ p.price|default:0 }}
+                   )">
+                {% if p.image %}
+                  <img src="{{ p.image.url }}" alt="{{ p.title }}" loading="lazy"
+                       class="absolute inset-0 w-full h-full object-cover transition duration-500 hover:scale-105">
+                {% else %}
+                  <div class="absolute inset-0 bg-stone-100 flex items-center justify-center text-stone-300">
+                    <i class="fas fa-image text-5xl"></i>
+                  </div>
+                {% endif %}
+                <!-- Degradado hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 hover:opacity-100 transition duration-300 flex items-end justify-center pb-4">
+                  <span class="text-white text-xs font-bold tracking-wider uppercase"><i class="fas fa-expand-alt mr-1"></i>Ver detalle</span>
+                </div>
+              </div>
+              <!-- Info -->
+              <div class="p-5 flex flex-col flex-1">
+                <h3 style="font-family:var(--cg);" class="text-xl font-semibold text-[var(--wood-dark)] leading-snug mb-1">{{ p.title }}</h3>
+                <p class="text-stone-500 text-sm leading-relaxed line-clamp-2 mb-3">{{ p.description|default:"Pieza artesanal de alta calidad." }}</p>
+                <!-- Precio en la sección de info, NO en la imagen -->
+                {% if p.price %}
+                <div class="flex items-center justify-between mb-4 bg-[var(--caramel)]/8 rounded-xl px-3 py-2">
+                  <span class="text-xs text-stone-500 font-medium">Precio</span>
+                  <span class="font-bold text-[var(--wood-dark)] text-base" style="font-variant-numeric:tabular-nums;">${{ p.price|floatformat:"0" }} COP</span>
+                </div>
+                {% else %}
+                <div class="mb-4"></div>
+                {% endif %}
+                <div class="flex gap-2 mt-auto">
+                  <button onclick="openProductModal('{% if p.image %}{{ p.image.url }}{% endif %}',{{ p.id }},'{{ p.title|escapejs }}','{{ p.description|default:""|escapejs }}',{{ p.price|default:0 }})"
+                          class="buy-btn flex-1 py-2.5 border border-[var(--caramel)] text-[var(--wood-dark)] hover:bg-[var(--caramel)] hover:text-white rounded-xl text-sm font-bold transition flex items-center justify-center gap-2">
+                    <i class="fas fa-eye"></i> Ver detalles
+                  </button>
+                  {% if can_contact %}
+                  <button onclick="prefillCustom('{{ p.title|escapejs }}')"
+                          title="Pedir algo similar" aria-label="Pedir pieza similar"
+                          class="buy-btn px-3.5 py-2.5 border border-stone-300 text-stone-600 hover:border-[var(--caramel)] hover:text-[var(--caramel)] rounded-xl text-sm transition">
+                    <i class="fas fa-pencil-ruler"></i>
+                  </button>
+                  {% endif %}
+                </div>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+
+          {% else %}
+          <div class="bg-white rounded-2xl border border-dashed border-stone-300 p-12 text-center">
+            <i class="fas fa-store-slash text-4xl text-stone-300 mb-3 block"></i>
+            <p class="font-medium text-stone-500 mb-1">Sin piezas publicadas aún</p>
+            <p class="text-sm text-stone-400">Puedes encargarte algo personalizado usando el formulario a la derecha.</p>
+          </div>
+          {% endif %}
+        </section>
+
+        <!-- ══ Reseñas ══ -->
+        <section class="au" style="animation-delay:.3s">
+          <div class="flex items-center justify-between mb-5">
+            <h2 style="font-family:var(--cg);" class="text-3xl font-semibold text-[var(--wood-dark)]">Reseñas</h2>
+            {% if total_reviews > 0 %}
+            <span class="flex items-center gap-2 text-sm text-stone-600">
+              {% for i in rating_range %}<i class="fas fa-star text-xs {% if i <= rating_avg %}star-on{% else %}star-off{% endif %}"></i>{% endfor %}
+              <strong class="text-[var(--wood-dark)]">{{ rating_avg }}</strong>/5
+            </span>
+            {% endif %}
+          </div>
+          {% if reviews %}
+          <div class="space-y-3">
+            {% for r in reviews %}
+            <div class="bg-white rounded-2xl border border-stone-200 p-5">
+              <div class="flex items-start justify-between mb-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-full bg-[var(--caramel)]/10 flex items-center justify-center text-sm font-bold text-[var(--caramel)] shrink-0">{{ r.user.full_name|slice:":1"|upper }}</div>
+                  <div>
+                    <p class="font-semibold text-[var(--wood-dark)] text-sm leading-none mb-0.5">{{ r.user.full_name }}</p>
+                    <p class="text-xs text-stone-400">{{ r.created_at|date:"d M Y" }}</p>
+                  </div>
+                </div>
+                <div class="flex gap-0.5 mt-0.5">{% for i in rating_range %}<i class="fas fa-star text-xs {% if i <= r.rating %}star-on{% else %}star-off{% endif %}"></i>{% endfor %}</div>
+              </div>
+              {% if r.comment %}<p class="text-stone-600 text-sm leading-relaxed">{{ r.comment }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+          {% else %}
+          <div class="bg-white rounded-2xl border border-stone-200 p-10 text-center text-stone-400">
+            <i class="fas fa-comment-slash text-3xl mb-3 block"></i>
+            <p class="text-sm">Sin reseñas aún. ¡Sé el primero en trabajar con {{ carpintero.user.full_name|truncatewords:2 }}!</p>
+          </div>
+          {% endif %}
+        </section>
+
+      </div><!-- /col izq -->
+
+      <!-- COLUMNA DERECHA -->
+      <div>
+        <div class="sticky-col space-y-5">
+
+          <!-- Tarjeta info artesano -->
+          <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+            <div class="bg-gradient-to-br from-[var(--wood-dark)] to-[var(--wood)] px-5 py-5 text-white">
+              <p class="text-xs uppercase tracking-widest text-stone-400 mb-1">Presupuesto desde</p>
+              <p style="font-family:var(--cg); font-variant-numeric:tabular-nums;" class="text-3xl font-semibold text-[var(--caramel)]">
+                {% if carpintero.budget_range %}${{ carpintero.budget_range|floatformat:"0" }} COP{% else %}A consultar{% endif %}
+              </p>
+              <div class="flex gap-4 mt-3 pt-3 border-t border-white/10 text-xs text-stone-400">
+                <span><i class="fas fa-images mr-1 text-stone-500"></i>{{ portafolio.count }} pieza{{ portafolio.count|pluralize:"s" }}</span>
+                <span><i class="fas fa-star mr-1 text-stone-500"></i>{{ rating_avg }}/5</span>
+                <span><i class="fas fa-clock mr-1 text-stone-500"></i>~24h respuesta</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formulario: encargar pieza personalizada -->
+          <div class="bg-white rounded-2xl border border-stone-200 shadow-sm overflow-hidden">
+            <div class="px-5 pt-5 pb-4 border-b border-stone-100">
+              <div class="flex items-center gap-3 mb-1">
+                <div class="w-9 h-9 rounded-xl bg-[var(--caramel)]/10 flex items-center justify-center shrink-0">
+                  <i class="fas fa-pencil-ruler text-[var(--caramel)]"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-[var(--wood-dark)] text-sm">Encargar pieza a medida</h3>
+                  <p class="text-xs text-stone-400 mt-0.5">¿Tienes algo en mente que no ves aquí?</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-5">
+              {% if can_contact %}
+              <form method="post" id="custom-form" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                  <label class="field-label" for="titulo-field">¿Qué pieza necesitas? <span class="text-red-400">*</span></label>
+                  <input class="field-input" type="text" name="titulo" id="titulo-field" required placeholder="Ej: Cama doble en madera de pino">
+                </div>
+                <div>
+                  <label class="field-label" for="desc-field">Descríbela con detalle <span class="text-red-400">*</span></label>
+                  <textarea class="field-input" name="descripcion" id="desc-field" required rows="4" style="resize:none;" placeholder="Medidas, estilo, colores, materiales, referencias…"></textarea>
+                  <p class="text-xs text-stone-400 mt-1.5">Cuanto más detalle des, mejor cotización recibirás.</p>
+                </div>
+                <div>
+                  <label class="field-label" for="budget-field">Tu presupuesto máximo (opcional)</label>
+                  <div class="relative">
+                    <span class="absolute inset-y-0 left-3.5 flex items-center text-stone-400 text-sm pointer-events-none select-none">COP&nbsp;$</span>
+                    <input class="field-input pl-14" type="number" name="presupuesto" id="budget-field" min="0" placeholder="1 500 000">
+                  </div>
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-xl font-bold text-sm transition shadow-[0_4px_14px_rgba(184,115,51,.35)] hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                  <i class="fas fa-paper-plane"></i> Enviar mi encargo
+                </button>
+                <p class="text-center text-xs text-stone-400">Sin compromiso · {{ carpintero.user.full_name|truncatewords:2 }} responde en ~24 h</p>
+              </form>
+
+              {% elif user.is_authenticated %}
+              <div class="text-center py-6 text-stone-500">
+                <i class="fas fa-user-lock text-3xl text-stone-300 mb-3 block"></i>
+                <p class="text-sm font-medium">Exclusivo para clientes</p>
+                <p class="text-xs text-stone-400 mt-1">Solo los clientes registrados pueden enviar encargos.</p>
+              </div>
+              {% else %}
+              <div class="text-center py-4">
+                <i class="fas fa-lock text-3xl text-[var(--caramel)]/30 mb-3 block"></i>
+                <p class="text-sm font-medium text-stone-700 mb-1">Inicia sesión para encargar</p>
+                <p class="text-xs text-stone-400 mb-4">Crea tu cuenta gratis y conecta con artesanos verificados.</p>
+                <a href="{% url 'login' %}?next={{ request.path }}" class="block w-full py-3.5 bg-[var(--caramel)] text-white rounded-xl font-bold text-sm text-center hover:bg-[#a6652c] transition">
+                  Iniciar sesión
+                </a>
+                <p class="text-xs text-stone-400 mt-3">¿Sin cuenta? <a href="{% url 'registro_usuario' %}" class="text-[var(--caramel)] font-medium hover:underline">Regístrate gratis</a></p>
+              </div>
+              {% endif %}
+
+              {% if carpintero.portfolio_url %}
+              <a href="{{ carpintero.portfolio_url }}" target="_blank" rel="noopener"
+                 class="mt-4 flex items-center justify-center gap-2 py-2.5 border border-stone-200 text-stone-500 rounded-xl text-sm hover:bg-stone-50 transition">
+                <i class="fas fa-external-link-alt text-stone-400"></i> Ver portafolio externo
+              </a>
+              {% endif %}
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /col der -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════
+     MODAL DE COMPRA — Premium Product Page Experience
+════════════════════════════════════════════════════ -->
+<div id="product-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"
+     class="modal-overlay fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-md"
+     onclick="if(event.target===this)closeModal()">
+
+  <div class="modal-box bg-white w-full max-w-5xl rounded-3xl shadow-[0_32px_80px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col md:flex-row" style="max-height:92vh;">
+
+    <!-- ── Imagen grande (izquierda) ── -->
+    <div class="relative md:w-[52%] shrink-0 bg-stone-100 overflow-hidden" style="min-height:280px;">
+      <img id="modal-img" src="" alt="" loading="lazy"
+           class="absolute inset-0 w-full h-full object-cover">
+      <!-- Overlay degradado inferior -->
+      <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+        <div id="modal-price-hero" class="hidden">
+          <p class="text-white/60 text-xs uppercase tracking-widest mb-1">Precio referencial</p>
+          <p id="modal-price-hero-text" class="text-white font-bold text-3xl md:text-4xl" style="font-family:var(--cg); font-variant-numeric:tabular-nums;"></p>
+        </div>
+      </div>
+      <!-- Badge verificado -->
+      <div class="absolute top-4 left-4 bg-emerald-500/90 text-white text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 backdrop-blur-sm">
+        <i class="fas fa-shield-alt"></i> Artesano verificado
+      </div>
+    </div>
+
+    <!-- ── Detalles + CTA (derecha) ── -->
+    <div class="flex-1 flex flex-col overflow-y-auto">
+      <!-- Header del producto -->
+      <div class="px-7 pt-7 pb-5 border-b border-stone-100">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs text-stone-400 uppercase tracking-[.18em] mb-2">Pieza artesanal · {{ carpintero.user.full_name }}</p>
+            <h2 id="modal-title" style="font-family:var(--cg);" class="text-3xl md:text-4xl font-semibold text-[var(--wood-dark)] leading-tight"></h2>
+          </div>
+          <button onclick="closeModal()" aria-label="Cerrar"
+                  class="shrink-0 w-10 h-10 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 transition mt-1">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Descripción -->
+      <div class="px-7 py-5 flex-1">
+        <p id="modal-desc" class="text-stone-600 leading-relaxed text-base" style="font-family:var(--dm);"></p>
+
+        <!-- Características placeholder -->
+        <div class="mt-5 grid grid-cols-2 gap-3">
+          <div class="bg-stone-50 rounded-xl px-4 py-3 border border-stone-100">
+            <p class="text-xs text-stone-400 mb-0.5">Artesano</p>
+            <p class="text-sm font-semibold text-[var(--wood-dark)] truncate">{{ carpintero.user.full_name }}</p>
+          </div>
+          <div class="bg-stone-50 rounded-xl px-4 py-3 border border-stone-100">
+            <p class="text-xs text-stone-400 mb-0.5">Experiencia</p>
+            <p class="text-sm font-semibold text-[var(--wood-dark)]">{{ carpintero.experience_years }} años</p>
+          </div>
+          <div class="bg-stone-50 rounded-xl px-4 py-3 border border-stone-100">
+            <p class="text-xs text-stone-400 mb-0.5">Ciudad</p>
+            <p class="text-sm font-semibold text-[var(--wood-dark)]">{{ carpintero.user.city|default:"Colombia" }}</p>
+          </div>
+          <div class="bg-stone-50 rounded-xl px-4 py-3 border border-stone-100">
+            <p class="text-xs text-stone-400 mb-0.5">Calificación</p>
+            <p class="text-sm font-semibold text-[var(--wood-dark)]">{{ rating_avg }}/5 <span class="text-[var(--caramel)]">★</span></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CTA pegado al fondo -->
+      <div class="px-7 py-6 border-t border-stone-100 bg-stone-50/60">
+        <!-- Precio destacado -->
+        <div id="modal-price-bar" class="hidden mb-4 flex items-center justify-between bg-white rounded-2xl border border-[var(--caramel)]/25 px-5 py-4 shadow-sm">
+          <div>
+            <p class="text-xs text-stone-400 uppercase tracking-wider">Precio</p>
+            <p id="modal-price-bar-text" class="text-2xl font-bold text-[var(--wood-dark)] mt-0.5" style="font-variant-numeric:tabular-nums; font-family:var(--cg);"></p>
+          </div>
+          <div class="w-10 h-10 rounded-full bg-[var(--caramel)]/10 flex items-center justify-center">
+            <i class="fas fa-tag text-[var(--caramel)]"></i>
+          </div>
+        </div>
+        {% if can_contact %}
+        <button onclick="closeModal(); prefillCustom(document.getElementById('modal-title').textContent)"
+                class="w-full py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-2xl font-bold text-base transition shadow-[0_6px_20px_rgba(184,115,51,.4)] hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-3">
+          <i class="fas fa-pencil-ruler text-lg"></i> Cotizar proyecto similar
+        </button>
+        {% elif not user.is_authenticated %}
+        <a href="{% url 'login' %}?next={{ request.path }}"
+           class="block w-full py-4 bg-[var(--caramel)] text-white rounded-2xl font-bold text-base text-center transition">
+          Iniciar sesión para comprar
+        </a>
+        {% endif %}
+        <p class="text-center text-xs text-stone-400 mt-4">
+          <i class="fas fa-shield-alt text-stone-300 mr-1"></i>Cotización sin compromiso · LF Carpinter protege tu proyecto
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- Formulario oculto para compra directa (POST al servidor) -->
+<form id="purchase-hidden-form" method="post" class="hidden">
+  {% csrf_token %}
+  <input type="hidden" name="titulo" id="ph-titulo">
+  <input type="hidden" name="descripcion" id="ph-desc">
+  <input type="hidden" name="presupuesto" id="ph-precio">
+</form>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  let _currentProject = {};
+
+  function openProductModal(img, id, title, desc, price) {
+    _currentProject = {id, title, price};
+    document.getElementById('modal-img').src = img || '';
+    document.getElementById('modal-img').alt = title;
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-desc').textContent = desc || 'Pieza artesanal de alta calidad.';
+
+    const heroWrap = document.getElementById('modal-price-hero');
+    const heroText = document.getElementById('modal-price-hero-text');
+    const barWrap  = document.getElementById('modal-price-bar');
+    const barText  = document.getElementById('modal-price-bar-text');
+    if (price && price > 0) {
+      const fmt = '$' + parseInt(price).toLocaleString('es-CO') + ' COP';
+      heroText.textContent = fmt;
+      barText.textContent  = fmt;
+      heroWrap.classList.remove('hidden');
+      barWrap.classList.remove('hidden');
+    } else {
+      heroWrap.classList.add('hidden');
+      barWrap.classList.add('hidden');
+    }
+
+    const modal = document.getElementById('product-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('product-modal');
+    modal.classList.add('hidden');
+    modal.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+
+  function submitPurchase() {
+    if (!_currentProject.title) return;
+    document.getElementById('ph-titulo').value  = 'Compra: ' + _currentProject.title;
+    document.getElementById('ph-desc').value    = 'Quiero comprar la pieza exacta: ' + _currentProject.title;
+    document.getElementById('ph-precio').value  = _currentProject.price || '';
+    document.getElementById('purchase-hidden-form').submit();
+  }
+
+  function prefillCustom(title) {
+    const f = document.getElementById('titulo-field');
+    if (!f) return;
+    f.value = 'Similar a: ' + title;
+    f.scrollIntoView({ behavior:'smooth', block:'center' });
+    f.focus();
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+{% endblock %}

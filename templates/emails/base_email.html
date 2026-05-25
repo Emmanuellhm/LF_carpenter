@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block email_title %}LF Carpinter{% endblock %}</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Georgia', serif; background-color: #f5f0e8; color: #3d2c22; }
+    .wrapper { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+    .header { background: linear-gradient(135deg, #3d2c22 0%, #6b4226 100%); padding: 40px 48px; text-align: center; }
+    .header .logo-icon { font-size: 40px; color: #c8874a; margin-bottom: 12px; }
+    .header h1 { color: #f5f0e8; font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+    .header p { color: rgba(245,240,232,0.65); font-size: 13px; margin-top: 4px; }
+    .body { padding: 48px; }
+    .greeting { font-size: 22px; font-weight: 700; color: #3d2c22; margin-bottom: 16px; }
+    .text { font-size: 15px; line-height: 1.8; color: #5a4a40; margin-bottom: 20px; }
+    .cta-wrapper { text-align: center; margin: 36px 0; }
+    .cta-btn { display: inline-block; background: linear-gradient(135deg, #b87333, #c8874a); color: #ffffff !important; text-decoration: none; padding: 16px 40px; border-radius: 50px; font-size: 15px; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 6px 20px rgba(184,115,51,0.35); }
+    .divider { border: none; border-top: 1px solid #ebe5d9; margin: 32px 0; }
+    .info-box { background: #fdf8f2; border: 1px solid #ede0cc; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .info-box p { font-size: 14px; color: #6b5344; line-height: 1.7; }
+    .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; }
+    .badge-orange { background: #fef3e2; color: #b87333; border: 1px solid #f0d5a0; }
+    .badge-green { background: #e8f7ef; color: #1f7a4a; border: 1px solid #a3d9bb; }
+    .badge-blue { background: #e8f0fb; color: #1a50a0; border: 1px solid #a3c0ed; }
+    .badge-purple { background: #f2eaff; color: #6b3fa0; border: 1px solid #c9a0ed; }
+    .footer { background: #3d2c22; padding: 32px 48px; text-align: center; }
+    .footer p { color: rgba(245,240,232,0.5); font-size: 12px; line-height: 1.8; }
+    .footer a { color: #c8874a; text-decoration: none; }
+    .social-links { margin: 16px 0; }
+    .social-links a { display: inline-block; width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); color: rgba(245,240,232,0.6) !important; text-align: center; line-height: 36px; margin: 0 4px; font-size: 14px; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <!-- Header con logo -->
+    <div class="header">
+      <div class="logo-icon">🪵</div>
+      <h1>LF Carpinter</h1>
+      <p>Artesanía en madera de alta calidad</p>
+    </div>
+
+    <!-- Cuerpo del correo -->
+    <div class="body">
+      {% block email_body %}{% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <div class="social-links">
+        <a href="#">📘</a>
+        <a href="#">📷</a>
+        <a href="#">💼</a>
+      </div>
+      <p>
+        Recibiste este correo porque tienes una cuenta en LF Carpinter.<br>
+        <a href="{{ site_url }}">Visitar la plataforma</a> · 
+        <a href="{{ site_url }}/terminos/">Términos y condiciones</a>
+      </p>
+      <p style="margin-top:12px">© 2026 LF Carpinter. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</body>
+</html>

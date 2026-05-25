@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ accion }} Proyecto | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-[var(--cream)]">
+  <div class="container mx-auto px-6 py-10 max-w-3xl">
+
+    <a href="{% url 'carpinteros:mis_proyectos' %}" class="text-stone-400 hover:text-[var(--caramel)] text-sm mb-6 flex items-center gap-1 transition"><i class="fas fa-arrow-left text-xs"></i> Volver a mi portafolio</a>
+
+    <div class="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+      <div class="bg-gradient-to-r from-[var(--wood-dark)] to-[var(--wood)] px-8 py-6">
+        <h1 class="font-display text-3xl text-white">{{ accion }} Proyecto</h1>
+        <p class="text-stone-300 text-sm mt-1">{% if accion == 'Subir' %}Comparte tu trabajo con el mundo{% else %}Actualiza la información de "{{ proyecto.title }}"{% endif %}</p>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" class="p-8 space-y-6">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Upload de imagen -->
+        <div>
+          <label class="block text-sm font-bold text-[var(--wood-dark)] mb-3">Fotografía del proyecto</label>
+          <div id="drop-zone" class="relative border-2 border-dashed border-stone-300 rounded-2xl overflow-hidden hover:border-[var(--caramel)] transition cursor-pointer bg-stone-50 hover:bg-stone-100 group">
+            {% if accion == 'Editar' and proyecto.image %}
+            <img id="preview-img" src="{{ proyecto.image.url }}" alt="Vista previa" class="w-full max-h-72 object-cover">
+            {% else %}
+            <img id="preview-img" src="" alt="Vista previa" class="w-full max-h-72 object-cover hidden">
+            {% endif %}
+            <div id="drop-placeholder" class="flex flex-col items-center justify-center py-16 {% if accion == 'Editar' and proyecto.image %}hidden{% endif %}">
+              <i class="fas fa-cloud-upload-alt text-5xl text-stone-300 group-hover:text-[var(--caramel)] mb-4 transition"></i>
+              <p class="font-medium text-stone-500">Arrastra tu foto aquí o <span class="text-[var(--caramel)]">haz clic para subir</span></p>
+              <p class="text-xs text-stone-400 mt-1">JPG, PNG, WEBP hasta 10MB</p>
+            </div>
+            {{ form.image }}
+          </div>
+          {% if form.image.errors %}<p class="text-red-600 text-xs mt-1">{{ form.image.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Título -->
+        <div>
+          <label for="{{ form.title.id_for_label }}" class="block text-sm font-bold text-[var(--wood-dark)] mb-2">{{ form.title.label }} *</label>
+          {{ form.title }}
+          {% if form.title.errors %}<p class="text-red-600 text-xs mt-1">{{ form.title.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Descripción -->
+        <div>
+          <label for="{{ form.description.id_for_label }}" class="block text-sm font-bold text-[var(--wood-dark)] mb-2">{{ form.description.label }}</label>
+          {{ form.description }}
+          {% if form.description.errors %}<p class="text-red-600 text-xs mt-1">{{ form.description.errors.0 }}</p>{% endif %}
+        </div>
+
+        <!-- Precio -->
+        <div>
+          <label for="{{ form.price.id_for_label }}" class="block text-sm font-bold text-[var(--wood-dark)] mb-2">{{ form.price.label }}</label>
+          <div class="relative">
+            <span class="absolute inset-y-0 left-3 flex items-center text-stone-400 text-sm pointer-events-none">COP $</span>
+            {{ form.price }}
+          </div>
+          {% if form.price.errors %}<p class="text-red-600 text-xs mt-1">{{ form.price.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="flex gap-3 pt-2">
+          <a href="{% url 'carpinteros:mis_proyectos' %}" class="flex-1 py-3 text-center border border-stone-300 text-stone-600 rounded-xl font-medium text-sm hover:bg-stone-50 transition">Cancelar</a>
+          <button type="submit" class="flex-1 py-3 bg-[var(--caramel)] text-white rounded-xl font-bold text-sm hover:bg-[#a6652c] transition shadow-lg flex items-center justify-center gap-2">
+            <i class="fas {% if accion == 'Subir' %}fa-upload{% else %}fa-save{% endif %}"></i>
+            {{ accion }} Proyecto
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const input = document.getElementById('proyecto_imagen_input');
+    const previewImg = document.getElementById('preview-img');
+    const placeholder = document.getElementById('drop-placeholder');
+
+    if (input) {
+      input.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function (ev) {
+            previewImg.src = ev.target.result;
+            previewImg.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+  });
+</script>
+{% endblock %}

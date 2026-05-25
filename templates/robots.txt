@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /usuarios/
+Disallow: /carpinteros/panel/
+Disallow: /chat/
+
+Sitemap: {{ request.scheme }}://{{ request.get_host }}/sitemap.xml

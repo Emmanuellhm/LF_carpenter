@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mis Encargos | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] py-16 px-4 sm:px-6 lg:px-8 bg-[var(--cream)]">
+
+  <!-- Breadcrumb + Navegación -->
+  <div class="max-w-5xl mx-auto mb-8">
+    <div class="flex items-center justify-between bg-white border border-stone-100 rounded-2xl px-5 py-3 shadow-sm">
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-sm font-body text-stone-400" aria-label="Breadcrumb">
+        <a href="{% url 'usuarios:panel' %}" class="flex items-center gap-1.5 hover:text-[var(--caramel)] transition-colors duration-200">
+          <i class="fas fa-home text-xs"></i>
+          <span>Panel</span>
+        </a>
+        <i class="fas fa-chevron-right text-xs text-stone-300"></i>
+        <span class="text-[var(--wood-dark)] font-semibold">Mis Encargos</span>
+      </nav>
+
+      <!-- Botón rápido -->
+      <a href="{% url 'usuarios:panel' %}"
+         class="inline-flex items-center gap-2 text-sm font-semibold text-stone-500 hover:text-[var(--caramel)] bg-stone-50 hover:bg-[var(--cream)] border border-stone-200 hover:border-[var(--caramel)] px-4 py-2 rounded-xl transition-all duration-200 cursor-pointer">
+        <i class="fas fa-arrow-left text-xs"></i> Volver al Panel
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-5xl mx-auto">
+    <!-- Header -->
+    <div class="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <div>
+        <p class="text-[var(--caramel)] font-bold text-sm tracking-widest uppercase mb-2">Área del cliente</p>
+        <h1 class="font-display text-4xl text-[var(--wood-dark)] mb-3">Mis Encargos</h1>
+        <p class="text-stone-500 font-body max-w-2xl text-lg">Haz seguimiento a las piezas personalizadas que has solicitado a nuestros artesanos.</p>
+      </div>
+      <!-- Filtros -->
+      <div class="flex gap-2">
+        <a href="{% url 'usuarios:mis_solicitudes' %}" class="px-4 py-2 rounded-xl text-sm font-semibold transition {% if not status_filter %}bg-[var(--caramel)] text-white shadow-md{% else %}bg-white border border-stone-200 text-stone-600 hover:border-[var(--caramel)] hover:text-[var(--caramel)]{% endif %}">Todos</a>
+        <a href="?status=pending" class="px-4 py-2 rounded-xl text-sm font-semibold transition {% if status_filter == 'pending' %}bg-[var(--caramel)] text-white shadow-md{% else %}bg-white border border-stone-200 text-stone-600 hover:border-[var(--caramel)] hover:text-[var(--caramel)]{% endif %}">Pendientes</a>
+        <a href="?status=completed" class="px-4 py-2 rounded-xl text-sm font-semibold transition {% if status_filter == 'completed' %}bg-[var(--caramel)] text-white shadow-md{% else %}bg-white border border-stone-200 text-stone-600 hover:border-[var(--caramel)] hover:text-[var(--caramel)]{% endif %}">Completados</a>
+      </div>
+    </div>
+
+    {% if page_obj %}
+    <div class="grid gap-6">
+      {% for solicitud in page_obj %}
+      <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-stone-100 hover:border-[var(--sand)] transition duration-300 flex flex-col lg:flex-row gap-6 lg:items-center">
+        <!-- Info Principal -->
+        <div class="flex-1">
+          <div class="flex items-center gap-3 mb-3">
+            <h3 class="font-display text-2xl text-[var(--wood-dark)] font-semibold">{{ solicitud.title }}</h3>
+            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider
+              {% if solicitud.status == 'pending' %}bg-yellow-100 text-yellow-700
+              {% elif solicitud.status == 'accepted' %}bg-blue-100 text-blue-700
+              {% elif solicitud.status == 'rejected' %}bg-red-100 text-red-700
+              {% elif solicitud.status == 'completed' %}bg-emerald-100 text-emerald-700
+              {% endif %}">
+              {{ solicitud.get_status_display }}
+            </span>
+          </div>
+          <p class="text-stone-500 font-body mb-5 line-clamp-2 leading-relaxed">{{ solicitud.description }}</p>
+          
+          <div class="flex flex-wrap items-center gap-5 text-sm text-stone-500 font-body">
+            <div class="flex items-center gap-2">
+              <div class="w-8 h-8 rounded-full bg-stone-100 flex items-center justify-center text-[var(--caramel)]">
+                <i class="fas fa-hammer text-xs"></i>
+              </div>
+              <span class="font-medium text-[var(--wood-dark)]">{{ solicitud.carpenter.user.full_name }}</span>
+            </div>
+            {% if solicitud.budget %}
+            <div class="flex items-center gap-2 bg-stone-50 px-3 py-1.5 rounded-lg border border-stone-100">
+              <i class="fas fa-tag text-stone-400"></i>
+              <span class="font-medium text-[var(--wood-dark)]">${{ solicitud.budget|floatformat:"0" }} COP</span>
+            </div>
+            {% endif %}
+            <div class="flex items-center gap-2">
+              <i class="far fa-calendar-alt text-stone-400"></i>
+              <span>Solicitado el {{ solicitud.created_at|date:"d M Y" }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="flex flex-row lg:flex-col gap-3 lg:min-w-[160px] shrink-0 border-t lg:border-t-0 pt-4 lg:pt-0 lg:border-l border-stone-100 lg:pl-6">
+          <a href="{% url 'perfil_publico_carpintero' solicitud.carpenter.id %}"
+             class="flex-1 lg:w-full py-3 px-4 bg-stone-50 hover:bg-stone-100 border border-stone-200 text-stone-600 rounded-xl font-semibold text-sm transition text-center flex items-center justify-center gap-2">
+            <i class="far fa-user-circle"></i> Ver artesano
+          </a>
+          
+          <a href="{% url 'chat:abrir_chat' solicitud.id %}"
+             class="flex-1 lg:w-full py-3 px-4 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-xl font-bold text-sm transition shadow-sm text-center flex items-center justify-center gap-2">
+            <i class="fas fa-comment-dots"></i> Chat en Vivo
+          </a>
+
+          <a href="{% url 'usuarios:tracking_proyecto' solicitud.id %}"
+             class="flex-1 lg:w-full py-3 px-4 bg-[var(--caramel)]/8 hover:bg-[var(--caramel)]/15 border border-[var(--caramel)]/30 text-[var(--wood)] rounded-xl font-bold text-sm transition text-center flex items-center justify-center gap-2">
+            <i class="fas fa-route"></i> Ver Fabricación
+          </a>
+
+          {% if solicitud.status == 'completed' %}
+          <button onclick="openReviewModal({{ solicitud.carpenter.id }}, '{{ solicitud.carpenter.user.full_name|escapejs }}')"
+                  class="flex-1 lg:w-full py-3 px-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-xl font-bold text-sm transition shadow-[0_4px_12px_rgba(184,115,51,.25)] text-center flex items-center justify-center gap-2">
+            <i class="fas fa-star"></i> Calificar
+          </button>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div class="flex justify-center mt-12 gap-2">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-stone-200 text-stone-500 hover:border-[var(--caramel)] hover:text-[var(--caramel)] transition">
+            <i class="fas fa-chevron-left"></i>
+        </a>
+        {% endif %}
+        
+        {% for i in page_obj.paginator.page_range %}
+            {% if page_obj.number == i %}
+            <span class="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--wood-dark)] text-white font-bold">{{ i }}</span>
+            {% else %}
+            <a href="?page={{ i }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-stone-200 text-stone-500 hover:border-[var(--wood-dark)] hover:text-[var(--wood-dark)] transition font-medium">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-stone-200 text-stone-500 hover:border-[var(--caramel)] hover:text-[var(--caramel)] transition">
+            <i class="fas fa-chevron-right"></i>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <div class="bg-white rounded-3xl border border-[var(--sand)] p-12 md:p-20 text-center shadow-sm">
+      <div class="w-24 h-24 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-[var(--caramel)] text-4xl mb-6 shadow-inner">
+        <i class="fas fa-ruler-combined"></i>
+      </div>
+      <h3 class="font-display text-2xl text-[var(--wood-dark)] mb-3 font-semibold">Aún no has encargado nada</h3>
+      <p class="text-stone-500 font-body mb-8 max-w-md mx-auto">Explora nuestro catálogo de artesanos verificados y solicita tu primera pieza de madera personalizada.</p>
+      <a href="{% url 'explorar_carpinteros' %}"
+         class="inline-flex items-center gap-2 bg-[var(--wood-dark)] hover:bg-[#2c221a] text-white font-bold px-8 py-4 rounded-xl shadow-lg transition hover:-translate-y-1">
+        <i class="fas fa-search"></i> Explorar Catálogo
+      </a>
+    </div>
+    {% endif %}
+  </div>  {# cierre del max-w-5xl interior #}
+</div>  {# cierre del contenedor principal #}
+
+<!-- Modal de Reseña -->
+<div id="review-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="if(event.target===this)closeReviewModal()">
+  <div class="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300" id="review-modal-box">
+    <div class="p-8">
+      <div class="flex justify-between items-start mb-6">
+        <div>
+          <h3 class="font-display text-3xl font-semibold text-[var(--wood-dark)] mb-1">Dejar Reseña</h3>
+          <p class="text-stone-500 text-sm">Califica el trabajo de <span id="review-artesano-name" class="font-bold text-[var(--wood-dark)]"></span></p>
+        </div>
+        <button type="button" onclick="closeReviewModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 flex items-center justify-center text-stone-500 transition">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <form id="review-form" method="POST" action="">
+        {% csrf_token %}
+        <div class="mb-6 flex flex-col items-center">
+          <p class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-3">Calificación</p>
+          <div class="flex gap-2 flex-row-reverse justify-center group" id="star-rating">
+            <!-- Usamos flex-row-reverse para el truco de CSS del hover en estrellas -->
+            <input type="radio" id="star5" name="rating" value="5" class="hidden peer" required />
+            <label for="star5" class="cursor-pointer text-3xl text-stone-200 peer-checked:text-[var(--caramel)] hover:text-[var(--caramel)] peer-checked:hover:text-[var(--caramel)] transition"><i class="fas fa-star"></i></label>
+            
+            <input type="radio" id="star4" name="rating" value="4" class="hidden peer" />
+            <label for="star4" class="cursor-pointer text-3xl text-stone-200 peer-checked:text-[var(--caramel)] hover:text-[var(--caramel)] peer-checked:hover:text-[var(--caramel)] transition"><i class="fas fa-star"></i></label>
+            
+            <input type="radio" id="star3" name="rating" value="3" class="hidden peer" />
+            <label for="star3" class="cursor-pointer text-3xl text-stone-200 peer-checked:text-[var(--caramel)] hover:text-[var(--caramel)] peer-checked:hover:text-[var(--caramel)] transition"><i class="fas fa-star"></i></label>
+            
+            <input type="radio" id="star2" name="rating" value="2" class="hidden peer" />
+            <label for="star2" class="cursor-pointer text-3xl text-stone-200 peer-checked:text-[var(--caramel)] hover:text-[var(--caramel)] peer-checked:hover:text-[var(--caramel)] transition"><i class="fas fa-star"></i></label>
+            
+            <input type="radio" id="star1" name="rating" value="1" class="hidden peer" />
+            <label for="star1" class="cursor-pointer text-3xl text-stone-200 peer-checked:text-[var(--caramel)] hover:text-[var(--caramel)] peer-checked:hover:text-[var(--caramel)] transition"><i class="fas fa-star"></i></label>
+          </div>
+          <style>
+            /* CSS trick para que las estrellas anteriores se iluminen en hover */
+            #star-rating > label:hover ~ label { color: var(--caramel); }
+            #star-rating > input:checked ~ label { color: var(--caramel); }
+          </style>
+        </div>
+
+        <div class="mb-8">
+          <label class="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-2">Comentario (Opcional)</label>
+          <textarea name="comment" rows="4" class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-stone-700 focus:outline-none focus:border-[var(--caramel)] focus:ring-1 focus:ring-[var(--caramel)] transition resize-none" placeholder="¿Cómo fue tu experiencia con este artesano?"></textarea>
+        </div>
+
+        <button type="submit" class="w-full py-4 bg-[var(--wood-dark)] hover:bg-[#2c221a] text-white rounded-xl font-bold text-base transition shadow-lg flex items-center justify-center gap-2">
+          <i class="fas fa-paper-plane"></i> Enviar Reseña
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openReviewModal(carpenterId, carpenterName) {
+    document.getElementById('review-artesano-name').textContent = carpenterName;
+    document.getElementById('review-form').action = "/usuarios/carpintero/" + carpenterId + "/resena/";
+    const modal = document.getElementById('review-modal');
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    // Pequeño timeout para la animación
+    setTimeout(() => {
+      modal.classList.remove('opacity-0');
+      document.getElementById('review-modal-box').classList.remove('scale-95');
+    }, 10);
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeReviewModal() {
+    const modal = document.getElementById('review-modal');
+    modal.classList.add('opacity-0');
+    document.getElementById('review-modal-box').classList.add('scale-95');
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      document.getElementById('review-form').reset();
+    }, 300);
+  }
+</script>
+{% endblock %}

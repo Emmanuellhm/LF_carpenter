@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat - {{ chat_room.solicitud.title }} | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-80px)] bg-stone-100 p-4 md:p-8 flex items-center justify-center">
+  <div class="w-full max-w-4xl bg-white rounded-3xl shadow-xl border border-stone-200 overflow-hidden flex flex-col h-[80vh]">
+    
+    <!-- Header -->
+    <div class="bg-white border-b border-stone-100 p-4 px-6 flex justify-between items-center z-10 shrink-0">
+      <div class="flex items-center gap-4">
+        {% if request.user.role == 'carpenter' %}
+          <a href="{% url 'carpinteros:detalle_solicitud' chat_room.solicitud.id %}" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-[var(--caramel)] hover:text-white transition">
+        {% else %}
+          <a href="{% url 'usuarios:mis_solicitudes' %}" class="w-10 h-10 rounded-full bg-stone-100 flex items-center justify-center text-stone-500 hover:bg-[var(--caramel)] hover:text-white transition">
+        {% endif %}
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-full bg-[var(--caramel)]/20 flex items-center justify-center text-[var(--caramel)] font-bold text-lg">
+            {{ other_user.full_name|slice:":1"|upper }}
+          </div>
+          <div>
+            <h2 class="font-bold text-stone-800 text-lg m-0">{{ other_user.full_name }}</h2>
+            <p class="text-xs text-stone-500">
+              Solicitud: <span class="font-semibold">{{ chat_room.solicitud.title }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="hidden sm:block">
+        <span class="px-3 py-1 bg-emerald-50 text-emerald-600 text-xs font-bold rounded-full border border-emerald-100 flex items-center gap-1">
+          <i class="fas fa-circle text-[8px]"></i> Chat En Vivo
+        </span>
+      </div>
+    </div>
+
+    <!-- Mensajes -->
+    <div id="chat-messages" class="flex-1 p-6 overflow-y-auto bg-[#f8f6f0] flex flex-col gap-4">
+      <div class="text-center text-xs text-stone-400 my-4 font-medium bg-white w-max mx-auto px-4 py-1 rounded-full shadow-sm border border-stone-100">
+        Inicio de la conversación segura
+      </div>
+
+      {% for mensaje in mensajes %}
+        {% if mensaje.sender == request.user %}
+          <!-- Sent by me -->
+          <div class="flex flex-col items-end gap-1">
+            <div class="bg-[var(--caramel)] text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm">
+              {{ mensaje.content }}
+            </div>
+            <span class="text-[10px] text-stone-400 font-medium px-1">{{ mensaje.timestamp|date:"H:i" }}</span>
+          </div>
+        {% else %}
+          <!-- Received -->
+          <div class="flex flex-col items-start gap-1">
+            <div class="bg-white border border-stone-200 text-stone-800 px-5 py-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm">
+              {{ mensaje.content }}
+            </div>
+            <span class="text-[10px] text-stone-400 font-medium px-1">{{ mensaje.timestamp|date:"H:i" }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Input -->
+    <div class="p-4 pb-8 sm:pb-4 bg-white border-t border-stone-100 shrink-0">
+      <form id="chat-form" data-no-loading="true" class="flex items-center gap-3">
+        <button type="button" class="w-10 h-10 rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600 flex items-center justify-center transition">
+          <i class="fas fa-paperclip"></i>
+        </button>
+        <input 
+          type="text" 
+          id="chat-message-input" 
+          placeholder="Escribe tu mensaje aquí..." 
+          class="flex-1 bg-stone-100 border-none rounded-full px-6 py-3 text-sm focus:ring-2 focus:ring-[var(--caramel)] transition-shadow"
+          autocomplete="off"
+        >
+        <button 
+          type="submit" 
+          id="chat-message-submit"
+          class="w-12 h-12 rounded-full bg-[var(--wood-dark)] hover:bg-[var(--caramel)] text-white flex items-center justify-center transition shadow-md"
+        >
+          <i class="fas fa-paper-plane ml-[-2px]"></i>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const roomId = "{{ room_id }}";
+  const requestUserId = {{ request.user.id }};
+  
+  // Create WebSocket connection
+  const wsScheme = window.location.protocol === "https:" ? "wss" : "ws";
+  const chatSocket = new WebSocket(
+      wsScheme + '://' + window.location.host + '/ws/chat/' + roomId + '/'
+  );
+
+  const messagesDiv = document.querySelector('#chat-messages');
+
+  // Auto-scroll to bottom on load
+  function scrollToBottom() {
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+  scrollToBottom();
+
+  chatSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data);
+      const isMe = (data.sender_id === requestUserId);
+      
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = isMe ? 'flex flex-col items-end gap-1' : 'flex flex-col items-start gap-1';
+      
+      const msgBubble = document.createElement('div');
+      msgBubble.className = isMe 
+        ? 'bg-[var(--caramel)] text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm'
+        : 'bg-white border border-stone-200 text-stone-800 px-5 py-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm';
+      msgBubble.innerText = data.message;
+      
+      const timeSpan = document.createElement('span');
+      timeSpan.className = 'text-[10px] text-stone-400 font-medium px-1';
+      timeSpan.innerText = data.timestamp;
+      
+      msgWrapper.appendChild(msgBubble);
+      msgWrapper.appendChild(timeSpan);
+      
+      messagesDiv.appendChild(msgWrapper);
+      scrollToBottom();
+  };
+
+  chatSocket.onclose = function(e) {
+      console.error('Chat socket closed unexpectedly');
+  };
+
+  document.querySelector('#chat-form').onsubmit = function(e) {
+      e.preventDefault();
+      const messageInputDom = document.querySelector('#chat-message-input');
+      const message = messageInputDom.value.trim();
+      
+      if (message) {
+          chatSocket.send(JSON.stringify({
+              'message': message
+          }));
+          messageInputDom.value = '';
+      }
+  };
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'emails/base_email.html' %}
+
+{% block content %}
+<table role="presentation" style="width: 100%;">
+    <tr>
+        <td>
+            <h2 style="margin: 0 0 20px 0; color: #1c1917; font-size: 24px;">
+                ¡Bienvenido, {{ user.full_name }}!
+            </h2>
+            <p style="margin: 0 0 15px 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Gracias por unirte a <strong>LF Carpinter</strong>. Estamos emocionados de tenerte en nuestra comunidad de amantes de la carpintería artesanal.
+            </p>
+
+            <div style="background-color: #fef3c7; border-radius: 8px; padding: 20px; margin: 25px 0;">
+                <h3 style="margin: 0 0 10px 0; color: #92400e; font-size: 18px;">
+                    ¿Qué puedes hacer en LF Carpinter?
+                </h3>
+                <ul style="margin: 0; padding-left: 20px; color: #44403c;">
+                    <li style="margin-bottom: 8px;">Descubrir carpinteros profesionales calificados</li>
+                    <li style="margin-bottom: 8px;">Solicitar presupuestos personalizados</li>
+                    <li style="margin-bottom: 8px;">Ver portafolios de trabajos realizados</li>
+                    <li style="margin-bottom: 8px;">Calificar y dejar reseñas</li>
+                </ul>
+            </div>
+
+            <p style="margin: 0; color: #44403c; font-size: 16px; line-height: 1.6;">
+                Si tienes alguna pregunta, no dudes en contactarnos. Estamos aquí para ayudarte.
+            </p>
+        </td>
+    </tr>
+</table>
+{% endblock %}
+
+{% block button %}
+<tr>
+    <td style="padding: 0 30px 30px 30px; text-align: center;">
+        <a href="{{ site_url }}/login/"
+           style="display: inline-block; background: linear-gradient(135deg, #d97706 0%, #b45309 100%); color: #ffffff; padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 14px 0 rgba(217, 119, 6, 0.4);">
+            Comenzar a explorar
+        </a>
+    </td>
+</tr>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contáctanos | LF Carpinter{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-20 px-6" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+  <div class="container mx-auto text-center">
+    <h1 class="font-display text-5xl text-white mb-4 reveal">Contáctanos</h1>
+    <p class="font-body text-stone-300 max-w-xl mx-auto reveal">Estamos aquí para ayudarte. Escríbenos y te responderemos a la brevedad.</p>
+  </div>
+</section>
+
+<!-- Contact Content -->
+<section class="py-20 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-6xl">
+    <div class="grid md:grid-cols-2 gap-12">
+      
+      <!-- Form -->
+      <div class="bg-white p-10 rounded-2xl shadow-lg reveal hover-lift" style="border: 1px solid var(--sand);">
+        <h2 class="font-display text-2xl mb-2" style="color: var(--wood-dark);">Envíanos un mensaje</h2>
+        <p class="font-body text-stone-500 text-sm mb-8">Completa el formulario y nos pondremos en contacto contigo.</p>
+        
+        <form method="post" class="space-y-5">
+          {% csrf_token %}
+          <div>
+            <label for="nombre" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre completo" required
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div>
+            <label for="correo" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com" required
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);">
+          </div>
+          <div>
+            <label for="mensaje" class="block text-xs font-body font-medium uppercase tracking-wider mb-2" style="color: var(--wood);">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="5" placeholder="¿En qué podemos ayudarte?" required
+              class="w-full px-4 py-3 rounded-xl font-body text-sm transition focus:ring-2 resize-none" style="border: 1px solid var(--sand); --tw-ring-color: var(--caramel);"></textarea>
+          </div>
+          <button type="submit"
+            class="w-full font-body font-medium py-3.5 rounded-xl text-white shadow-lg hover:shadow-xl transition hover:opacity-90" style="background: var(--caramel);">
+            <i class="fas fa-paper-plane mr-2"></i> Enviar mensaje
+          </button>
+        </form>
+      </div>
+
+      <!-- Info -->
+      <div class="flex flex-col gap-8">
+        <div class="p-10 rounded-2xl reveal" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+          <h2 class="font-display text-2xl text-white mb-6">Información de contacto</h2>
+          <p class="font-body text-stone-400 text-sm mb-8">También puedes comunicarte con nosotros directamente:</p>
+          <div class="space-y-5 font-body text-sm">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(194,129,61,0.15);">
+                <i class="fas fa-map-marker-alt" style="color: var(--caramel);"></i>
+              </div>
+              <div>
+                <p class="text-white font-medium">Dirección</p>
+                <p class="text-stone-400">Calle 123, Medellín, Colombia</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(194,129,61,0.15);">
+                <i class="fas fa-phone" style="color: var(--caramel);"></i>
+              </div>
+              <div>
+                <p class="text-white font-medium">Teléfono</p>
+                <p class="text-stone-400">+57 300 123 4567</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style="background: rgba(194,129,61,0.15);">
+                <i class="fas fa-envelope" style="color: var(--caramel);"></i>
+              </div>
+              <div>
+                <p class="text-white font-medium">Correo</p>
+                <p class="text-stone-400">lfcarpinter@gmail.com</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="rounded-2xl overflow-hidden shadow-lg reveal" style="height: 250px;">
+          <iframe class="w-full h-full"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3976.954471310789!2d-75.57982!3d6.244203!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e4429a69b0d9e23%3A0xabc123!2sMedell%C3%ADn!5e0!3m2!1ses!2sco!4v1694039692923"
+            allowfullscreen="" loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

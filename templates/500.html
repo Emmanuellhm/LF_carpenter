@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Error del servidor | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center bg-[var(--cream)] px-4 py-12">
+    <div class="max-w-xl w-full text-center">
+        <!-- Icon -->
+        <div class="w-32 h-32 mx-auto bg-white rounded-full flex items-center justify-center shadow-lg border border-[var(--sand)] mb-8 relative">
+            <i class="fas fa-tools text-red-500 text-5xl"></i>
+            <div class="absolute -bottom-2 -right-2 bg-stone-100 w-12 h-12 rounded-full flex items-center justify-center border-4 border-[var(--cream)]">
+                <span class="font-display font-bold text-[var(--wood-dark)] text-xl">500</span>
+            </div>
+        </div>
+
+        <h1 class="font-display text-4xl md:text-5xl text-[var(--wood-dark)] font-semibold mb-4 leading-tight">Problemas en el Taller</h1>
+        <p class="font-body text-stone-500 text-lg mb-10 max-w-md mx-auto">
+            Algo salió mal internamente y nuestro equipo de mantenimiento ya está trabajando para solucionarlo.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'home' %}" class="px-8 py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white font-bold rounded-xl shadow-[0_6px_20px_rgba(184,115,51,.3)] hover:-translate-y-1 transition duration-300 flex items-center justify-center gap-2">
+                <i class="fas fa-home"></i> Volver al Inicio
+            </a>
+            <a href="javascript:location.reload();" class="px-8 py-4 bg-white border border-stone-200 text-stone-600 hover:text-[var(--caramel)] hover:border-[var(--caramel)] font-bold rounded-xl transition duration-300 flex items-center justify-center gap-2">
+                <i class="fas fa-sync-alt"></i> Reintentar
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

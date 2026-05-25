@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}LF Carpinter | Carpintería Artesanal de Calidad{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative overflow-hidden" style="background: linear-gradient(160deg, var(--wood-dark) 0%, var(--wood) 60%, #4a2c1a 100%); min-height: 85vh;">
+  <!-- Subtle pattern overlay -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;%3E%3Cpath d=&quot;M0 40L40 0H20L0 20M40 40V20L20 40&quot;/%3E%3C/g%3E%3C/svg%3E');"></div>
+  </div>
+
+  <div class="container mx-auto px-6 py-20 md:py-28 flex flex-col md:flex-row items-center gap-16 relative z-10">
+    <!-- Left: Text -->
+    <div class="md:w-1/2 reveal">
+      <span class="font-body text-sm uppercase tracking-[0.25em] mb-5 block" style="color: var(--caramel);">Carpintería artesanal desde Colombia</span>
+      <h1 class="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6">
+        Muebles con <span class="italic" style="color: var(--caramel);">alma</span> y carácter
+      </h1>
+      <p class="font-body text-stone-400 text-lg mb-10 max-w-lg leading-relaxed">
+        Conectamos a los mejores carpinteros artesanales con personas que valoran la calidad, el detalle y la tradición en cada pieza.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-4 mb-12">
+        <a href="{% url 'explorar_carpinteros' %}" class="font-body font-medium text-center px-8 py-4 rounded-xl text-white shadow-lg hover:shadow-xl transition hover:opacity-90" style="background: var(--caramel);">
+          Explorar Artesanos <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+        <a href="{% url 'registro_carpintero' %}" class="font-body font-medium text-center px-8 py-4 rounded-xl border border-stone-500 text-stone-300 hover:border-white hover:text-white transition">
+          Soy Carpintero
+        </a>
+      </div>
+
+      <!-- Mini stats -->
+      <div class="flex gap-10">
+        <div>
+          <p class="font-display text-3xl text-white">48+</p>
+          <p class="font-body text-stone-500 text-sm">Carpinteros</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl text-white">130+</p>
+          <p class="font-body text-stone-500 text-sm">Usuarios</p>
+        </div>
+        <div>
+          <p class="font-display text-3xl text-white">18+</p>
+          <p class="font-body text-stone-500 text-sm">Proyectos</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Images -->
+    <div class="md:w-1/2 reveal" style="animation-delay: 0.2s;">
+      <div class="relative">
+        <div class="rounded-2xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-500">
+          <img src="{% static 'img/silla_roble.jpeg' %}" alt="Silla artesanal" class="w-full h-80 object-cover">
+        </div>
+        <div class="absolute -bottom-8 -left-8 w-48 h-48 rounded-2xl overflow-hidden shadow-2xl -rotate-3 hover:rotate-0 transition-transform duration-500 border-4" style="border-color: var(--wood-dark);">
+          <img src="{% static 'img/estanteria.webp' %}" alt="Estantería" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute -top-6 -right-4 w-36 h-36 rounded-2xl overflow-hidden shadow-2xl rotate-6 hover:rotate-0 transition-transform duration-500 border-4" style="border-color: var(--wood-dark);">
+          <img src="{% static 'img/mesanoche.jpeg' %}" alt="Mesa de noche" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ¿Cómo funciona? -->
+<section class="py-24 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-5xl text-center">
+    <span class="font-body text-sm uppercase tracking-widest mb-4 block reveal" style="color: var(--caramel);">Simple y eficaz</span>
+    <h2 class="font-display text-4xl md:text-5xl mb-16 reveal" style="color: var(--wood-dark);">¿Cómo funciona?</h2>
+    
+    <div class="grid md:grid-cols-3 gap-10 stagger reveal">
+      <div class="text-center">
+        <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, var(--caramel), #d4954f);">
+          <span class="font-display text-3xl text-white">1</span>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Explora</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Navega por nuestro directorio de carpinteros verificados. Filtra por especialidad, ubicación y calificaciones.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, var(--wood), #5a3a2a);">
+          <span class="font-display text-3xl text-white">2</span>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Solicita</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Envía una solicitud de proyecto detallando lo que necesitas. El carpintero revisará tu propuesta.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center shadow-lg" style="background: linear-gradient(135deg, var(--caramel), var(--wood));">
+          <span class="font-display text-3xl text-white">3</span>
+        </div>
+        <h3 class="font-display text-xl mb-3" style="color: var(--wood-dark);">Construye</h3>
+        <p class="font-body text-stone-500 text-sm leading-relaxed">Coordina directamente con tu carpintero y transforma tu idea en un mueble único y artesanal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Proyectos Destacados -->
+<section class="py-24 px-6" style="background: var(--sand);">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-16">
+      <span class="font-body text-sm uppercase tracking-widest mb-4 block reveal" style="color: var(--caramel);">Portafolio</span>
+      <h2 class="font-display text-4xl md:text-5xl reveal" style="color: var(--wood-dark);">Proyectos Destacados</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 stagger reveal">
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-md hover-lift cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="{% static 'img/silla_roble.jpeg' %}" alt="Silla de Madera Roble" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1" style="color: var(--wood-dark);">Silla de Madera Roble</h3>
+          <p class="font-body text-stone-500 text-sm">Diseño ergonómico con acabados profesionales.</p>
+        </div>
+      </div>
+
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-md hover-lift cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="{% static 'img/estanteria.webp' %}" alt="Estantería Minimalista" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1" style="color: var(--wood-dark);">Estantería Minimalista</h3>
+          <p class="font-body text-stone-500 text-sm">Estilo moderno en pino tratado.</p>
+        </div>
+      </div>
+
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-md hover-lift cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="{% static 'img/comedor.jpeg' %}" alt="Comedor para 6" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1" style="color: var(--wood-dark);">Comedor para 6 Personas</h3>
+          <p class="font-body text-stone-500 text-sm">Nogal con barniz protector.</p>
+        </div>
+      </div>
+
+      <div class="group bg-white rounded-2xl overflow-hidden shadow-md hover-lift cursor-pointer">
+        <div class="overflow-hidden">
+          <img src="{% static 'img/mesanoche.jpeg' %}" alt="Mesa de noche" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1" style="color: var(--wood-dark);">Mesa de Noche</h3>
+          <p class="font-body text-stone-500 text-sm">Diseño clásico barnizada a mano.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Carpinteros Destacados -->
+<section class="py-24 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-6xl">
+    <div class="text-center mb-16">
+      <span class="font-body text-sm uppercase tracking-widest mb-4 block reveal" style="color: var(--caramel);">Profesionales</span>
+      <h2 class="font-display text-4xl md:text-5xl reveal" style="color: var(--wood-dark);">Conoce a Nuestros Carpinteros</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 stagger reveal">
+      {% for carpintero in carpinteros %}
+      <a href="{% url 'usuarios:ver_carpintero_detalle' carpintero.id %}" class="group bg-white rounded-2xl overflow-hidden shadow-md hover-lift">
+        <div class="overflow-hidden">
+          {% if carpintero.hoja_vida %}
+          <img src="{{ carpintero.hoja_vida.url }}" alt="{{ carpintero.user.full_name }}" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+          {% else %}
+          <img src="{% static 'img/fotoP.jpg' %}" alt="{{ carpintero.user.full_name }}" class="w-full h-52 object-cover group-hover:scale-110 transition-transform duration-700">
+          {% endif %}
+        </div>
+        <div class="p-5">
+          <h3 class="font-display text-lg mb-1" style="color: var(--wood-dark);">{{ carpintero.user.full_name }}</h3>
+          <p class="font-body text-sm mb-3" style="color: var(--caramel);">{{ carpintero.specialties|default:"Carpintero" }}</p>
+          <p class="font-body text-stone-500 text-sm">{{ carpintero.description|truncatewords:10 }}</p>
+          <span class="inline-flex items-center gap-1 mt-3 font-body text-sm font-medium group-hover:gap-3 transition-all" style="color: var(--caramel);">
+            Ver perfil <i class="fas fa-arrow-right text-xs"></i>
+          </span>
+        </div>
+      </a>
+      {% empty %}
+      <div class="col-span-4 text-center py-12">
+        <p class="font-body text-stone-400">No hay carpinteros verificados aún.</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA Final -->
+<section class="py-20 px-6" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+  <div class="container mx-auto max-w-3xl text-center reveal">
+    <h2 class="font-display text-4xl text-white mb-5">¿Tienes un proyecto en mente?</h2>
+    <p class="font-body text-stone-400 mb-10 max-w-xl mx-auto">Encuentra al carpintero perfecto o únete como profesional a la red de artesanos más grande de Colombia.</p>
+    <a href="{% url 'registro_usuario' %}" class="inline-block font-body font-medium px-10 py-4 rounded-xl text-white shadow-xl hover:shadow-2xl transition hover:opacity-90" style="background: var(--caramel);">
+      Comenzar Ahora <i class="fas fa-arrow-right ml-2"></i>
+    </a>
+  </div>
+</section>
+{% endblock %}

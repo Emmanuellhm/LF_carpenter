@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalle Solicitud | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] py-12 px-4 sm:px-6 lg:px-8 bg-amber-50">
+  <div class="max-w-3xl mx-auto">
+    <a href="{% url 'carpinteros:ver_solicitudes' %}" class="inline-flex items-center gap-2 text-amber-700 hover:text-amber-800 mb-6">
+      <i class="fas fa-arrow-left"></i> Volver a solicitudes
+    </a>
+
+    <div class="bg-white rounded-xl shadow-lg border border-stone-200 overflow-hidden">
+      <div class="bg-gradient-to-r from-amber-700 to-amber-500 px-6 py-4">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="text-2xl font-bold text-white">{{ solicitud.title }}</h1>
+            <!-- Badge unificado -->
+            {% if solicitud.status == 'pending' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-stone-100 text-stone-600 border border-stone-200">Pendiente</span>
+            {% elif solicitud.status == 'reviewing' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-blue-50 text-blue-700 border border-blue-200">En Revisión</span>
+            {% elif solicitud.status == 'accepted' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">Presupuestado</span>
+            {% elif solicitud.status == 'in_progress' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-amber-50 text-amber-700 border border-amber-200">En Fabricación</span>
+            {% elif solicitud.status == 'completed' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-green-50 text-green-700 border border-green-200">Completado</span>
+            {% elif solicitud.status == 'rejected' %}
+              <span class="mt-2 inline-block px-3 py-1 rounded-md text-sm font-medium bg-red-50 text-red-700 border border-red-200">Rechazado</span>
+            {% endif %}
+          </div>
+          <span class="text-amber-100 text-sm">{{ solicitud.created_at|date:"d/m/Y H:i" }}</span>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <div class="flex justify-between items-center mb-3">
+              <h2 class="font-bold text-stone-800">Información del Cliente</h2>
+              <a href="{% url 'chat:abrir_chat' solicitud.id %}" class="text-xs bg-emerald-100 text-emerald-700 px-3 py-1.5 rounded-full font-bold hover:bg-emerald-200 transition">
+                <i class="fas fa-comment-dots"></i> Abrir Chat
+              </a>
+            </div>
+            <div class="space-y-2">
+              <p><strong class="text-stone-600">Nombre:</strong> {{ solicitud.user.full_name }}</p>
+              <p><strong class="text-stone-600">Email:</strong> {{ solicitud.user.email }}</p>
+              <p><strong class="text-stone-600">Teléfono:</strong> {{ solicitud.user.phone|default:"No especificado" }}</p>
+            </div>
+          </div>
+          <div>
+            <h2 class="font-bold text-stone-800 mb-3">Detalles del Proyecto</h2>
+            <div class="space-y-2">
+              {% if solicitud.budget %}
+              <p><strong class="text-stone-600">Presupuesto:</strong> ${{ solicitud.budget }}</p>
+              {% endif %}
+              {% if solicitud.deadline %}
+              <p><strong class="text-stone-600">Fecha límite:</strong> {{ solicitud.deadline|date:"d/m/Y" }}</p>
+              {% endif %}
+              {% if solicitud.dimensions %}
+              <p><strong class="text-stone-600">Dimensiones:</strong> {{ solicitud.dimensions }}</p>
+              {% endif %}
+              {% if solicitud.materials %}
+              <p><strong class="text-stone-600">Materiales:</strong> {{ solicitud.materials }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h2 class="font-bold text-stone-800 mb-3">Descripción</h2>
+          <p class="text-stone-600">{{ solicitud.description }}</p>
+        </div>
+
+        {% if solicitud.reference_image %}
+        <div class="mb-6">
+          <h2 class="font-bold text-stone-800 mb-3">Imagen de Referencia</h2>
+          <img src="{{ solicitud.reference_image.url }}" alt="Referencia" class="max-w-md rounded-lg border border-stone-200">
+        </div>
+        {% endif %}
+
+        {% if solicitud.status == 'pending' %}
+        <div class="flex gap-3 pt-4 border-t border-stone-200">
+          <form action="" method="post" class="flex-1">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="accept">
+            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-lg transition">
+              <i class="fas fa-check mr-2"></i> Aceptar Solicitud
+            </button>
+          </form>
+          <form action="" method="post" class="flex-1">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="reject">
+            <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition">
+              <i class="fas fa-times mr-2"></i> Rechazar
+            </button>
+          </form>
+        </div>
+        {% elif solicitud.status == 'accepted' %}
+        <div class="flex gap-3 pt-4 border-t border-stone-200">
+          <form action="" method="post" class="w-full">
+            {% csrf_token %}
+            <input type="hidden" name="action" value="complete">
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition">
+              <i class="fas fa-check-double mr-2"></i> Marcar como Completado
+            </button>
+          </form>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ PANEL: Registrar Avance de Fabricación ═══════ -->
+{% if solicitud.status != 'pending' and solicitud.status != 'rejected' and solicitud.status != 'completed' %}
+<div class="bg-[var(--cream)] pb-12">
+  <div class="container mx-auto px-6">
+    <div class="bg-white rounded-3xl border border-stone-200 shadow-sm p-8">
+
+      <div class="flex items-center gap-4 mb-6 pb-4 border-b border-stone-100">
+        <div class="w-12 h-12 rounded-2xl bg-[var(--caramel)]/10 flex items-center justify-center text-[var(--caramel)]">
+          <i class="fas fa-tools text-xl"></i>
+        </div>
+        <div>
+          <h3 class="font-bold text-[var(--wood-dark)] text-lg">Registrar Avance de Fabricación</h3>
+          <p class="text-sm text-stone-400">Publica un update para que el cliente vea el progreso en tiempo real.</p>
+        </div>
+      </div>
+
+      <form action="{% url 'carpinteros:actualizar_fabricacion' solicitud.id %}" method="POST" enctype="multipart/form-data" class="grid md:grid-cols-2 gap-6">
+        {% csrf_token %}
+
+        <div class="md:col-span-2">
+          <label class="block text-xs uppercase tracking-widest text-stone-400 font-bold mb-2">Nuevo estado del proyecto</label>
+          <select name="status" required class="w-full px-4 py-3 rounded-xl border border-stone-200 text-[var(--wood-dark)] font-semibold focus:border-[var(--caramel)] focus:ring-2 focus:ring-[var(--caramel)]/20 outline-none transition bg-stone-50">
+            {% for key, label in status_choices %}
+              {% if key in editable_statuses %}
+              <option value="{{ key }}" {% if solicitud.status == key %}selected{% endif %}>{{ label }}</option>
+              {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-xs uppercase tracking-widest text-stone-400 font-bold mb-2">Nota o descripción del avance</label>
+          <textarea name="notes" rows="3" placeholder="Ej: Hoy terminamos el corte de todas las piezas en pino natural..."
+                    class="w-full px-4 py-3 rounded-xl border border-stone-200 text-stone-700 focus:border-[var(--caramel)] focus:ring-2 focus:ring-[var(--caramel)]/20 outline-none transition resize-none bg-stone-50"></textarea>
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block text-xs uppercase tracking-widest text-stone-400 font-bold mb-2">Foto de avance (opcional)</label>
+          <label class="flex flex-col items-center justify-center w-full h-32 rounded-xl border-2 border-dashed border-stone-300 hover:border-[var(--caramel)] cursor-pointer transition bg-stone-50 hover:bg-[var(--caramel)]/5 group">
+            <i class="fas fa-camera text-3xl text-stone-300 group-hover:text-[var(--caramel)] transition mb-2"></i>
+            <span class="text-sm text-stone-400 group-hover:text-[var(--caramel)] transition">Haz clic para subir una foto</span>
+            <input type="file" name="photo" accept="image/*" class="hidden">
+          </label>
+        </div>
+
+        <div class="md:col-span-2">
+          <button type="submit" class="w-full py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-2xl font-bold transition shadow-[0_4px_16px_rgba(184,115,51,.3)] hover:-translate-y-0.5 flex items-center justify-center gap-3">
+            <i class="fas fa-paper-plane"></i> Publicar avance
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}
