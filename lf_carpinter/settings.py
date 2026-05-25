@@ -175,7 +175,7 @@ LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = os.environ.get(
     'EMAIL_BACKEND',
-    'django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'
+    'django.core.mail.backends.smtp.EmailBackend'
 )
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', 587))
@@ -282,6 +282,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', 
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', '')
 SOCIAL_AUTH_URL_NAMESPACE = 'social'
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'home'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/registro/google-exitoso/'
 SOCIAL_AUTH_RAISE_EXCEPTIONS = True
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = not DEBUG
 

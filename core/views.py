@@ -101,7 +101,7 @@ def registro_usuario(request):
                 request,
                 '¡Registro casi completo! Por favor revisa tu correo electrónico para confirmar tu cuenta y poder iniciar sesión.'
             )
-            return redirect('login')
+            return redirect('registro_exitoso_usuario')
     else:
         form = UserRegistroForm()
 
@@ -157,8 +157,16 @@ def registro_carpintero(request):
 
 
 def registro_enviado(request):
-    """Página de confirmación de registro enviado"""
+    """Página de confirmación de registro enviado (Carpinteros)"""
     return render(request, 'core/registro_enviado.html')
+
+def registro_exitoso_usuario(request):
+    """Página de éxito tras registro manual de usuario"""
+    return render(request, 'core/registro_exitoso_usuario.html')
+
+def registro_exitoso_google(request):
+    """Página de éxito tras registro con Google"""
+    return render(request, 'core/registro_exitoso_google.html')
 
 
 def recuperar_contrasena(request):

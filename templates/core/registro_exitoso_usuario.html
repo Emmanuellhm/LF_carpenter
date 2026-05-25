@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registro Exitoso | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style="background: linear-gradient(160deg, var(--wood-dark) 0%, var(--wood) 60%, #4a2c1a 100%);">
+  
+  <!-- Subtle pattern overlay -->
+  <div class="absolute inset-0 opacity-5">
+    <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;%3E%3Cpath d=&quot;M0 40L40 0H20L0 20M40 40V20L20 40&quot;/%3E%3C/g%3E%3C/svg%3E');"></div>
+  </div>
+
+  <div class="max-w-lg w-full text-center relative z-10 reveal">
+    <!-- Glassmorphism Card -->
+    <div class="bg-white/10 backdrop-blur-xl p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] border border-white/20">
+      
+      <!-- Icon Container -->
+      <div class="w-24 h-24 mx-auto mb-8 flex items-center justify-center rounded-full bg-gradient-to-tr from-green-400 to-emerald-600 shadow-[0_0_30px_rgba(52,211,153,0.4)]">
+        <i class="fas fa-envelope-open-text text-white text-4xl"></i>
+      </div>
+
+      <h2 class="font-display text-4xl text-white mb-4">¡Casi listo!</h2>
+
+      <p class="font-body text-stone-200 text-lg mb-8 leading-relaxed">
+        Tu registro ha sido exitoso, pero necesitamos <strong>confirmar tu identidad</strong> por seguridad. 
+        Hemos enviado un correo electrónico a tu bandeja de entrada.
+      </p>
+
+      <div class="bg-black/20 rounded-xl p-6 mb-8 border border-white/10 text-left flex gap-4 items-start">
+        <i class="fas fa-info-circle text-amber-400 text-xl mt-1"></i>
+        <div>
+          <h3 class="font-body font-bold text-white mb-1">Próximos pasos</h3>
+          <p class="font-body text-stone-300 text-sm leading-relaxed">
+            Abre tu correo electrónico, busca nuestro mensaje y haz clic en el botón de confirmación. Una vez hecho, tu cuenta estará <strong class="text-white">activa</strong> y lista para usar.
+          </p>
+        </div>
+      </div>
+
+      <a href="{% url 'login' %}" class="inline-flex items-center justify-center py-4 px-8 border border-transparent text-base font-medium rounded-xl text-stone-900 bg-amber-400 hover:bg-amber-300 hover:scale-105 transition duration-300 shadow-lg w-full">
+        Ir a Iniciar Sesión <i class="fas fa-arrow-right ml-2"></i>
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
