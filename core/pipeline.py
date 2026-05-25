@@ -36,14 +36,18 @@ def require_extra_data(strategy, details, user=None, is_new=False, *args, **kwar
 
 def notify_successful_registration(strategy, details, user=None, is_new=False, *args, **kwargs):
     """
-    Envía el correo de bienvenida y muestra un mensaje de éxito si el usuario es nuevo
-    y se ha registrado vía Google.
+    Activa al usuario automáticamente, envía correo de bienvenida y muestra mensaje de éxito.
     """
+    if user:
+        if not user.is_active:
+            user.is_active = True
+            user.save()
+            
     if is_new and user:
         from django.contrib import messages
         from core.email_utils import LFEmailService
         
-        # Enviar correo de bienvenida (no necesita confirmación porque Google ya valida el email)
+        # Enviar correo de bienvenida
         email_service = LFEmailService()
         email_service.send_welcome_email(user)
         
