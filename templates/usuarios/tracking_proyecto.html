@@ -256,7 +256,12 @@
         <a href="{% url 'chat:abrir_chat' solicitud.id %}"
            class="flex items-center justify-center gap-3 w-full py-4 bg-[var(--wood-dark)] hover:bg-[var(--wood)] text-white rounded-2xl font-bold transition shadow-md hover:shadow-lg au"
            style="animation-delay:.3s">
-          <i class="fas fa-comments"></i> Ir al chat con el carpintero
+          <i class="fas fa-comments"></i> 
+          {% if request.user.role == 'carpenter' %}
+            Ir al chat con el cliente
+          {% else %}
+            Ir al chat con el carpintero
+          {% endif %}
         </a>
 
       </div>

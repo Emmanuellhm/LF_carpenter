@@ -415,6 +415,34 @@
         // 2. Marcar como leída
         function markNotificationRead(id, e, element) {
             e.preventDefault();
+            
+            // Efecto visual de eliminación inmediata
+            element.style.transition = 'all 0.3s ease';
+            element.style.opacity = '0';
+            element.style.transform = 'translateX(20px)';
+            
+            setTimeout(() => { 
+                element.style.display = 'none'; 
+                
+                // Actualizar contadores
+                const badge = document.getElementById('notification-badge');
+                const countText = document.getElementById('notification-count-text');
+                if (countText) {
+                    let text = countText.innerText.replace(/[^0-9]/g, '');
+                    let currentCount = parseInt(text) || 0;
+                    if (currentCount > 0) {
+                        currentCount--;
+                        countText.innerText = currentCount + ' nuevas';
+                        if (currentCount === 0) {
+                            if(badge) badge.classList.add('hidden');
+                            countText.classList.add('hidden');
+                            const noMsg = document.getElementById('no-notifications-msg');
+                            if (noMsg) noMsg.classList.remove('hidden');
+                        }
+                    }
+                }
+            }, 300);
+
             fetch(`/api/notificaciones/marcar-leida/${id}/`, {
                 method: 'POST',
                 headers: {

@@ -68,49 +68,57 @@
     {% endif %}
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-1 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-[var(--caramel)]/10 flex items-center justify-center">
-            <i class="fas fa-images text-[var(--caramel)]"></i>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-5 mb-10">
+      <!-- Tarjeta 1 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-1 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-[var(--caramel)]/5 rounded-full blur-2xl group-hover:bg-[var(--caramel)]/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-[var(--caramel)]">
+            <i class="fas fa-images text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ total_proyectos }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ total_proyectos }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Proyectos</p>
-        <a href="{% url 'carpinteros:mis_proyectos' %}" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Ver todos →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Proyectos</p>
+        <a href="{% url 'carpinteros:mis_proyectos' %}" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Ver todos <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-2 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
-            <i class="fas fa-briefcase text-blue-500"></i>
+      <!-- Tarjeta 2 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-2 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-blue-500/5 rounded-full blur-2xl group-hover:bg-blue-500/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-blue-500">
+            <i class="fas fa-briefcase text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ total_solicitudes }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ total_solicitudes }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Centro de Proyectos</p>
-        <a href="{% url 'carpinteros:ver_solicitudes' %}" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Ver Proyectos →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Centro Proyectos</p>
+        <a href="{% url 'carpinteros:ver_solicitudes' %}" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Ver Proyectos <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-3 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-            <i class="fas fa-clock text-amber-500"></i>
+      <!-- Tarjeta 3 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-3 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-amber-500">
+            <i class="fas fa-clock text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ solicitudes_pendientes }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ solicitudes_pendientes }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Pendientes</p>
-        <a href="{% url 'carpinteros:ver_solicitudes' %}?estado=pending" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Revisar →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Pendientes</p>
+        <a href="{% url 'carpinteros:ver_solicitudes' %}?estado=pending" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Revisar <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-3 opacity-0" style="animation-delay: 400ms;">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-            <i class="fas fa-star text-emerald-500"></i>
+      <!-- Tarjeta 4 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-3 opacity-0 relative overflow-hidden group" style="animation-delay: 400ms;">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-emerald-500">
+            <i class="fas fa-star text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ rating_avg }}<span class="text-sm text-stone-400 font-normal">/5</span></span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ rating_avg }}<span class="text-sm text-stone-400 font-normal">/5</span></span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Calificación</p>
-        <span class="text-xs text-stone-400 mt-1 block">{{ total_reviews }} reseña{{ total_reviews|pluralize:"s" }}</span>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Calificación</p>
+        <span class="text-xs text-stone-400 mt-2 block relative z-10">{{ total_reviews }} reseña{{ total_reviews|pluralize:"s" }}</span>
       </div>
     </div>
 
@@ -142,12 +150,17 @@
             {% endfor %}
           </div>
           {% else %}
-          <div class="flex flex-col items-center justify-center py-16 text-stone-400">
-            <i class="fas fa-camera text-5xl mb-4"></i>
-            <p class="font-medium mb-1">Aún no tienes proyectos</p>
-            <p class="text-sm mb-4">Muéstrale a tus clientes tus mejores trabajos</p>
-            <a href="{% url 'carpinteros:subir_proyecto' %}" class="px-4 py-2 bg-[var(--caramel)] text-white rounded-lg text-sm font-bold hover:bg-[#a6652c] transition">
-              <i class="fas fa-plus mr-2"></i>Subir primer proyecto
+          <div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+            <div class="relative mb-6">
+              <div class="absolute inset-0 bg-[var(--caramel)]/20 blur-xl rounded-full"></div>
+              <div class="w-20 h-20 bg-white border border-stone-100 shadow-md rounded-2xl flex items-center justify-center relative z-10">
+                <i class="fas fa-camera text-3xl text-[var(--caramel)]"></i>
+              </div>
+            </div>
+            <h3 class="font-display font-bold text-2xl text-[var(--wood-dark)] mb-2">Aún no tienes proyectos</h3>
+            <p class="text-stone-500 text-sm max-w-sm mb-6 leading-relaxed">Muéstrale a tus clientes tus mejores trabajos subiendo imágenes a tu portafolio.</p>
+            <a href="{% url 'carpinteros:subir_proyecto' %}" class="group px-6 py-3.5 bg-[var(--caramel)] text-white rounded-xl text-sm font-bold hover:bg-[#a6652c] transition shadow-[0_4px_14px_0_rgba(184,115,51,0.4)] hover:-translate-y-0.5 flex items-center gap-2">
+              <i class="fas fa-plus"></i> Subir primer proyecto
             </a>
           </div>
           {% endif %}
@@ -219,19 +232,24 @@
           </div>
           
           <!-- Barra de progreso visual aproximada -->
-          <div class="w-full bg-stone-100 rounded-full h-2 mb-5 overflow-hidden">
+          <div class="w-full bg-stone-100/80 rounded-full h-2.5 mb-6 overflow-hidden shadow-inner">
             {% if request.user.full_name and carpintero.specialties and total_proyectos > 0 and request.user.phone %}
-              <div class="bg-emerald-500 h-2 rounded-full" style="width: 100%"></div>
+              <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.3)] relative overflow-hidden" style="width: 100%">
+                <div class="absolute inset-0 bg-white/20 w-full h-full" style="animation: shimmer 2s infinite linear; transform: translateX(-100%);"></div>
+              </div>
             {% elif request.user.full_name and carpintero.specialties and total_proyectos > 0 %}
-              <div class="bg-amber-400 h-2 rounded-full" style="width: 75%"></div>
+              <div class="bg-gradient-to-r from-amber-400 to-amber-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(245,158,11,0.3)]" style="width: 75%"></div>
             {% elif request.user.full_name and carpintero.specialties %}
-              <div class="bg-[var(--caramel)] h-2 rounded-full" style="width: 50%"></div>
+              <div class="bg-gradient-to-r from-[var(--caramel)] to-[#d9904d] h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(184,115,51,0.3)]" style="width: 50%"></div>
             {% elif request.user.full_name %}
-              <div class="bg-[var(--caramel)] h-2 rounded-full" style="width: 25%"></div>
+              <div class="bg-gradient-to-r from-[var(--caramel)] to-[#d9904d] h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(184,115,51,0.3)]" style="width: 25%"></div>
             {% else %}
-              <div class="bg-stone-300 h-2 rounded-full" style="width: 10%"></div>
+              <div class="bg-stone-300 h-full rounded-full transition-all duration-1000 ease-out" style="width: 10%"></div>
             {% endif %}
           </div>
+          <style>
+            @keyframes shimmer { 100% { transform: translateX(100%); } }
+          </style>
           
           <div class="space-y-3">
             <div class="flex items-center gap-3 text-sm">

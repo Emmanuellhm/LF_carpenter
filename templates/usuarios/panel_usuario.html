@@ -41,38 +41,44 @@
   <div class="container mx-auto px-6 py-8">
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-1 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-[var(--caramel)]/10 flex items-center justify-center">
-            <i class="fas fa-folder-open text-[var(--caramel)]"></i>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+      <!-- Tarjeta 1 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-1 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-[var(--caramel)]/5 rounded-full blur-2xl group-hover:bg-[var(--caramel)]/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-[var(--caramel)]">
+            <i class="fas fa-folder-open text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ total_solicitudes }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ total_solicitudes }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Solicitudes Totales</p>
-        <a href="{% url 'usuarios:historial' %}" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Ver historial →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Solicitudes Totales</p>
+        <a href="{% url 'usuarios:historial' %}" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Ver historial <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-2 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center">
-            <i class="fas fa-hammer text-amber-500"></i>
+      <!-- Tarjeta 2 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-2 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl group-hover:bg-amber-500/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-amber-500">
+            <i class="fas fa-hammer text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ solicitudes_activas }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ solicitudes_activas }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Proyectos Activos</p>
-        <a href="{% url 'usuarios:mis_solicitudes' %}" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Hacer seguimiento →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Proyectos Activos</p>
+        <a href="{% url 'usuarios:mis_solicitudes' %}" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Hacer seguimiento <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
 
-      <div class="bg-white rounded-2xl p-6 border border-stone-200 premium-card shadow-sm animate-fade-in-up stagger-3 opacity-0">
-        <div class="flex items-center justify-between mb-3">
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
-            <i class="fas fa-check-circle text-emerald-500"></i>
+      <!-- Tarjeta 3 -->
+      <div class="bg-gradient-to-br from-white to-stone-50/80 rounded-2xl p-6 border border-stone-200/60 shadow-sm hover:shadow-md transition duration-300 animate-fade-in-up stagger-3 opacity-0 relative overflow-hidden group">
+        <div class="absolute -right-4 -top-4 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition"></div>
+        <div class="flex items-center justify-between mb-4 relative z-10">
+          <div class="w-12 h-12 rounded-xl bg-white border border-stone-100 shadow-sm flex items-center justify-center text-emerald-500">
+            <i class="fas fa-check-circle text-lg"></i>
           </div>
-          <span class="text-2xl font-bold text-[var(--wood-dark)]">{{ solicitudes_completadas }}</span>
+          <span class="text-3xl font-display font-bold text-[var(--wood-dark)]">{{ solicitudes_completadas }}</span>
         </div>
-        <p class="text-stone-500 text-sm font-medium">Proyectos Completados</p>
-        <a href="{% url 'usuarios:historial' %}" class="text-xs text-[var(--caramel)] hover:underline mt-1 block">Ver reseñas →</a>
+        <p class="text-stone-500 text-sm font-medium relative z-10">Proyectos Completados</p>
+        <a href="{% url 'usuarios:historial' %}" class="text-xs font-bold text-[var(--caramel)] hover:text-[#a6652c] mt-2 inline-flex items-center gap-1 relative z-10">Ver reseñas <i class="fas fa-arrow-right text-[10px]"></i></a>
       </div>
     </div>
 
@@ -132,14 +138,17 @@
               {% endfor %}
             </div>
           {% else %}
-            <div class="flex flex-col items-center justify-center py-16 text-stone-400">
-              <div class="w-16 h-16 bg-stone-50 rounded-full flex items-center justify-center mb-4 border border-stone-100">
-                <i class="fas fa-file-signature text-2xl text-stone-300"></i>
+            <div class="flex flex-col items-center justify-center py-20 px-4 text-center">
+              <div class="relative mb-6">
+                <div class="absolute inset-0 bg-[var(--caramel)]/20 blur-xl rounded-full"></div>
+                <div class="w-20 h-20 bg-white border border-stone-100 shadow-md rounded-2xl flex items-center justify-center relative z-10">
+                  <i class="fas fa-drafting-compass text-3xl text-[var(--caramel)]"></i>
+                </div>
               </div>
-              <p class="font-medium text-stone-600 mb-1">Aún no has encargado proyectos</p>
-              <p class="text-sm mb-4 text-center max-w-sm">Explora el directorio de carpinteros para encontrar al artesano ideal para tu próxima idea.</p>
-              <a href="{% url 'explorar_carpinteros' %}" class="px-5 py-2.5 bg-[var(--caramel)] text-white rounded-xl text-sm font-bold hover:bg-[#a6652c] transition shadow-md">
-                Explorar Directorio
+              <h3 class="font-display font-bold text-2xl text-[var(--wood-dark)] mb-2">Aún no hay proyectos</h3>
+              <p class="text-stone-500 text-sm max-w-sm mb-6 leading-relaxed">Conecta con los mejores artesanos y dale vida a ese mueble o pieza de madera que tienes en mente.</p>
+              <a href="{% url 'explorar_carpinteros' %}" class="group px-6 py-3.5 bg-[var(--wood-dark)] text-white rounded-xl text-sm font-bold hover:bg-[#2c221a] transition shadow-lg hover:shadow-xl hover:-translate-y-0.5 flex items-center gap-2">
+                Explorar Catálogo <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
               </a>
             </div>
           {% endif %}
@@ -215,17 +224,22 @@
           </div>
           
           <!-- Barra de progreso visual -->
-          <div class="w-full bg-stone-100 rounded-full h-2 mb-5 overflow-hidden">
+          <div class="w-full bg-stone-100/80 rounded-full h-2.5 mb-6 overflow-hidden shadow-inner">
             {% if request.user.full_name and request.user.phone and request.user.city %}
-              <div class="bg-emerald-500 h-2 rounded-full" style="width: 100%"></div>
+              <div class="bg-gradient-to-r from-emerald-400 to-emerald-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(16,185,129,0.3)] relative overflow-hidden" style="width: 100%">
+                <div class="absolute inset-0 bg-white/20 w-full h-full" style="animation: shimmer 2s infinite linear; transform: translateX(-100%);"></div>
+              </div>
             {% elif request.user.full_name and request.user.phone %}
-              <div class="bg-amber-400 h-2 rounded-full" style="width: 66%"></div>
+              <div class="bg-gradient-to-r from-amber-400 to-amber-500 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(245,158,11,0.3)]" style="width: 66%"></div>
             {% elif request.user.full_name %}
-              <div class="bg-[var(--caramel)] h-2 rounded-full" style="width: 33%"></div>
+              <div class="bg-gradient-to-r from-[var(--caramel)] to-[#d9904d] h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_10px_rgba(184,115,51,0.3)]" style="width: 33%"></div>
             {% else %}
-              <div class="bg-stone-300 h-2 rounded-full" style="width: 10%"></div>
+              <div class="bg-stone-300 h-full rounded-full transition-all duration-1000 ease-out" style="width: 10%"></div>
             {% endif %}
           </div>
+          <style>
+            @keyframes shimmer { 100% { transform: translateX(100%); } }
+          </style>
 
           <div class="space-y-3">
             <div class="flex items-center gap-3 text-sm">
