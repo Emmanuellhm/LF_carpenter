@@ -45,7 +45,7 @@
     
     <div class="relative z-10 p-12 lg:p-20">
       <div class="border-t border-white/20 pt-8 flex items-center gap-4">
-        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-12 opacity-80 brightness-0 invert">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" width="48" height="48" class="h-12 w-auto opacity-80 brightness-0 invert">
         <p class="text-sm text-stone-400">&copy; 2026 LF Carpinter. Red de Artesanos.</p>
       </div>
     </div>
@@ -56,7 +56,7 @@
     <div class="max-w-xl w-full mx-auto">
       
       <div class="lg:hidden mb-8 text-center">
-        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-16 mx-auto mb-4">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" width="64" height="64" class="h-16 w-auto mx-auto mb-4">
       </div>
 
       <!-- TAB SWITCHER -->
@@ -94,8 +94,8 @@
           <div class="space-y-4">
             <div class="pl-icon-container">
               <label for="{{ form.full_name.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Nombre completo *</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-user"></i></span>
+              <div class="relative group">
+                <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-user"></i></span>
                 {{ form.full_name }}
               </div>
               {{ form.full_name.errors }}
@@ -103,8 +103,8 @@
 
             <div class="pl-icon-container">
               <label for="{{ form.email.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Correo electrónico *</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-envelope"></i></span>
+              <div class="relative group">
+                <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-envelope"></i></span>
                 {{ form.email }}
               </div>
               {{ form.email.errors }}
@@ -113,16 +113,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="pl-icon-container">
                 <label for="{{ form.phone.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Teléfono</label>
-                <div class="relative">
-                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-phone"></i></span>
+                <div class="relative group">
+                  <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-phone"></i></span>
                   {{ form.phone }}
                 </div>
                 {{ form.phone.errors }}
               </div>
               <div class="pl-icon-container">
                 <label for="{{ form.city.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Ciudad</label>
-                <div class="relative">
-                  <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-map-marker-alt"></i></span>
+                <div class="relative group">
+                  <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-map-marker-alt"></i></span>
                   {{ form.city }}
                 </div>
                 {{ form.city.errors }}
@@ -131,8 +131,8 @@
 
             <div class="pl-icon-container">
               <label for="{{ form.password.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Contraseña *</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-lock"></i></span>
+              <div class="relative group">
+                <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-lock"></i></span>
                 {{ form.password }}
               </div>
               {{ form.password.errors }}
@@ -140,8 +140,8 @@
 
             <div class="pl-icon-container">
               <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-stone-700 mb-1">Confirmar contraseña *</label>
-              <div class="relative">
-                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-stone-400 z-10 pointer-events-none"><i class="fas fa-lock"></i></span>
+              <div class="relative group">
+                <span class="absolute inset-y-0 left-0 w-12 flex items-center justify-center text-stone-400 z-10 pointer-events-none transition-colors group-focus-within:text-[var(--wood-dark)]"><i class="fas fa-lock"></i></span>
                 {{ form.password2 }}
               </div>
               {{ form.password2.errors }}
@@ -161,7 +161,7 @@
         </div>
 
         <div class="pt-4">
-          <button type="submit" class="w-full flex justify-center items-center py-4 px-4 border border-transparent text-lg font-bold rounded-xl text-white bg-[var(--wood)] hover:bg-[var(--wood-dark)] focus:outline-none focus:ring-4 focus:ring-[#e2ad7e] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+          <button type="submit" class="w-full flex justify-center items-center py-4 px-4 border border-transparent text-lg font-bold rounded-xl text-white bg-[var(--wood)] hover:bg-[var(--wood-dark)] outline-none focus-visible:ring-4 focus-visible:ring-[#e2ad7e] transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
             Crear cuenta <i class="fas fa-arrow-right ml-2"></i>
           </button>
         </div>
@@ -201,7 +201,7 @@
 {% block extra_scripts %}
 <style>
   /* Fix the icon absolute positioning overriding the input padding */
-  .pl-icon-container input { padding-left: 2.5rem !important; }
+  .pl-icon-container input { padding-left: 3rem !important; }
   
   /* Error styling */
   ul.errorlist { color: #dc2626; font-size: 0.875rem; margin-top: 0.25rem; list-style-type: none; padding-left: 0; }

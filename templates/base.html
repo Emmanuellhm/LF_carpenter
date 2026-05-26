@@ -60,7 +60,41 @@
         }
         #mobile-menu.open { max-height: 600px; opacity: 1; }
 
-        /* Hamburger → X animation */
+        /* Animaciones globales */
+        @keyframes fadeInUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+        .animate-fade-in-up {
+            animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        /* Stagger children animations */
+        .stagger-1 { animation-delay: 100ms; }
+        .stagger-2 { animation-delay: 200ms; }
+        .stagger-3 { animation-delay: 300ms; }
+        
+        /* Premium Cards */
+        .premium-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .premium-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -10px rgba(184, 115, 51, 0.2);
+            border-color: rgba(184, 115, 51, 0.3);
+        }
+
+        /* Glassmorphism Header Panels */
+        .glass-header {
+            background: linear-gradient(135deg, rgba(44, 26, 16, 0.95), rgba(94, 58, 33, 0.9));
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Optimizaciones UX Pro Max */
+        body, button, a, input, select, textarea {
+            touch-action: manipulation;
+        }
+
         .ham-line { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); transform-origin: center; }
         .ham-open .ham-top { transform: translateY(8px) rotate(45deg);  }
         .ham-open .ham-mid { opacity: 0; transform: scaleX(0); }
@@ -77,7 +111,7 @@
             <!-- Logo -->
             <a href="{% url 'home' %}" class="flex items-center gap-3 group flex-shrink-0">
                 <div class="w-11 h-11 flex items-center justify-center bg-white/5 rounded-xl border border-white/10 group-hover:bg-white/10 transition-colors duration-300">
-                    <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Carpinter" class="h-7 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
+                    <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Carpinter" width="28" height="28" class="h-7 w-auto object-contain brightness-0 invert opacity-90 group-hover:opacity-100 transition-opacity">
                 </div>
                 <span class="font-display text-xl font-bold italic tracking-wider text-white">LF <span class="text-[var(--caramel)]">Carpinter</span></span>
             </a>
@@ -88,7 +122,7 @@
                     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <i class="fas fa-search text-stone-400 group-focus-within:text-[var(--caramel)] transition-colors"></i>
                     </div>
-                    <input type="text" name="q" placeholder="¿Qué experto buscas? Ej. Cocinas, Restauración, Closets..." class="w-full pl-11 pr-32 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-stone-400 focus:bg-white focus:text-stone-800 focus:border-[var(--caramel)] focus:ring-4 focus:ring-[var(--caramel)]/20 outline-none transition-all duration-300 shadow-inner">
+                    <input type="text" name="q" aria-label="Buscar carpinteros" placeholder="¿Qué experto buscas? Ej. Cocinas, Restauración, Closets..." class="w-full pl-11 pr-32 py-3 rounded-full bg-white/10 border border-white/20 text-white placeholder-stone-400 focus:bg-white focus:text-stone-800 focus-visible:border-[var(--caramel)] focus-visible:ring-4 focus-visible:ring-[var(--caramel)]/20 outline-none transition-all duration-300 shadow-inner">
                     <button type="submit" class="absolute right-1.5 top-1/2 -translate-y-1/2 px-5 py-2 rounded-full bg-[var(--caramel)] text-white font-bold text-sm hover:bg-[#a6652c] transition-all shadow-md hover:shadow-lg">
                         Buscar
                     </button>
@@ -114,7 +148,7 @@
                     <div class="flex items-center gap-3 pl-4 border-l border-white/10 relative">
                         <!-- Campana Notificaciones -->
                         <div class="relative" id="notification-container">
-                            <button id="notification-btn" class="text-stone-300 hover:text-[var(--caramel)] transition p-2 relative outline-none rounded-lg hover:bg-white/10">
+                            <button id="notification-btn" aria-label="Abrir notificaciones" class="text-stone-300 hover:text-[var(--caramel)] transition p-2 relative outline-none focus-visible:ring-2 focus-visible:ring-[var(--caramel)] rounded-lg hover:bg-white/10">
                                 <i class="fas fa-bell text-lg"></i>
                                 <span id="notification-badge" class="absolute top-1.5 right-1.5 flex h-2.5 w-2.5 {% if not notificaciones_unread_count %}hidden{% endif %}">
                                     <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -123,7 +157,7 @@
                             </button>
 
                             <!-- Dropdown -->
-                            <div id="notification-dropdown" class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-stone-100 hidden opacity-0 transition-all duration-200 z-50 overflow-hidden transform origin-top-right scale-95">
+                            <div id="notification-dropdown" class="absolute right-0 mt-3 w-80 bg-white rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-stone-100 hidden opacity-0 transition-all duration-200 z-50 overflow-hidden transform origin-top-right scale-95" style="overscroll-behavior: contain;">
                                 <div class="bg-[var(--cream)] px-4 py-3 border-b border-stone-100 flex justify-between items-center">
                                     <h3 class="font-bold text-[var(--wood-dark)] text-sm">Notificaciones</h3>
                                     <span id="notification-count-text" class="text-[10px] uppercase tracking-wider bg-[var(--caramel)]/10 text-[var(--caramel)] px-2 py-0.5 rounded-full font-bold {% if not notificaciones_unread_count %}hidden{% endif %}">
@@ -275,7 +309,7 @@
                         {% else %}<i class="fas fa-info-circle text-[var(--caramel)] text-xl"></i>{% endif %}
                     </div>
                     <div class="flex-1 font-body text-sm font-medium pt-0.5">{{ message }}</div>
-                    <button onclick="this.closest('.toast-message').remove()" class="shrink-0 text-stone-400 hover:text-stone-600 transition">
+                    <button onclick="this.closest('.toast-message').remove()" aria-label="Cerrar notificación" class="shrink-0 text-stone-400 hover:text-stone-600 transition outline-none focus-visible:ring-2 focus-visible:ring-stone-400 rounded">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
@@ -341,7 +375,7 @@
                 <p id="toast-title" class="text-sm font-bold text-[var(--wood-dark)] mb-0.5">Nueva notificación</p>
                 <p id="toast-message" class="text-xs text-stone-500 leading-snug">Tienes un nuevo mensaje</p>
             </div>
-            <button onclick="hideToast()" class="text-stone-300 hover:text-stone-500 transition ml-2">
+            <button onclick="hideToast()" aria-label="Cerrar notificación" class="text-stone-300 hover:text-stone-500 transition ml-2 outline-none focus-visible:ring-2 focus-visible:ring-stone-400 rounded">
                 <i class="fas fa-times"></i>
             </button>
         </div>

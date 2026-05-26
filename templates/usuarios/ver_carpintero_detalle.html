@@ -115,7 +115,7 @@
                 <label class="block text-xs font-body font-medium uppercase tracking-wider mb-3" style="color: var(--wood);">Tu Calificación</label>
                 <div class="flex items-center gap-2 text-3xl" id="star-rating">
                   {% for i in "12345" %}
-                  <button type="button" data-rating="{{ forloop.counter }}" class="star-btn text-stone-300 hover:text-amber-400 transition-colors duration-200 focus:outline-none">
+                  <button type="button" data-rating="{{ forloop.counter }}" aria-label="Calificar con {{ forloop.counter }} estrellas" class="star-btn text-stone-300 hover:text-amber-400 transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-sm">
                     <i class="fas fa-star"></i>
                   </button>
                   {% endfor %}
