@@ -67,6 +67,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
+        image_url = event.get('image_url', None)
         sender = event['sender']
         sender_id = event['sender_id']
         timestamp = event['timestamp']
@@ -74,6 +75,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             'message': message,
+            'image_url': image_url,
             'sender': sender,
             'sender_id': sender_id,
             'timestamp': timestamp

@@ -48,3 +48,51 @@ def sala_chat(request, room_id):
         'mensajes': mensajes,
     }
     return render(request, 'chat/sala.html', context)
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@login_required
+@csrf_exempt
+def upload_image(request, room_id):
+    """Sube una imagen al chat y devuelve la URL"""
+    if request.method == 'POST' and request.FILES.get('image'):
+        chat_room = get_object_or_404(ChatRoom, id=room_id)
+        
+        # Verificar acceso
+        is_client = request.user == chat_room.solicitud.user
+        is_carpenter = request.user == chat_room.solicitud.carpenter.user
+        if not (is_client or is_carpenter):
+            return JsonResponse({'error': 'No tienes acceso'}, status=403)
+            
+        from .models import Message
+        image = request.FILES['image']
+        msg = Message.objects.create(
+            room=chat_room,
+            sender=request.user,
+            content='',
+            image=image
+        )
+        
+        from channels.layers import get_channel_layer
+        from asgiref.sync import async_to_sync
+        
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f'chat_{room_id}',
+            {
+                'type': 'chat_message',
+                'message': '',
+                'image_url': msg.image.url,
+                'sender': request.user.full_name,
+                'sender_id': request.user.id,
+                'timestamp': msg.timestamp.strftime('%H:%M')
+            }
+        )
+        
+        return JsonResponse({
+            'success': True,
+            'image_url': msg.image.url,
+            'timestamp': msg.timestamp.strftime('%H:%M')
+        })
+    return JsonResponse({'error': 'No image provided'}, status=400)

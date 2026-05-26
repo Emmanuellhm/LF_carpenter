@@ -46,16 +46,24 @@
         {% if mensaje.sender == request.user %}
           <!-- Sent by me -->
           <div class="flex flex-col items-end gap-1">
-            <div class="bg-[var(--caramel)] text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm">
-              {{ mensaje.content }}
+            <div class="bg-[var(--caramel)] text-white {% if not mensaje.image %}px-5{% endif %} p-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm">
+              {% if mensaje.image %}
+                <img src="{{ mensaje.image.url }}" class="rounded-lg max-w-full h-auto max-h-48 object-cover cursor-pointer hover:opacity-90 transition" onclick="window.open('{{ mensaje.image.url }}', '_blank')">
+              {% else %}
+                {{ mensaje.content }}
+              {% endif %}
             </div>
             <span class="text-[10px] text-stone-400 font-medium px-1">{{ mensaje.timestamp|date:"H:i" }}</span>
           </div>
         {% else %}
           <!-- Received -->
           <div class="flex flex-col items-start gap-1">
-            <div class="bg-white border border-stone-200 text-stone-800 px-5 py-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm">
-              {{ mensaje.content }}
+            <div class="bg-white border border-stone-200 text-stone-800 {% if not mensaje.image %}px-5{% endif %} p-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm">
+              {% if mensaje.image %}
+                <img src="{{ mensaje.image.url }}" class="rounded-lg max-w-full h-auto max-h-48 object-cover cursor-pointer hover:opacity-90 transition" onclick="window.open('{{ mensaje.image.url }}', '_blank')">
+              {% else %}
+                {{ mensaje.content }}
+              {% endif %}
             </div>
             <span class="text-[10px] text-stone-400 font-medium px-1">{{ mensaje.timestamp|date:"H:i" }}</span>
           </div>
@@ -66,9 +74,10 @@
     <!-- Input -->
     <div class="p-4 pb-8 sm:pb-4 bg-white border-t border-stone-100 shrink-0">
       <form id="chat-form" data-no-loading="true" class="flex items-center gap-3">
-        <button type="button" class="w-10 h-10 rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600 flex items-center justify-center transition">
+        <label for="chat-image-input" class="w-10 h-10 rounded-full text-stone-400 hover:bg-stone-100 hover:text-stone-600 flex items-center justify-center transition cursor-pointer">
           <i class="fas fa-paperclip"></i>
-        </button>
+          <input type="file" id="chat-image-input" accept="image/*" class="hidden">
+        </label>
         <input 
           type="text" 
           id="chat-message-input" 
@@ -102,6 +111,7 @@
   );
 
   const messagesDiv = document.querySelector('#chat-messages');
+  const imageInput = document.querySelector('#chat-image-input');
 
   // Auto-scroll to bottom on load
   function scrollToBottom() {
@@ -118,9 +128,15 @@
       
       const msgBubble = document.createElement('div');
       msgBubble.className = isMe 
-        ? 'bg-[var(--caramel)] text-white px-5 py-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm'
-        : 'bg-white border border-stone-200 text-stone-800 px-5 py-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm';
-      msgBubble.innerText = data.message;
+        ? 'bg-[var(--caramel)] text-white p-3 rounded-2xl rounded-tr-sm max-w-[75%] shadow-sm text-sm'
+        : 'bg-white border border-stone-200 text-stone-800 p-3 rounded-2xl rounded-tl-sm max-w-[75%] shadow-sm text-sm';
+      
+      if (data.image_url) {
+          msgBubble.innerHTML = `<img src="${data.image_url}" class="rounded-lg max-w-full h-auto max-h-48 object-cover cursor-pointer hover:opacity-90 transition" onclick="window.open('${data.image_url}', '_blank')">`;
+      } else {
+          msgBubble.innerText = data.message;
+          msgBubble.classList.add('px-5');
+      }
       
       const timeSpan = document.createElement('span');
       timeSpan.className = 'text-[10px] text-stone-400 font-medium px-1';
@@ -149,5 +165,32 @@
           messageInputDom.value = '';
       }
   };
+
+  // Image upload logic
+  imageInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) {
+          const file = this.files[0];
+          const formData = new FormData();
+          formData.append('image', file);
+          
+          fetch(`/chat/api/upload-image/${roomId}/`, {
+              method: 'POST',
+              body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+              if (data.error) {
+                  alert(data.error);
+              }
+              // We don't manually append here because the server will broadcast it via WebSocket
+          })
+          .catch(error => {
+              console.error('Error uploading image:', error);
+              alert('Error al subir la imagen');
+          });
+          
+          this.value = ''; // Reset input
+      }
+  });
 </script>
 {% endblock %}
