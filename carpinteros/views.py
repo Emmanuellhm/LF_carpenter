@@ -233,7 +233,16 @@ def detalle_solicitud(request, solicitud_id):
     solicitud = get_object_or_404(SolicitudProyecto, id=solicitud_id, carpenter=carpintero)
 
     if request.method == 'POST':
-        nuevo_estado = request.POST.get('estado')
+        action = request.POST.get('action')
+        nuevo_estado = request.POST.get('estado') # Para compatibilidad futura
+        
+        if action == 'accept':
+            nuevo_estado = 'accepted'
+        elif action == 'reject':
+            nuevo_estado = 'rejected'
+        elif action == 'complete':
+            nuevo_estado = 'completed'
+
         mensaje_respuesta = request.POST.get('response_message', '').strip()
         ESTADOS_VALIDOS = ['accepted', 'rejected', 'completed']
 
@@ -245,7 +254,7 @@ def detalle_solicitud(request, solicitud_id):
             messages.success(request, f'Estado de la solicitud actualizado a "{solicitud.get_status_display()}".')
             return redirect('carpinteros:ver_solicitudes')
         else:
-            messages.error(request, 'Estado no válido.')
+            messages.error(request, 'Estado no válido o acción no reconocida.')
 
     context = {
         'solicitud': solicitud,
