@@ -20,7 +20,10 @@ from carpinteros.models import Carpintero
 
 def home(request):
     """Página de inicio"""
-    carpinteros = Carpintero.objects.filter(approved=True, is_verified=True)[:4]
+    from django.db.models import Avg
+    carpinteros = Carpintero.objects.filter(approved=True).annotate(
+        avg_rating=Avg('reviews__rating')
+    ).order_by('-avg_rating')[:4]
     return render(request, 'core/home.html', {'carpinteros': carpinteros})
 
 
