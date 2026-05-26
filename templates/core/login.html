@@ -13,7 +13,7 @@
         <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,%3Csvg width=&quot;40&quot; height=&quot;40&quot; viewBox=&quot;0 0 40 40&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;%23c2813d&quot; fill-opacity=&quot;1&quot; fill-rule=&quot;evenodd&quot;%3E%3Cpath d=&quot;M0 40L40 0H20L0 20M40 40V20L20 40&quot;/%3E%3C/g%3E%3C/svg%3E');"></div>
       </div>
       <div class="relative z-10">
-        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="h-16 w-16 mb-8">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" width="64" height="64" class="h-16 w-auto object-contain mb-8 brightness-0 invert opacity-90">
         <h2 class="font-display text-3xl text-white mb-4">Bienvenido de vuelta</h2>
         <p class="font-body text-stone-400 leading-relaxed">Accede a tu cuenta para gestionar tus proyectos, revisar solicitudes y conectar con los mejores carpinteros artesanales.</p>
       </div>
@@ -22,7 +22,7 @@
     <!-- Right: Form -->
     <div class="bg-white p-10 md:p-12">
       <div class="md:hidden text-center mb-8">
-        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" class="mx-auto h-16 w-16 mb-4">
+        <img src="{% static 'img/Logo de Carpintería LF.png' %}" alt="LF Logo" width="64" height="64" class="mx-auto h-16 w-auto object-contain mb-4">
         <h2 class="font-display text-2xl" style="color: var(--wood-dark);">Iniciar Sesión</h2>
       </div>
       <h2 class="hidden md:block font-display text-2xl mb-8" style="color: var(--wood-dark);">Iniciar Sesión</h2>
@@ -123,7 +123,8 @@
     const inputs = document.querySelectorAll('input[type="text"], input[type="password"], input[type="email"]');
     inputs.forEach(input => {
       input.classList.remove('form-control');
-      input.classList.add('w-full', 'pl-12', 'pr-4', 'py-3.5', 'border', 'rounded-xl', 'focus:ring-2', 'font-body', 'text-sm', 'transition-all');
+      input.classList.add('w-full', 'pr-4', 'py-3.5', 'border', 'rounded-xl', 'focus:ring-2', 'font-body', 'text-sm', 'transition-all');
+      input.style.paddingLeft = '3rem';
       input.style.borderColor = '#e8ddd0';
       input.style.setProperty('--tw-ring-color', 'rgba(194, 129, 61, 0.3)');
     });
