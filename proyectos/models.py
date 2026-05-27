@@ -22,6 +22,7 @@ class SolicitudProyecto(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='solicitudes')
     carpenter = models.ForeignKey(Carpintero, on_delete=models.CASCADE, related_name='solicitudes_recibidas')
+    portafolio_item = models.ForeignKey('carpinteros.Portafolio', on_delete=models.SET_NULL, null=True, blank=True, related_name='compras_directas')
     title = models.CharField('Título del proyecto', max_length=255)
     description = models.TextField('Descripción del proyecto')
     budget = models.DecimalField('Presupuesto', max_digits=12, decimal_places=2, null=True, blank=True)

@@ -392,19 +392,25 @@
             <i class="fas fa-tag text-[var(--caramel)]"></i>
           </div>
         </div>
-        {% if can_contact %}
+        {% if request.user.role == 'user' %}
+        <form id="purchase-form" method="post" action="">
+          {% csrf_token %}
+          <button type="submit" id="btn-comprar" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl font-bold text-base transition shadow-[0_6px_20px_rgba(5,150,105,.4)] hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-3 hidden">
+            <i class="fas fa-shopping-cart text-lg"></i> Comprar ahora
+          </button>
+        </form>
         <button onclick="closeModal(); prefillCustom(document.getElementById('modal-title').textContent)"
                 class="w-full py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-2xl font-bold text-base transition shadow-[0_6px_20px_rgba(184,115,51,.4)] hover:-translate-y-0.5 flex items-center justify-center gap-3 mb-3">
           <i class="fas fa-pencil-ruler text-lg"></i> Cotizar proyecto similar
         </button>
-        {% elif not user.is_authenticated %}
+        {% elif not request.user.is_authenticated %}
         <a href="{% url 'login' %}?next={{ request.path }}"
-           class="block w-full py-4 bg-[var(--caramel)] text-white rounded-2xl font-bold text-base text-center transition">
-          Iniciar sesión para comprar
+           class="block w-full py-4 bg-[var(--caramel)] hover:bg-[#a6652c] text-white rounded-2xl font-bold text-base text-center transition mb-3">
+          Iniciar sesión para interactuar
         </a>
         {% endif %}
         <p class="text-center text-xs text-stone-400 mt-4">
-          <i class="fas fa-shield-alt text-stone-300 mr-1"></i>Cotización sin compromiso · LF Carpinter protege tu proyecto
+          <i class="fas fa-shield-alt text-stone-300 mr-1"></i>Pago 100% protegido con LF Carpinter
         </p>
       </div>
     </div>
@@ -413,13 +419,7 @@
 </div>
 
 
-<!-- Formulario oculto para compra directa (POST al servidor) -->
-<form id="purchase-hidden-form" method="post" class="hidden">
-  {% csrf_token %}
-  <input type="hidden" name="titulo" id="ph-titulo">
-  <input type="hidden" name="descripcion" id="ph-desc">
-  <input type="hidden" name="presupuesto" id="ph-precio">
-</form>
+<!-- Fin modal -->
 
 {% endblock %}
 
@@ -453,6 +453,17 @@
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     document.body.style.overflow = 'hidden';
+
+    const buyForm = document.getElementById('purchase-form');
+    const buyBtn = document.getElementById('btn-comprar');
+    if(buyForm && buyBtn) {
+      if(price && price > 0) {
+        buyForm.action = `/comprar-proyecto/${id}/`;
+        buyBtn.classList.remove('hidden');
+      } else {
+        buyBtn.classList.add('hidden');
+      }
+    }
   }
 
   function closeModal() {
@@ -460,14 +471,6 @@
     modal.classList.add('hidden');
     modal.classList.remove('flex');
     document.body.style.overflow = '';
-  }
-
-  function submitPurchase() {
-    if (!_currentProject.title) return;
-    document.getElementById('ph-titulo').value  = 'Compra: ' + _currentProject.title;
-    document.getElementById('ph-desc').value    = 'Quiero comprar la pieza exacta: ' + _currentProject.title;
-    document.getElementById('ph-precio').value  = _currentProject.price || '';
-    document.getElementById('purchase-hidden-form').submit();
   }
 
   function prefillCustom(title) {

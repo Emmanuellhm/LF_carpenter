@@ -89,6 +89,8 @@ def editar_perfil(request):
                 user.phone = phone
             if city:
                 user.city = city
+            if 'avatar' in request.FILES:
+                user.avatar = request.FILES['avatar']
             user.save()
 
             messages.success(request, '¡Perfil actualizado correctamente!')

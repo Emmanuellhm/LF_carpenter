@@ -14,6 +14,7 @@ class User(AbstractUser):
     full_name = models.CharField('Nombre completo', max_length=255)
     phone = models.CharField('Teléfono', max_length=20, blank=True)
     city = models.CharField('Ciudad', max_length=100, blank=True)
+    avatar = models.ImageField('Foto de perfil', upload_to='avatars/', null=True, blank=True)
     role = models.CharField('Rol', max_length=20, choices=ROLE_CHOICES, default='user')
     is_active = models.BooleanField('Activo', default=True)
     created_at = models.DateTimeField('Fecha de registro', auto_now_add=True)

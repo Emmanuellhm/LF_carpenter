@@ -523,6 +523,38 @@ def perfil_publico_carpintero(request, carpintero_id):
     return render(request, 'core/perfil_publico_carpintero.html', context)
 
 @login_required
+def comprar_proyecto(request, portafolio_id):
+    from carpinteros.models import Portafolio
+    from proyectos.models import SolicitudProyecto
+
+    # Solo usuarios que sean 'user' pueden comprar (no otros carpinteros)
+    if request.user.role != 'user':
+        messages.error(request, 'Solo los clientes pueden comprar proyectos.')
+        return redirect('home')
+
+    item = get_object_or_404(Portafolio, id=portafolio_id)
+
+    if request.method == 'POST':
+        # Crear la solicitud (pedido)
+        solicitud = SolicitudProyecto.objects.create(
+            user=request.user,
+            carpenter=item.carpenter,
+            portafolio_item=item,
+            title=f"Compra: {item.title}",
+            description=f"Solicitud de compra directa del ítem de portafolio: {item.title}.\n\nDescripción original: {item.description}",
+            budget=item.price,
+            contact_info=request.user.phone or request.user.email,
+            project_type='purchase',
+            status='pending',
+        )
+        messages.success(request, f'¡Has solicitado la compra de "{item.title}"! El artesano se pondrá en contacto pronto.')
+        return redirect('usuarios:mis_solicitudes')
+
+    # Si entra por GET (no debería pasar si lo hacemos con formulario POST, pero por seguridad redirigimos)
+    return redirect('perfil_publico_carpintero', carpintero_id=item.carpenter.id)
+
+
+@login_required
 def marcar_notificacion_leida(request, notif_id):
     import json
     from django.http import JsonResponse

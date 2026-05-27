@@ -23,6 +23,7 @@ urlpatterns = [
     # Catálogo público (RF10)
     path('explorar/', views.explorar_carpinteros, name='explorar_carpinteros'),
     path('carpintero/<int:carpintero_id>/', views.perfil_publico_carpintero, name='perfil_publico_carpintero'),
+    path('comprar-proyecto/<int:portafolio_id>/', views.comprar_proyecto, name='comprar_proyecto'),
     # Onboarding Social
     path('completar-registro-social/', views.completar_registro_social, name='completar_registro_social'),
     path('api/notificaciones/marcar-leida/<int:notif_id>/', views.marcar_notificacion_leida, name='marcar_notificacion_leida'),
