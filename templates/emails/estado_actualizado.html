@@ -1,0 +1,64 @@
+{% extends 'emails/base_email.html' %}
+
+{% block email_title %}Tu proyecto "{{ solicitud.title }}" cambió de estado{% endblock %}
+
+{% block email_body %}
+<p class="greeting">Hola, {{ user.full_name }} 👋</p>
+<p class="text">
+  Tenemos novedades sobre tu solicitud de proyecto. Tu artesano ha actualizado 
+  el estado de tu pedido.
+</p>
+
+<div class="info-box">
+  <p style="margin-bottom:12px">
+    <strong>📋 Proyecto:</strong> {{ solicitud.title }}
+  </p>
+  <p style="margin-bottom:8px">
+    <strong>🪚 Artesano:</strong> {{ solicitud.carpenter.user.full_name }}
+  </p>
+  <p>
+    <strong>Estado actual:</strong>
+    {% if solicitud.status == 'pending' %}
+      <span class="badge badge-orange">🕐 Nueva Solicitud</span>
+    {% elif solicitud.status == 'budgeting' %}
+      <span class="badge badge-blue">💼 En Cotización</span>
+    {% elif solicitud.status == 'accepted' %}
+      <span class="badge badge-green">✅ Aceptado — Preparando Materiales</span>
+    {% elif solicitud.status == 'in_progress' %}
+      <span class="badge badge-orange">🔨 En Taller</span>
+    {% elif solicitud.status == 'finishing' %}
+      <span class="badge badge-purple">🎨 En Acabados</span>
+    {% elif solicitud.status == 'ready' %}
+      <span class="badge badge-green">📦 Listo para Entrega</span>
+    {% elif solicitud.status == 'completed' %}
+      <span class="badge badge-green">🎉 Entregado y Completado</span>
+    {% endif %}
+  </p>
+</div>
+
+{% if solicitud.status == 'ready' %}
+<p class="text">
+  🚀 <strong>¡Tu mueble está listo!</strong> Coordina con tu artesano la entrega 
+  o recogida a través del chat en la plataforma.
+</p>
+{% elif solicitud.status == 'completed' %}
+<p class="text">
+  🎉 <strong>¡Proyecto finalizado!</strong> Esperamos que estés feliz con tu nuevo mueble.
+  No olvides dejar una reseña para ayudar a otros clientes.
+</p>
+{% else %}
+<p class="text">
+  Puedes usar el <strong>chat en vivo</strong> de la plataforma para comunicarte 
+  directamente con tu artesano y resolver cualquier duda.
+</p>
+{% endif %}
+
+<div class="cta-wrapper">
+  <a href="{{ site_url }}/usuarios/mis-solicitudes/" class="cta-btn">Ver mis Solicitudes</a>
+</div>
+
+<hr class="divider">
+<p class="text" style="font-size:13px; color:#8a7060;">
+  Recibiste este correo porque tienes una solicitud activa en LF Carpinter.
+</p>
+{% endblock %}

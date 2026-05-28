@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Seguimiento de Proyecto | LF Carpinter{% endblock %}
+
+{% block extra_head %}
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=DM+Sans:wght@400;500&display=swap');
+
+  .tracking-hero {
+    background: linear-gradient(135deg, #1c1109 0%, #2c1a10 60%, #3d2010 100%);
+    position: relative; overflow: hidden;
+  }
+  .tracking-hero::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(184,115,51,.12), transparent 65%);
+  }
+
+  /* ── Progress bar ── */
+  .step-connector { flex: 1; height: 2px; transition: background 0.5s ease; }
+  .step-connector.done   { background: var(--caramel); }
+  .step-connector.future { background: #d6d3d1; }
+
+  .step-icon {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; transition: all 0.4s ease;
+    flex-shrink: 0; position: relative;
+  }
+  .step-icon.done    { background: var(--caramel); color: #fff; box-shadow: 0 0 0 4px rgba(184,115,51,.18); }
+  .step-icon.current { background: var(--wood-dark); color: #fff; box-shadow: 0 0 0 4px rgba(44,26,16,.22); }
+  .step-icon.future  { background: #f5f5f4; color: #a8a29e; border: 2px dashed #d6d3d1; }
+
+  /* pulse on current */
+  .step-icon.current::after {
+    content: ''; position: absolute; inset: -6px; border-radius: 50%;
+    border: 2px solid var(--caramel); opacity: 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); opacity: 0; }
+    50%      { transform: scale(1.15); opacity: .5; }
+  }
+
+  /* ── Timeline events ── */
+  .tl-line { position: absolute; left: 20px; top: 0; bottom: 0; width: 2px; background: #e7e5e4; }
+  .tl-dot  {
+    position: absolute; left: -7px; top: 18px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--caramel); border: 3px solid #fff;
+    box-shadow: 0 0 0 3px rgba(184,115,51,.2);
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+  .au { animation: fadeUp .5s ease both; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- ═══════════ HERO ═══════════ -->
+<div class="tracking-hero py-14 md:py-20">
+  <div class="container mx-auto px-6 relative z-10">
+    {% if user.role == 'carpenter' %}
+    <a href="{% url 'carpinteros:ver_solicitudes' %}" class="inline-flex items-center gap-2 text-stone-400 hover:text-[var(--caramel)] text-sm mb-8 transition">
+      <i class="fas fa-arrow-left text-xs"></i> Volver a Proyectos
+    </a>
+    {% else %}
+    <a href="{% url 'usuarios:mis_solicitudes' %}" class="inline-flex items-center gap-2 text-stone-400 hover:text-[var(--caramel)] text-sm mb-8 transition">
+      <i class="fas fa-arrow-left text-xs"></i> Mis Solicitudes
+    </a>
+    {% endif %}
+    <div class="max-w-2xl">
+      <p class="text-xs uppercase tracking-[.25em] text-[var(--caramel)] mb-3">Seguimiento de Fabricación</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;" class="text-5xl md:text-6xl font-semibold text-white leading-tight mb-4">
+        {{ solicitud.title }}
+      </h1>
+      <div class="flex flex-wrap gap-5 text-stone-400 text-sm mt-4">
+        <span><i class="fas fa-user-hard-hat text-[var(--caramel)] mr-1.5"></i>{{ solicitud.carpenter.user.full_name }}</span>
+        <span><i class="fas fa-calendar-alt text-[var(--caramel)] mr-1.5"></i>Desde {{ solicitud.created_at|date:"d M Y" }}</span>
+        <span class="px-3 py-1 rounded-full text-xs font-bold border
+          {% if solicitud.status == 'completed' %}border-emerald-500/40 text-emerald-400 bg-emerald-500/10
+          {% elif solicitud.status == 'rejected' %}border-red-500/40 text-red-400 bg-red-500/10
+          {% else %}border-[var(--caramel)]/40 text-[var(--caramel)] bg-[var(--caramel)]/10{% endif %}">
+          <i class="fas fa-circle text-[7px] mr-1"></i>{{ solicitud.get_status_display }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONTENIDO ═══════════ -->
+<div class="bg-[var(--cream)] min-h-screen py-12">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+
+      <!-- ── COLUMNA PRINCIPAL ── -->
+      <div class="lg:col-span-2 space-y-10">
+
+        <!-- Barra de Progreso por Pasos -->
+        <section class="bg-white rounded-3xl border border-stone-200 p-8 shadow-sm au" style="animation-delay:.1s">
+          <h2 style="font-family:'Cormorant Garamond',serif;" class="text-2xl font-semibold text-[var(--wood-dark)] mb-8">Estado del Proyecto</h2>
+
+          <!-- Steps — desktop -->
+          <div class="hidden sm:flex items-center gap-0">
+            {% for key, label, icon in status_steps %}
+            {% with forloop.counter0 as idx %}
+              <div class="flex flex-col items-center gap-2 z-10">
+                <div class="step-icon {% if idx < current_index %}done{% elif idx == current_index %}current{% else %}future{% endif %}">
+                  <i class="fas {{ icon }}"></i>
+                </div>
+                <span class="text-[10px] font-semibold text-center leading-tight w-16
+                  {% if idx < current_index %}text-[var(--caramel)]
+                  {% elif idx == current_index %}text-[var(--wood-dark)]
+                  {% else %}text-stone-400{% endif %}">
+                  {{ label }}
+                </span>
+              </div>
+              {% if not forloop.last %}
+              <div class="step-connector {% if idx < current_index %}done{% else %}future{% endif %} mb-6"></div>
+              {% endif %}
+            {% endwith %}
+            {% endfor %}
+          </div>
+
+          <!-- Steps — mobile (list) -->
+          <div class="sm:hidden space-y-3">
+            {% for key, label, icon in status_steps %}
+            {% with forloop.counter0 as idx %}
+            <div class="flex items-center gap-4 py-2 {% if idx == current_index %}opacity-100{% elif idx < current_index %}opacity-80{% else %}opacity-40{% endif %}">
+              <div class="step-icon shrink-0 {% if idx < current_index %}done{% elif idx == current_index %}current{% else %}future{% endif %}">
+                <i class="fas {{ icon }}"></i>
+              </div>
+              <div>
+                <p class="font-semibold text-sm {% if idx == current_index %}text-[var(--wood-dark)]{% elif idx < current_index %}text-[var(--caramel)]{% else %}text-stone-400{% endif %}">
+                  {{ label }}
+                </p>
+                {% if idx == current_index %}
+                <p class="text-xs text-stone-400">Estado actual</p>
+                {% endif %}
+              </div>
+              {% if idx < current_index %}<i class="fas fa-check-circle text-[var(--caramel)] ml-auto text-lg"></i>{% endif %}
+            </div>
+            {% endwith %}
+            {% endfor %}
+          </div>
+        </section>
+
+        <!-- Línea de Tiempo de Eventos -->
+        <section class="au" style="animation-delay:.2s">
+          <h2 style="font-family:'Cormorant Garamond',serif;" class="text-2xl font-semibold text-[var(--wood-dark)] mb-6">
+            Bitácora de Fabricación
+          </h2>
+
+          {% if estados %}
+          <div class="relative pl-12">
+            <div class="tl-line"></div>
+            <div class="space-y-6">
+              {% for estado in estados %}
+              <div class="relative bg-white rounded-2xl border border-stone-200 p-5 shadow-sm" style="animation:fadeUp .4s ease both; animation-delay:{{ forloop.counter0 }}00ms;">
+                <div class="tl-dot"></div>
+                <div class="flex flex-wrap items-start justify-between gap-3 mb-2">
+                  <div>
+                    <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--caramel)]/10 text-[var(--caramel)] text-xs font-bold">
+                      <i class="fas fa-circle text-[7px]"></i>{{ estado.get_status_display }}
+                    </span>
+                  </div>
+                  <span class="text-xs text-stone-400 shrink-0">
+                    <i class="fas fa-clock mr-1"></i>{{ estado.created_at|date:"d M Y · H:i" }}
+                  </span>
+                </div>
+                {% if estado.notes %}
+                <p class="text-stone-600 text-sm leading-relaxed mt-2">{{ estado.notes }}</p>
+                {% endif %}
+                {% if estado.photo %}
+                <div class="mt-4">
+                  <img src="{{ estado.photo.url }}" alt="Foto de avance"
+                       class="rounded-xl max-h-72 w-auto object-cover border border-stone-200 shadow-sm cursor-pointer hover:opacity-90 transition"
+                       onclick="openImg('{{ estado.photo.url }}')">
+                </div>
+                {% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% else %}
+          <div class="bg-white rounded-2xl border border-dashed border-stone-300 p-14 text-center">
+            <i class="fas fa-tools text-4xl text-stone-300 mb-4 block"></i>
+            <p class="font-semibold text-stone-500 mb-1">Sin actualizaciones aún</p>
+            <p class="text-sm text-stone-400">El carpintero publicará fotos y notas de avance aquí a medida que trabaje en tu proyecto.</p>
+          </div>
+          {% endif %}
+        </section>
+
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <div class="space-y-5">
+
+        <!-- Resumen del encargo -->
+        <div class="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden au" style="animation-delay:.15s">
+          <div class="bg-gradient-to-br from-[var(--wood-dark)] to-[var(--wood)] px-6 py-5 text-white">
+            <p class="text-xs uppercase tracking-widest text-stone-400 mb-1">Proyecto</p>
+            <h3 style="font-family:'Cormorant Garamond',serif;" class="text-2xl font-semibold leading-snug">{{ solicitud.title }}</h3>
+          </div>
+          <div class="p-6 space-y-4 text-sm">
+            <div class="flex gap-3">
+              <i class="fas fa-user-hard-hat text-[var(--caramel)] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-stone-400 text-xs mb-0.5">Carpintero</p>
+                <p class="font-semibold text-[var(--wood-dark)]">{{ solicitud.carpenter.user.full_name }}</p>
+              </div>
+            </div>
+            {% if solicitud.budget %}
+            <div class="flex gap-3">
+              <i class="fas fa-tag text-[var(--caramel)] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-stone-400 text-xs mb-0.5">Presupuesto acordado</p>
+                <p class="font-semibold text-[var(--wood-dark)]">${{ solicitud.budget|floatformat:"0" }} COP</p>
+              </div>
+            </div>
+            {% endif %}
+            {% if solicitud.deadline %}
+            <div class="flex gap-3">
+              <i class="fas fa-calendar-check text-[var(--caramel)] mt-0.5 shrink-0"></i>
+              <div>
+                <p class="text-stone-400 text-xs mb-0.5">Fecha límite</p>
+                <p class="font-semibold text-[var(--wood-dark)]">{{ solicitud.deadline|date:"d M Y" }}</p>
+              </div>
+            </div>
+            {% endif %}
+            <div class="pt-3 border-t border-stone-100">
+              <p class="text-stone-400 text-xs mb-1.5">Descripción</p>
+              <p class="text-stone-600 leading-relaxed">{{ solicitud.description|truncatewords:40 }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagen de referencia -->
+        {% if solicitud.reference_image %}
+        <div class="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden au" style="animation-delay:.25s">
+          <div class="px-5 pt-5 pb-3 border-b border-stone-100">
+            <p class="text-xs uppercase tracking-widest text-stone-400 font-bold">Imagen de Referencia</p>
+          </div>
+          <div class="p-4">
+            <img src="{{ solicitud.reference_image.url }}" alt="Referencia"
+                 class="w-full rounded-2xl object-cover max-h-56 cursor-pointer hover:opacity-90 transition"
+                 onclick="openImg('{{ solicitud.reference_image.url }}')">
+          </div>
+        </div>
+        {% endif %}
+
+        <!-- Ir al chat -->
+        <a href="{% url 'chat:abrir_chat' solicitud.id %}"
+           class="flex items-center justify-center gap-3 w-full py-4 bg-[var(--wood-dark)] hover:bg-[var(--wood)] text-white rounded-2xl font-bold transition shadow-md hover:shadow-lg au"
+           style="animation-delay:.3s">
+          <i class="fas fa-comments"></i> 
+          {% if request.user.role == 'carpenter' %}
+            Ir al chat con el cliente
+          {% else %}
+            Ir al chat con el carpintero
+          {% endif %}
+        </a>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox simple -->
+<div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-md p-4" onclick="closeLb()">
+  <img id="lb-img" src="" alt="" class="max-w-full max-h-[90vh] object-contain rounded-2xl shadow-2xl">
+</div>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  function openImg(src) {
+    document.getElementById('lb-img').src = src;
+    const lb = document.getElementById('lightbox');
+    lb.classList.remove('hidden');
+    lb.classList.add('flex');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLb() {
+    const lb = document.getElementById('lightbox');
+    lb.classList.add('hidden');
+    lb.classList.remove('flex');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+</script>
+{% endblock %}
