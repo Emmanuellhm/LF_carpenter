@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Panel Carpintero | LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="flex min-h-[80vh]" style="background: var(--cream);">
+  <!-- Sidebar -->
+  <aside class="w-64 shadow-xl flex-shrink-0" style="background: var(--wood-dark);">
+    <div class="flex flex-col h-full">
+      <div class="flex flex-col items-center py-8" style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+        <div class="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-display font-bold shadow-lg overflow-hidden" style="background: linear-gradient(135deg, var(--caramel), var(--wood)); border: 3px solid var(--caramel);">
+          {% if perfil.hoja_vida %}
+          <img src="{{ perfil.hoja_vida.url }}" alt="{{ user.full_name }}" class="w-full h-full object-cover">
+          {% else %}
+          {{ user.full_name|slice:":1" }}
+          {% endif %}
+        </div>
+        <span class="mt-3 font-body font-bold text-white text-center px-4">{{ user.full_name }}</span>
+        <span class="text-xs text-stone-500 font-body mt-1">Carpintero {% if perfil.is_verified %}<i class="fas fa-check-circle" style="color: var(--caramel);"></i>{% endif %}</span>
+      </div>
+      <nav class="flex flex-col space-y-1 px-4 mt-6 flex-grow">
+        <a href="{% url 'carpinteros:panel' %}" class="text-white rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3" style="background: rgba(194,129,61,0.2);">
+          <i class="fas fa-home w-5"></i> Panel Principal
+        </a>
+        <a href="{% url 'carpinteros:mis_proyectos' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-folder w-5"></i> Mis Proyectos
+        </a>
+        <a href="{% url 'carpinteros:ver_solicitudes' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-clipboard-list w-5"></i> Solicitudes
+          {% if solicitudes_pendientes > 0 %}
+          <span class="text-white text-xs px-2 py-0.5 rounded-full" style="background: var(--caramel);">{{ solicitudes_pendientes }}</span>
+          {% endif %}
+        </a>
+        <a href="{% url 'carpinteros:notificaciones' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-bell w-5"></i> Notificaciones
+          {% if notificaciones_no_leidas > 0 %}
+          <span class="text-white text-xs px-2 py-0.5 rounded-full" style="background: var(--caramel);">{{ notificaciones_no_leidas }}</span>
+          {% endif %}
+        </a>
+        <a href="{% url 'carpinteros:editar_perfil' %}" class="text-stone-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-3 font-body text-sm text-left flex items-center gap-3 transition">
+          <i class="fas fa-user-edit w-5"></i> Editar Perfil
+        </a>
+      </nav>
+      <a href="{% url 'logout' %}"
+         class="text-center py-5 text-stone-600 hover:text-white cursor-pointer font-body text-sm flex items-center justify-center gap-2 transition" style="border-top: 1px solid rgba(255,255,255,0.1);">
+         <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 p-10">
+    {% if not perfil.approved %}
+    <div class="bg-amber-50 border px-6 py-4 rounded-xl mb-6 font-body text-sm" style="border-color: var(--caramel); color: var(--wood);">
+      <p class="font-medium"><i class="fas fa-exclamation-triangle mr-2" style="color: var(--caramel);"></i> Tu cuenta está pendiente de aprobación</p>
+      <p class="text-stone-500 mt-1">Algunas funcionalidades estarán limitadas hasta que un administrador apruebe tu cuenta.</p>
+    </div>
+    {% endif %}
+
+    <h1 class="font-display text-4xl mb-2" style="color: var(--wood-dark);">Panel de Carpintero</h1>
+    <p class="font-body text-stone-500 mb-8">Bienvenido, {{ user.full_name }}</p>
+
+    <!-- Stats Cards -->
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white p-6 rounded-2xl shadow-md hover-lift" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center" style="background: rgba(194,129,61,0.1);">
+            <i class="fas fa-folder text-xl" style="color: var(--caramel);"></i>
+          </div>
+          <div>
+            <p class="font-display text-2xl" style="color: var(--wood-dark);">{{ proyectos_count }}</p>
+            <p class="font-body text-xs text-stone-500">Proyectos</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover-lift" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-green-50">
+            <i class="fas fa-clipboard-list text-xl text-green-600"></i>
+          </div>
+          <div>
+            <p class="font-display text-2xl" style="color: var(--wood-dark);">{{ solicitudes_pendientes }}</p>
+            <p class="font-body text-xs text-stone-500">Solicitudes</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover-lift" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50">
+            <i class="fas fa-star text-xl text-blue-600"></i>
+          </div>
+          <div>
+            <p class="font-display text-2xl" style="color: var(--wood-dark);">{{ avg_rating|floatformat:1|default:"—" }}</p>
+            <p class="font-body text-xs text-stone-500">Calificación</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-white p-6 rounded-2xl shadow-md hover-lift" style="border: 1px solid var(--sand);">
+        <div class="flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-50">
+            <i class="fas fa-bell text-xl text-purple-600"></i>
+          </div>
+          <div>
+            <p class="font-display text-2xl" style="color: var(--wood-dark);">{{ notificaciones_no_leidas }}</p>
+            <p class="font-body text-xs text-stone-500">Notificaciones</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions + Profile -->
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-2xl shadow-md" style="border: 1px solid var(--sand);">
+        <h2 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Acciones Rápidas</h2>
+        <div class="space-y-3">
+          <a href="{% url 'carpinteros:subir_proyecto' %}" class="block text-white font-body font-medium px-6 py-3 rounded-xl shadow text-center transition hover:opacity-90" style="background: var(--caramel);">
+            <i class="fas fa-plus mr-2"></i> Subir Nuevo Proyecto
+          </a>
+          <a href="{% url 'carpinteros:ver_solicitudes' %}" class="block font-body font-medium px-6 py-3 rounded-xl shadow text-center transition hover:opacity-90 text-white" style="background: var(--wood);">
+            <i class="fas fa-clipboard-list mr-2"></i> Ver Solicitudes
+          </a>
+          <a href="{% url 'carpinteros:editar_perfil' %}" class="block font-body font-medium px-6 py-3 rounded-xl shadow text-center transition hover:opacity-70 text-white" style="background: var(--wood-dark);">
+            <i class="fas fa-user-edit mr-2"></i> Editar Mi Perfil
+          </a>
+        </div>
+      </div>
+
+      <div class="bg-white p-6 rounded-2xl shadow-md" style="border: 1px solid var(--sand);">
+        <h2 class="font-display text-xl mb-4" style="color: var(--wood-dark);">Mi Perfil</h2>
+        <div class="space-y-2 font-body text-sm">
+          <p><strong class="text-stone-500">Especialidad:</strong> {{ perfil.specialties|default:"No especificada" }}</p>
+          <p><strong class="text-stone-500">Experiencia:</strong> {{ perfil.experience_years }} años</p>
+          <p><strong class="text-stone-500">Estado:</strong>
+            {% if perfil.approved %}
+              {% if perfil.is_verified %}
+              <span class="text-green-600">Verificado</span>
+              {% else %}
+              <span class="text-blue-600">Aprobado</span>
+              {% endif %}
+            {% else %}
+            <span style="color: var(--caramel);">Pendiente de aprobación</span>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer %}{% endblock %}

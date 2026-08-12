@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Preguntas Frecuentes | LF Carpinter{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<section class="py-20 px-6" style="background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood) 100%);">
+  <div class="container mx-auto text-center">
+    <h1 class="font-display text-5xl text-white mb-4 reveal">Preguntas Frecuentes</h1>
+    <p class="font-body text-stone-300 max-w-xl mx-auto reveal">Respuestas a las dudas más comunes sobre nuestra plataforma y servicios.</p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="py-20 px-6" style="background: var(--cream);">
+  <div class="container mx-auto max-w-3xl">
+
+    <!-- Categoría: Para Clientes -->
+    <div class="mb-12 reveal">
+      <span class="font-body text-sm uppercase tracking-widest mb-6 block" style="color: var(--caramel);">Para Clientes</span>
+      
+      <div class="space-y-4 stagger">
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Cómo puedo encontrar un carpintero?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">Regístrate como usuario, navega por nuestro directorio de carpinteros verificados, filtra por especialidad, ubicación o calificación, y cuando encuentres al indicado, envíale una solicitud de proyecto directamente desde su perfil.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Cuánto cuesta usar la plataforma?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">La plataforma es completamente gratuita para clientes. Puedes buscar carpinteros, ver sus portafolios, leer reseñas y enviar solicitudes sin costo alguno. El presupuesto del proyecto se negocia directamente con el carpintero.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Cómo puedo calificar a un carpintero?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">Solo puedes dejar una reseña para un carpintero una vez que tu proyecto haya sido marcado como "completado". Esto garantiza que las calificaciones reflejan experiencias reales de trabajo.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Categoría: Para Carpinteros -->
+    <div class="mb-12 reveal">
+      <span class="font-body text-sm uppercase tracking-widest mb-6 block" style="color: var(--caramel);">Para Carpinteros</span>
+
+      <div class="space-y-4 stagger">
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Cómo me registro como carpintero?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">Completa el formulario de registro de carpintero con tus datos, especialidades y experiencia. Tu solicitud será revisada por nuestro equipo y, una vez aprobada, tu perfil estará visible para todos los clientes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Cuánto tarda la aprobación de mi cuenta?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">El proceso de aprobación generalmente toma entre 24 y 48 horas hábiles. Recibirás una notificación por correo electrónico una vez que tu cuenta sea aprobada.</p>
+          </div>
+        </div>
+
+        <div class="faq-item bg-white rounded-xl shadow-sm border border-stone-200/50 overflow-hidden hover-lift">
+          <button class="faq-toggle w-full text-left px-6 py-5 flex justify-between items-center" onclick="toggleFaq(this)">
+            <span class="font-body font-semibold pr-4" style="color: var(--wood-dark);">¿Puedo editar mi perfil y portafolio?</span>
+            <i class="fas fa-plus text-sm transition-transform duration-300" style="color: var(--caramel);"></i>
+          </button>
+          <div class="faq-content px-6 overflow-hidden" style="max-height: 0; transition: max-height 0.4s ease, padding 0.4s ease;">
+            <p class="font-body text-stone-500 text-sm leading-relaxed pb-5">¡Sí! Desde tu panel de carpintero puedes actualizar tu especialidad, descripción, foto de perfil y subir nuevos proyectos a tu portafolio en cualquier momento.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="text-center pt-8 reveal">
+      <p class="font-body text-stone-500 mb-4">¿No encontraste lo que buscabas?</p>
+      <a href="{% url 'contactanos' %}" class="inline-flex items-center gap-2 font-body font-medium px-8 py-3 rounded-xl text-white transition shadow-lg hover:shadow-xl hover:opacity-90" style="background: var(--caramel);">
+        <i class="fas fa-envelope"></i> Contáctanos
+      </a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleFaq(btn) {
+  const item = btn.closest('.faq-item');
+  const content = item.querySelector('.faq-content');
+  const icon = btn.querySelector('i');
+  const isOpen = content.style.maxHeight !== '0px' && content.style.maxHeight !== '';
+  
+  // Close all
+  document.querySelectorAll('.faq-content').forEach(c => { c.style.maxHeight = '0px'; c.style.paddingTop = '0'; });
+  document.querySelectorAll('.faq-toggle i').forEach(i => { i.classList.remove('fa-minus'); i.classList.add('fa-plus'); i.style.transform = 'rotate(0)'; });
+  
+  // Open clicked if it was closed
+  if (!isOpen) {
+    content.style.maxHeight = content.scrollHeight + 'px';
+    icon.classList.remove('fa-plus');
+    icon.classList.add('fa-minus');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+</script>
+{% endblock %}

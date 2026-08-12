@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Eliminar Proyecto - LF Carpinter{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-6 py-8">
+  <div class="max-w-lg mx-auto">
+    <div class="bg-white rounded-xl shadow-lg p-8">
+      <h1 class="text-3xl font-bold text-red-700 mb-6">
+        <i class="fas fa-trash-alt mr-3"></i>Eliminar Proyecto
+      </h1>
+
+      <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <p class="text-red-800">
+          <i class="fas fa-exclamation-triangle mr-2"></i>
+          ¿Estás seguro de que deseas eliminar este proyecto? Esta acción no se puede deshacer.
+        </p>
+      </div>
+
+      <div class="bg-stone-50 rounded-lg p-4 mb-6">
+        <h3 class="font-bold text-stone-800 mb-2">{{ proyecto.title }}</h3>
+        <p class="text-stone-600 text-sm">{{ proyecto.description|truncatewords:20 }}</p>
+        {% if proyecto.image %}
+        <img src="{{ proyecto.image.url }}" alt="{{ proyecto.title }}" class="w-32 h-32 object-cover rounded-lg mt-3">
+        {% endif %}
+      </div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="flex gap-4">
+          <button type="submit" class="flex-1 bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition font-medium">
+            <i class="fas fa-trash-alt mr-2"></i>Sí, Eliminar
+          </button>
+          <a href="{% url 'carpinteros:mis_proyectos' %}" class="flex-1 bg-stone-200 text-stone-700 py-3 rounded-lg hover:bg-stone-300 transition font-medium text-center">
+            <i class="fas fa-times mr-2"></i>Cancelar
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

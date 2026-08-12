@@ -1,0 +1,36 @@
+{% extends 'emails/base_email.html' %}
+
+{% block email_title %}¡Bienvenido a LF Carpinter, {{ user.full_name }}!{% endblock %}
+
+{% block email_body %}
+<p class="greeting">¡Hola, {{ user.full_name }}! 👋</p>
+<p class="text">
+  Tu cuenta en <strong>LF Carpinter</strong> ha sido creada exitosamente. 
+  Estás a un paso de conectar con los mejores artesanos de madera verificados de tu ciudad.
+</p>
+
+<div class="info-box">
+  <p>
+    🧑‍💼 <strong>Tu cuenta:</strong> {{ user.email }}<br>
+    🗓️ <strong>Registrado el:</strong> {{ user.date_joined|date:"d \d\e F \d\e Y" }}<br>
+    🏙️ <strong>Ciudad:</strong> {{ user.city|default:"Por completar" }}
+  </p>
+</div>
+
+<p class="text">¿Qué puedes hacer desde tu panel?</p>
+<ul style="color:#5a4a40; font-size:14px; line-height:2; padding-left:20px; margin-bottom:24px;">
+  <li>🔍 <strong>Explorar carpinteros</strong> verificados y filtrarlos por ciudad o especialidad.</li>
+  <li>📋 <strong>Enviar solicitudes</strong> de proyectos personalizados con imágenes de referencia.</li>
+  <li>💬 <strong>Chatear en vivo</strong> con el artesano asignado a tu proyecto.</li>
+  <li>⭐ <strong>Dejar reseñas</strong> y ayudar a la comunidad a elegir bien.</li>
+</ul>
+
+<div class="cta-wrapper">
+  <a href="{{ site_url }}/explorar/" class="cta-btn">Explorar Artesanos</a>
+</div>
+
+<hr class="divider">
+<p class="text" style="font-size:13px; color:#8a7060;">
+  Si no creaste esta cuenta, ignora este correo. Tu información está segura.
+</p>
+{% endblock %}
